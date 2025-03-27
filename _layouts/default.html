@@ -73,7 +73,7 @@ layout: none
 /* Fixed header */
 .app-header {
     height: 50px;
-    background: var(--primary-color);
+    background: var(--primary-color, #6A6DB3);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -89,7 +89,6 @@ layout: none
 .app-content {
     display: flex;
     flex: 1;
-    min-height: 670px; /* 900px - 50px header - 180px footer */
     position: relative;
 }
 
@@ -103,7 +102,7 @@ layout: none
     flex: 1;
     padding: 1.5rem;
     overflow-y: auto;
-    background: white;
+    background: #fff;
 }
 
 .welcome-content {
@@ -113,7 +112,7 @@ layout: none
 /* Fixed footer */
 .app-footer {
     height: 180px;
-    background: white;
+    background: #fff;
     border-top: 1px solid #ddd;
     flex-shrink: 0;
 }
