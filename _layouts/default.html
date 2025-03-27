@@ -28,25 +28,25 @@ layout: none
     {% include sidebar.html %}
     {% endunless %}
     
-    <main class="main-container">
-        <div class="content-wrapper">
-            <div class="content-area">
-                {{ content }}
-            </div>
-        </div>
-    </main>
+    {{ content }}
 
-    {% include footer.html %}
-
-    <!-- Global scripts -->
-    <script src="/assets/js/navigation.js"></script>
-    <script src="/assets/js/auth.js"></script>
-
-    <!-- Page-specific scripts -->
-    {% if page.scripts %}
-    {% for script in page.scripts %}
-    <script src="{{ script }}"></script>
-    {% endfor %}
+    <!-- Load scripts based on page type -->
+    {% if page.chat_only %}
+        <!-- Chat page scripts loaded via page.scripts -->
+        {% if page.scripts %}
+        {% for script in page.scripts %}
+        <script src="{{ script }}"></script>
+        {% endfor %}
+        {% endif %}
+    {% else %}
+        <!-- Global scripts for non-chat pages -->
+        <script src="/assets/js/navigation.js"></script>
+        <script src="/assets/js/auth.js"></script>
+        {% if page.scripts %}
+        {% for script in page.scripts %}
+        <script src="{{ script }}"></script>
+        {% endfor %}
+        {% endif %}
     {% endif %}
 </body>
 </html>
