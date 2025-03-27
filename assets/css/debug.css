@@ -1,0 +1,38 @@
+/* Visual debugging helpers */
+.debug-container {
+    border: 3px dotted #001F40;
+    margin: 2px;
+    position: relative;
+}
+
+.debug-visible {
+    border: 3px solid #004080;
+    position: relative;
+}
+
+.debug-overflow {
+    border: 3px dashed #FF0000;
+    position: relative;
+}
+
+/* Optional: Add dimensions display */
+.debug-container::after,
+.debug-visible::after,
+.debug-overflow::after {
+    content: attr(data-debug);
+    position: absolute;
+    top: -20px;
+    right: 0;
+    font-size: 10px;
+    background: #fff;
+    padding: 2px 5px;
+    border: 1px solid currentColor;
+    display: none;
+}
+
+/* Show dimensions on hover */
+.debug-container:hover::after,
+.debug-visible:hover::after,
+.debug-overflow:hover::after {
+    display: block;
+} 

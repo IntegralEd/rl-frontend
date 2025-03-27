@@ -18,6 +18,57 @@ body {
     padding: 0;
 }
 
+/* Layout Structure */
+.page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    max-width: 1900px;
+    margin: 0 auto;
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Section visibility */
+.section {
+    display: none;
+    width: 100%;
+}
+
+.section.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 20%;
+    min-width: 200px;
+    background: var(--primary-color);
+    padding: 20px;
+}
+
+/* Main content area */
+.content-area {
+    width: 80%;
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Footer areas */
+.footer-area {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
 /* Header Styles */
 .header {
     background-color: var(--primary-color);

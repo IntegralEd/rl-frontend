@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BHB Chat</title>
+</head>
+<body>
+    <style>
+/* Debug helpers */
+.debug-container { border: 3px dotted #001F40; margin: 2px; }
+.debug-visible { border: 3px solid #004080; }
+.debug-overflow { border: 3px dashed #FF0000; }
+
+/* Basic layout */
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+}
+
+/* Sections */
+.section:not(.active) {
+  display: none;
+}
+</style>
+
+<div class="page-wrapper debug-container">
+  <!-- Header -->
+  <div id="header-bar">
+  <img id="header-logo" src="/assets/images/horiz_lockup_white.png" alt="Recursive Learning">
+</div>
+
+<style>
+  #header-bar {
+    background-color: #004080;
+    height: 50px;
+    width: 1200px;
+    max-width: 100%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  #header-logo {
+    height: 40px;
+    object-fit: contain;
+  }
+</style>
+
+
+  <div class="main-content debug-container">
+    <!-- Sidebar - 20% width -->
+    <div class="debug-visible" style="width: 20%; min-width: 200px;">
+      <div id="sidebar">
+  <button onclick="showSection(0)" id="nav-welcome" class="active">Welcome</button>
+  <button onclick="showSection(1)" id="nav-public-chat" disabled>Anonymous Public Chat</button>
+  <button onclick="showSection(2)" id="nav-tools" disabled>Tools</button>
+</div>
+
+    </div>
+
+    <!-- Main area - 80% width -->
+    <div class="debug-container" style="width: 80%;">
+      <!-- Welcome section -->
+      <div class="section active" id="welcome-section">
+        <!-- _includes/welcome_affirmations.html -->
+<div class="welcome-section">
+  <h1>Welcome!</h1>
+  <p>
+    Access maternal health resources as a public user.
+    Please note that this is an agreement for public use 
+    and not medical advice, in line with our style guide.
+  </p>
+
+  <div class="affirmation-container">
+    <label>
+      <input type="checkbox" id="tos" onclick="checkAffirmations()" />
+      I affirm the terms of service.
+    </label>
+    <label>
+      <input type="checkbox" id="norms" onclick="checkAffirmations()" />
+      I affirm the community norms and guidelines.
+    </label>
+    <label>
+      <input type="checkbox" id="acknowledge" onclick="checkAffirmations()" />
+      I acknowledge this is a monitored public health resource.
+    </label>
+  </div>
+
+  <!-- The "Next" button typically navigates to the chat or next section -->
+  <button id="next-button" class="next-button" onclick="showSection(1)" disabled>
+    Next
+  </button>
+
+  <!-- The "Account" button, if needed, might open a sign-up flow -->
+  <button id="account-button" class="account-button" onclick="redirectToIntake()" disabled>
+    Create Account to Save Chat
+  </button>
+</div>
+
+      </div>
+
+      <!-- Chat section -->
+      <div class="section" id="chat-section">
+        <div id="main-form">
+  <!-- Existing content -->
+</div>
+
+<script>
+  let messageCount = 0; // Add at top of script
+
+  document.addEventListener("DOMContentLoaded", function() {
+      showSection(0);
+      window.threadId = localStorage.getItem('threadId') || null;
+      console.log('Session initialized:', window.threadId ? `Using thread ${window.threadId}` : 'No existing thread');
+
+      // Add keyboard handlers
+      const chatInput = document.getElementById("chat-input");
+      const sendButton = document.querySelector(".send-button");
+
+      chatInput.addEventListener("keydown", function(event) {
+          if (event.key === "Enter" && !event.shiftKey) {
+              event.preventDefault();
+              sendMessage();
+          }
+          // Tab handling
+          if (event.key === "Tab") {
+              event.preventDefault();
+              sendButton.focus();
+          }
+      });
+
+      // Handle enter key on send button when focused
+      sendButton.addEventListener("keydown", function(event) {
+          if (event.key === "Enter") {
+              event.preventDefault();
+              sendMessage();
+          }
+      });
+  });
+
+  function showSection(index) {
+      document.querySelectorAll('.section').forEach((section, i) => {
+          section.classList.toggle('active', i === index);
+      });
+      document.querySelectorAll('#sidebar button').forEach((button, i) => {
+          button.classList.toggle('active', i === index);
+      });
+
+      const chatContainer = document.querySelector(".chat-container");
+      if (index === 1) {
+          document.getElementById("nav-public-chat").removeAttribute("disabled");
+          if (chatContainer) chatContainer.style.display = "flex";
+      } else {
+          if (chatContainer) chatContainer.style.display = "none";
+      }
+  }
+
+  function sendMessage() {
+      const input = document.getElementById("chat-input");
+      if (input.value.trim() === "") return;
+      
+      messageCount++;
+      console.log(`Message ${messageCount}: ${window.threadId ? `Using thread ${window.threadId}` : 'No thread exists'}`);
+      
+      const requestBody = window.threadId ? 
+          { message: input.value, threadId: window.threadId } : 
+          { message: input.value };
+      
+      console.log(`Sending message ${messageCount}${window.threadId ? ` with threadId: ${window.threadId}` : ''}`);
+      
+      // Add message to UI
+      const chatWindow = document.getElementById("chat-window");
+      const message = document.createElement("div");
+      message.classList.add("message", "user");
+      message.textContent = input.value;
+      chatWindow.appendChild(message);
+      input.value = "";
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+
+      // Show loading indicator
+      const transmissionIndicator = document.createElement("div");
+      transmissionIndicator.classList.add("message", "assistant");
+      transmissionIndicator.textContent = "Sending...";
+      chatWindow.appendChild(transmissionIndicator);
+
+      // Send to Lambda
+      fetch('https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log('Full Lambda response:', data);
+          
+          transmissionIndicator.remove(); // Remove the "Sending..." indicator
+          const responseMessage = document.createElement("div");
+          responseMessage.classList.add("message", "assistant");
+          responseMessage.textContent = data.response;
+          chatWindow.appendChild(responseMessage);
+          chatWindow.scrollTop = chatWindow.scrollHeight;
+          if (messageCount === 5) {
+              saveChat();
+          }
+      })
+      .catch((error) => {
+          console.error('Error with thread:', window.threadId, error);
+          transmissionIndicator.textContent = "Failed to send message.";
+      });
+  }
+
+  function redirectToIntake() {
+      const threadId = window.threadId || 'new';
+      window.location.href = `https://bmore.softr.app/user-intake?thread_id=${threadId}`;
+  }
+
+  function checkAffirmations() {
+      const tos = document.getElementById('tos').checked;
+      const norms = document.getElementById('norms').checked;
+      const acknowledge = document.getElementById('acknowledge').checked;
+      const nextButton = document.getElementById('next-button');
+      const accountButton = document.getElementById('account-button');
+
+      if (nextButton && accountButton) {
+          if (tos && norms && acknowledge) {
+              nextButton.classList.add('enabled');
+              nextButton.disabled = false;
+              accountButton.classList.add('enabled');
+              accountButton.disabled = false;
+          } else {
+              nextButton.classList.remove('enabled');
+              nextButton.disabled = true;
+              accountButton.classList.remove('enabled');
+              accountButton.disabled = true;
+          }
+      }
+  }
+
+  function saveChat() {
+      const threadId = window.threadId || 'new';
+      const assistantId = 'asst_8Akizj8qAc3itsBD6ypTyO5q';
+      const timestamp = new Date().toISOString();
+      const chatSummary = {
+          event_type: "rag_chat",
+          session: {
+              id: threadId,
+              timestamp: timestamp,
+              source_url: "https://recursivelearning.app/BHB-chat.html",
+              entry_point: "public_anonymous"
+          },
+          persona: {
+              role: "community_health_worker",
+              context_source: "bmore_health_resources",
+              interaction_style: "empathetic_guidance"
+          },
+          interaction_log: {
+              initial_query: "I need help finding maternal health support",
+              location_context: "Baltimore",
+              identified_needs: ["prenatal_care", "transportation"],
+              resources_shared: [
+                  {
+                      type: "program",
+                      name: "B'more for Healthy Babies",
+                      url: "https://integraled.org/bmore/programs/healthy-babies"
+                  }
+              ]
+          },
+          outcome: {
+              primary_action: "user_signup",
+              redirect_path: "/user-intake",
+              context_preservation: {
+                  needs_assessment: true,
+                  location: true,
+                  program_interest: ["maternal_health", "transportation"]
+              },
+              instructional_intent: "Guide user through maternal health resource discovery and program enrollment"
+          }
+      };
+
+      fetch('YOUR_WEBHOOK_URL', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(chatSummary)
+      })
+      .then(response => response.json())
+      .then(data => console.log('Success:', data))
+      .catch((error) => console.error('Error:', error));
+  }
+</script>
+</body>
+</html>
+      </div>
+
+      <!-- Tools section -->
+      <div class="section" id="tools-section">
+        <h2>Tools & Export</h2>
+        <p>Coming soon...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer area - switches between playbar and chatbar -->
+  <div class="debug-visible">
+    <div id="playbar-container">
+      <!-- A bottom bar for "Next" style interactions -->
+ 
+<!-- _includes/playbar.html -->
+<div class="playbar" role="region" aria-label="Form navigation bar">
+  <!-- 
+    aria-label or alt text helps screen readers identify the button 
+    "nextStep()" in your JS handles advancing the flow
+  -->
+  <button 
+    class="playbar-button next-button" 
+    onclick="nextStep()" 
+    aria-label="Go to next step"
+  >
+    <img 
+      src="/assets/images/noun-next-5654311-FFFFFF.svg" 
+      class="playbar-icon" 
+      width="50" 
+      height="50" 
+      alt="Next arrow icon" 
+    />
+    <!-- Optionally, include visible text or a visually hidden span -->
+    <span class="sr-only">Next</span>
+  </button>
+</div>
+
+<div class="playbar">
+    <button class="playbar-button">
+        <span class="playbar-icon" aria-label="Playbar Icon"></span>
+    </button>
+</div>
+
+    </div>
+    <div id="chatbar-container" style="display: none;">
+      <!-- A bottom bar for chat input -->
+<!-- _includes/chatbar.html -->
+<div class="chatbar" role="region" aria-label="Chat compose bar">
+  <label for="chat-input" class="sr-only">Type your message</label>
+  <input 
+    type="text" 
+    id="chat-input" 
+    class="chat-input" 
+    placeholder="Type your message here..." 
+    aria-label="Chat input field"
+  />
+
+  <button 
+    class="chat-send-button" 
+    onclick="sendMessage()" 
+    aria-label="Send message"
+  >
+    <!-- 50px round CTA icon, e.g. a paper airplane -->
+    <img 
+      src="/assets/images/send-icon.svg" 
+      width="50" 
+      height="50" 
+      alt="Send" 
+      class="chat-send-icon"
+    />
+  </button>
+</div>
+
+<style>
+.chatbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Adjust as needed */
+    background: #f8f8f8;
+    border-top: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    z-index: 999;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 8px;
+    font-size: 16px;
+    margin-right: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.chat-send-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.chat-send-icon {
+    background-color: var(--primary-color); /* Use your primary color */
+    border-radius: 50%;
+    display: block;
+    width: 50px;
+    height: 50px;
+}
+</style>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// Initialize on load
+document.addEventListener('DOMContentLoaded', function() {
+  // Set initial state
+  showSection(0);
+  
+  // Initialize thread ID from local storage if exists
+  window.threadId = localStorage.getItem('threadId') || null;
+  console.log('Session initialized:', window.threadId ? `Using thread ${window.threadId}` : 'New session');
+});
+
+function showSection(index) {
+  // Update sections
+  document.querySelectorAll('.section').forEach((section, i) => {
+    section.classList.toggle('active', i === index);
+  });
+  
+  // Update sidebar buttons
+  document.querySelectorAll('#sidebar button').forEach((button, i) => {
+    button.classList.toggle('active', i === index);
+  });
+
+  // Toggle appropriate footer
+  const playbarContainer = document.getElementById('playbar-container');
+  const chatbarContainer = document.getElementById('chatbar-container');
+  
+  if (index === 1) { // Chat section
+    playbarContainer.style.display = 'none';
+    chatbarContainer.style.display = 'block';
+  } else {
+    playbarContainer.style.display = 'block';
+    chatbarContainer.style.display = 'none';
+  }
+}
+</script> 
+</body>
+</html>
