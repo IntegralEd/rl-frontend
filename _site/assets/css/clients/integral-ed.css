@@ -1,0 +1,49 @@
+/* Integral Ed Theme Variables */
+:root {
+  /* Branding Colors */
+  --primary-color: #28A745;
+  --secondary-color: #34C759;
+  --accent-color: #FF9500;
+  --background-color: #F5F5F7;
+  --text-color: #1A1A1A;
+
+  /* Typography */
+  --client-font-h1: 'Inter, sans-serif';
+  --client-font-h2: 'Open Sans, sans-serif';
+  --client-font-body: 'Arial, sans-serif';
+  --client-font-size-h1: 32px;
+  --client-font-size-h2: 24px;
+  --client-font-size-body: 16px;
+
+  /* Layout */
+  --client-button-radius: 8px;
+  --client-button-padding: 12px 24px;
+  --client-card-border-radius: 12px;
+  --client-spacing-large: 32px;
+  --client-spacing-medium: 24px;
+  --client-spacing-small: 16px;
+
+  /* Accessibility */
+  --client-font-scale: 1.1;
+}
+
+/* Chat Container Overrides */
+.chat-container {
+  width: 95%;
+  max-width: 1400px;
+  height: 90vh;
+  background: var(--background-color);
+  border-radius: var(--client-card-border-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.chat-window {
+  background-color: #fff;
+  padding: var(--client-spacing-medium);
+}
+
+/* Integral Ed Sidebar Customization */
+#sidebar {
+  background-color: var(--primary-color);
+  padding: var(--client-spacing-medium);
+} 

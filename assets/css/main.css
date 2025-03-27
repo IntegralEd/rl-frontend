@@ -187,9 +187,7 @@ button:disabled {
 
 /* Sidebar */
 .sidebar {
-    width: 20%;
-    min-width: 200px;
-    background: var(--primary-color);
+    width: var(--sidebar-width);
     padding: 20px;
 }
 

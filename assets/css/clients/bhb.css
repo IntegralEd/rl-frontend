@@ -1,0 +1,69 @@
+/* BHB Theme Variables */
+:root {
+  /* Branding Colors */
+  --primary-color: #6a6db3; /* Desaturated BHB Primary Blue */
+  --secondary-color: #e6184e; /* BHB Primary Red */
+  --accent-color: #0cb189; /* BHB Primary Green */
+  --background-color: #f9f9f9; /* Light Background */
+  --text-color: #2b2b2b; /* Dark Gray Text */
+
+  /* Additional Colors */
+  --additional-color-1: #7d5c48;
+  --additional-color-2: #e0c9a8;
+  --additional-color-3: #f1e8db;
+  --additional-color-4: #e7f5f7;
+  --additional-color-5: #3c3b3d;
+
+  /* Typography */
+  --client-font-h1: 'Montserrat, sans-serif';
+  --client-font-h2: 'Lora, serif';
+  --client-font-body: 'Source Sans Pro, sans-serif';
+  --client-font-size-h1: 36px;
+  --client-font-size-h2: 28px;
+  --client-font-size-body: 18px;
+
+  /* Layout */
+  --client-button-radius: 10px;
+  --client-button-padding: 14px 28px;
+  --client-card-border-radius: 16px;
+  --client-spacing-large: 40px;
+  --client-spacing-medium: 28px;
+  --client-spacing-small: 18px;
+}
+
+/* BHB-specific styles */
+.footer {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Chat Container Overrides */
+.chat-container {
+  width: 90%;
+  max-width: 1200px;
+  height: 85vh;
+  background: var(--white, #ffffff);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-window {
+  background-color: var(--background-light, #F9FAFB);
+}
+
+/* BHB Sidebar Customization */
+#sidebar {
+  background-color: var(--primary-color);
+}
+
+.tool-icon {
+  width: 40px;
+  height: 40px;
+  margin: 15px 0;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.tool-icon:hover {
+  transform: scale(1.1);
+} 

@@ -1,15 +1,13 @@
 ---
 layout: default
 ---
-{{ content }}
-
-<div class="chat-container">
-    <div id="chat-window" class="chat-window"></div>
-    <div class="input-area">
-        <input type="text" id="chat-input" placeholder="Type your message...">
-        <button class="send-button" onclick="sendMessage()">Send</button>
-    </div>
+<div class="chat-wrapper">
+    {{ content }}
+    
+    {% include chat-interface.html %}
 </div>
+
+<script src="/assets/js/chat.js"></script>
 
 <script>
 let messageCount = 0;
