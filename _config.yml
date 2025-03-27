@@ -1,29 +1,51 @@
-title: "Recursive Learning"
-baseurl: ""      # Keep empty for root domain
+title: Recursive Learning
+description: >-
+  Recursive Learning - Adaptive Learning Platform
+baseurl: ""
 url: "https://recursivelearning.app"
+
+# Build settings
 markdown: kramdown
 theme: minima
+plugins:
+  - jekyll-feed
 
+# Collections
+collections:
+  clients:
+    output: true
+    permalink: /:collection/:path
+
+# Collection defaults
+defaults:
+  - scope:
+      path: ""
+      type: "clients"
+    values:
+      layout: "chat"
+
+# Include directories
 include:
-  - clients
-  - shared_jekyll
+  - BHB
   - assets
-  - "*.html"
+  - _layouts
+  - _includes
 
+# Exclude from processing
 exclude:
   - Gemfile
   - Gemfile.lock
   - node_modules
   - vendor
   - .git
-  - .gitignore
+  - .github
   - README.md
+  - CNAME
+  - .DS_Store
+  - "*.log"
 
 # (Comment out or leave out the permalink if not ready to use)
 # permalink: "/:categories/:title.html"
-
-plugins:
-  - jekyll-feed
 
 # Development settings
 development:
