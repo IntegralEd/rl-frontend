@@ -25,6 +25,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 sendMessage();
             }
         });
+
+        // Add click handler for send button
+        sendButton.addEventListener("click", sendMessage);
     }
 });
 
@@ -75,9 +78,21 @@ function sendMessage() {
         if (messageCount === 5) {
             saveChat();
         }
+
+        // Store thread ID if provided
+        if (data.Thread_ID) {
+            threadId = data.Thread_ID;
+            localStorage.setItem('threadId', threadId);
+        }
     })
     .catch((error) => {
         console.error('Error with thread:', threadId, error);
         transmissionIndicator.textContent = "Failed to send message.";
     });
+}
+
+// Helper function to save chat (placeholder)
+function saveChat() {
+    console.log('Saving chat...');
+    // Implement chat saving functionality
 } 
