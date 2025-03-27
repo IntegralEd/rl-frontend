@@ -2,6 +2,10 @@ source "https://rubygems.org"
 
 gem "jekyll", "~> 4.2.0"
 gem "minima", "~> 2.5"
+gem "csv"  # Required for Ruby 3.4+
+gem "logger"  # Will be required for Ruby 3.5+
+gem "base64"  # Required for Ruby 3.4+
+gem "bigdecimal"  # Required for Ruby 3.4+
 
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
