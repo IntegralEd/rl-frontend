@@ -1,33 +1,29 @@
 ---
-layout: default
-title: BHB Chat Assistant
-scripts:
-  - /assets/js/auth.js
-  - /assets/js/navigation.js
-  - /assets/js/chat.js
+layout: chat
+styles:
+  - /assets/css/chat.css
 ---
 
 <div class="section active">
     <h1>Welcome!</h1>
     <p>Access maternal health resources as a public user. Please note that this is an agreement for public use and not medical advice, in line with our style guide.</p>
-    <div>
-        <input type="checkbox" id="tos" onclick="checkAffirmations()"> I affirm the terms of service.<br>
-        <input type="checkbox" id="norms" onclick="checkAffirmations()"> I affirm the community norms and guidelines.<br>
-        <input type="checkbox" id="acknowledge" onclick="checkAffirmations()"> I acknowledge this is a monitored public health resource.<br>
-    </div>
-    <button id="next-button" class="next-button" onclick="showSection(1)" disabled>Next</button>
-</div>
 
-<div class="section chat-active">
-    {% capture chat_content %}
-    <div class="message assistant">Welcome to the B'more Healthy Babies Maternal Health Chat</div>
-    {% endcapture %}
-    {% include chat.html content=chat_content %}
+    <div class="affirmations">
+        <label>
+            <input type="checkbox" class="affirmation-checkbox" id="tos"> I affirm the terms of service.
+        </label>
+        <label>
+            <input type="checkbox" class="affirmation-checkbox" id="norms"> I affirm the community norms and guidelines.
+        </label>
+        <label>
+            <input type="checkbox" class="affirmation-checkbox" id="acknowledge"> I acknowledge this is a monitored public health resource.
+        </label>
+    </div>
+
+    <button id="unlock-chat" class="button" disabled onclick="showSection(1)">Start Chat</button>
+    <button onclick="redirectToIntake()" class="button" id="account-button" disabled>Create Account to Save Chat</button>
 </div>
 
 <div class="section">
-    <h1>Tools (not available in anonymous public accounts)</h1>
-    <button id="account-button" class="account-button" onclick="redirectToIntake()" disabled>Create Account to Save Chat</button>
-    <button onclick="exportPDF()">Export to PDF</button>
-    <button onclick="restartChat()">Start Over</button>
+    <div class="chat-content"></div>
 </div>

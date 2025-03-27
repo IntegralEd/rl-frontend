@@ -1,5 +1,5 @@
 // Handles section navigation and state management
-window.Navigation = window.Navigation || {
+const Navigation = {
     init() {
         this.currentSection = 0;
         this.showSection(0);
@@ -58,4 +58,8 @@ window.Navigation = window.Navigation || {
 };
 
 // Initialize on page load
-document.addEventListener('DOMContentLoaded', () => Navigation.init()); 
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => Navigation.init());
+} else {
+    Navigation.init();
+} 
