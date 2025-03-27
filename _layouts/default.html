@@ -39,11 +39,24 @@ layout: none
         {% endunless %}
     </div>
 
-    <!-- Page-specific scripts -->
-    {% if page.scripts %}
-    {% for script in page.scripts %}
-    <script src="{{ script }}"></script>
-    {% endfor %}
+    <!-- Scripts -->
+    {% if page.chat_only %}
+        <!-- Chat page scripts -->
+        {% if page.scripts %}
+        {% for script in page.scripts %}
+        <script src="{{ script }}" defer></script>
+        {% endfor %}
+        {% endif %}
+    {% else %}
+        <!-- Default scripts -->
+        <script src="/assets/js/navigation.js" defer></script>
+        <script src="/assets/js/auth.js" defer></script>
+        <!-- Additional page scripts -->
+        {% if page.scripts %}
+        {% for script in page.scripts %}
+        <script src="{{ script }}" defer></script>
+        {% endfor %}
+        {% endif %}
     {% endif %}
 </body>
 </html>
