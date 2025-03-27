@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHB Chat</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    
+    <!-- Global styles -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    
+    <link rel="stylesheet" href="/assets/css/dev.css">
+    
+
+    <!-- Page-specific styles -->
+    
+</head>
+<body>
+    <div id="header-bar">
+  <img id="header-logo" src="/assets/images/RecursiveLearningLockup_White.png" alt="Recursive Learning">
+  <a href="#" class="menu-link">[menu url]</a>
+</div>
+
+<style>
+  #header-bar {
+    background-color: #004080;
+    height: 50px;
+    width: 1200px;
+    max-width: 100%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #header-logo {
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .menu-link {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 0 15px;
+    border-bottom: 1px solid #FFFFFF;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .menu-link:hover {
+    opacity: 1;
+  }
+</style>
+
+    <div id="sidebar">
+  <button onclick="showSection(0)" id="nav-welcome" class="active">Welcome</button>
+  <button onclick="showSection(1)" id="nav-public-chat" disabled>Anonymous Public Chat</button>
+  <button onclick="showSection(2)" id="nav-tools" disabled>Tools</button>
+</div>
+
+    
+    <main class="main-container">
+        <div class="content-wrapper">
+            <div class="content-area">
+                <div class="chat-wrapper">
+    <p>&lt;!DOCTYPE html&gt;</p>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>BHB Chat</title>
+</head>
+<body>
+
+  <!-- Page content -->
+  <h1>BHB Chat</h1>
+  <p>Static Content. This is a minimal test page.</p>
+
+  <!-- Simple script -->
+  <script>
+    console.log('Test script is running');
+    alert('JavaScript is working');
+  </script>
+
+</body>
+</html>
+
+    
+    <div class="chat-container">
+    <div id="chat-window" class="chat-window"></div>
+    <div class="input-area">
+        <input type="text" id="chat-input" placeholder="Type your message...">
+        <button class="send-button">Send</button>
+    </div>
+</div> 
+</div>
+
+<script src="/assets/js/chat.js"></script> 
+            </div>
+        </div>
+    </main>
+
+    <!-- Global scripts -->
+    <script src="/assets/js/navigation.js"></script>
+    <script src="/assets/js/auth.js"></script>
+
+    <!-- Page-specific scripts -->
+    
+</body>
+</html>
