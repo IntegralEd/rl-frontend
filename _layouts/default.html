@@ -24,13 +24,8 @@ layout: none
 </head>
 <body>
     <div class="app-frame">
-        <!-- Fixed header -->
-        <header class="app-header">
-            <img src="/assets/images/RecursiveLearningLockup_White.png" alt="Recursive Learning" class="header-logo">
-            <a href="#" class="menu-link" style="color: white; text-decoration: none;">[menu url]</a>
-        </header>
+        {% include header.html %}
 
-        <!-- Main content area -->
         <main class="app-content">
             {% unless page.chat_only %}
             <nav class="app-nav">
@@ -68,21 +63,6 @@ layout: none
     flex-direction: column;
     background: white;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-/* Fixed header */
-.app-header {
-    height: 50px;
-    background: var(--primary-color, #6A6DB3);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    flex-shrink: 0;
-}
-
-.header-logo {
-    height: 30px;
 }
 
 /* Main content area */

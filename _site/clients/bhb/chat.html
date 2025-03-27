@@ -221,48 +221,37 @@
         <footer class="app-footer">
             <!-- Interaction Container -->
 <div class="interaction-container">
-    <!-- Chatbar Variant -->
+    <!-- Chatbar -->
     <div class="interaction-bar chatbar" role="region" aria-label="Chat compose bar" style="display: none;">
-        <label for="chat-input" class="sr-only">Type your message</label>
-        <input 
-            type="text" 
-            id="chat-input" 
-            class="interaction-input" 
-            placeholder="Type your message here..." 
-            aria-label="Chat input field"
-            onkeydown="handleKeyPress(event)"
-        />
-        <button 
-            class="interaction-button chat-send-button" 
-            onclick="sendMessage()" 
-            aria-label="Send message"
-        >
-            <img 
-                src="/assets/images/send-icon.svg" 
-                width="50" 
-                height="50" 
-                alt="Send" 
-                class="interaction-icon"
-            />
-        </button>
+        <div class="interaction-controls">
+            <button class="interaction-button custom-button" onclick="customAction()">
+                <img src="/assets/images/custom-icon.svg" class="interaction-icon" alt="Custom" />
+            </button>
+        </div>
+        
+        <div class="chat-input-group">
+            <label for="chat-input" class="sr-only">Type your message</label>
+            <input type="text" id="chat-input" class="interaction-input" 
+                placeholder="Type your message here..." 
+                aria-label="Chat input field"
+                onkeydown="handleKeyPress(event)" />
+            <button class="interaction-button send-button" onclick="sendMessage()" aria-label="Send message">
+                <img src="/assets/images/send-icon.svg" class="interaction-icon" alt="Send" />
+            </button>
+        </div>
     </div>
 
-    <!-- Playbar Variant -->
+    <!-- Playbar -->
     <div class="interaction-bar playbar" role="region" aria-label="Form navigation bar" style="display: flex;">
-        <button 
-            class="interaction-button next-button" 
-            onclick="Navigation.showSection(1)" 
-            aria-label="Go to next step"
-            disabled
-        >
-            <img 
-                src="/assets/images/noun-next-5654311-FFFFFF.svg" 
-                class="interaction-icon" 
-                width="50" 
-                height="50" 
-                alt="Next arrow icon" 
-            />
-            <span class="sr-only">Next</span>
+        <div class="interaction-controls">
+            <button class="interaction-button custom-button" onclick="customAction()">
+                <img src="/assets/images/custom-icon.svg" class="interaction-icon" alt="Custom" />
+            </button>
+        </div>
+        
+        <button class="interaction-button next-button" onclick="Navigation.showSection('chat')" 
+            aria-label="Go to next step" disabled>
+            <img src="/assets/images/noun-next-5654311-FFFFFF.svg" class="interaction-icon" alt="Next" />
         </button>
     </div>
 </div>
@@ -274,37 +263,45 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: white;
+    background: #fff;
 }
 
 .interaction-bar {
     width: 100%;
-    height: 60px;
-    background: white;
+    height: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    padding: 10px 20px;
-    position: relative;
-    z-index: 100;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+}
+
+.interaction-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.chat-input-group {
+    flex: 1;
+    display: flex;
+    gap: 1rem;
+    margin: 0 2rem;
 }
 
 .interaction-input {
     flex: 1;
-    padding: 12px;
-    font-size: 16px;
-    margin-right: 20px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
     border-radius: 8px;
     border: 1px solid #ddd;
     min-height: 40px;
     resize: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .interaction-input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.2);
+    box-shadow: 0 0 0 2px rgba(44,82,130,0.2);
 }
 
 .interaction-button {
@@ -330,11 +327,10 @@
 .interaction-icon {
     background-color: var(--primary-color);
     border-radius: 50%;
-    display: block;
-    width: 50px;
-    height: 50px;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .sr-only {
@@ -344,7 +340,7 @@
     padding: 0;
     margin: -1px;
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+    clip: rect(0,0,0,0);
     white-space: nowrap;
     border: 0;
 }
@@ -355,12 +351,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show playbar by default
     document.querySelector('.playbar').style.display = 'flex';
     document.querySelector('.chatbar').style.display = 'none';
-    
-    // Ensure next button starts disabled
-    const nextButton = document.querySelector('.next-button');
-    if (nextButton) {
-        nextButton.disabled = true;
-    }
 });
 
 function handleKeyPress(event) {
@@ -368,6 +358,11 @@ function handleKeyPress(event) {
         event.preventDefault();
         sendMessage();
     }
+}
+
+function customAction() {
+    // Implement custom action
+    console.log('Custom action triggered');
 }
 </script> 
         </footer>
@@ -398,7 +393,7 @@ function handleKeyPress(event) {
 /* Fixed header */
 .app-header {
     height: 50px;
-    background: var(--primary-color);
+    background: var(--primary-color, #6A6DB3);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -414,7 +409,6 @@ function handleKeyPress(event) {
 .app-content {
     display: flex;
     flex: 1;
-    min-height: 670px; /* 900px - 50px header - 180px footer */
     position: relative;
 }
 
@@ -428,7 +422,7 @@ function handleKeyPress(event) {
     flex: 1;
     padding: 1.5rem;
     overflow-y: auto;
-    background: white;
+    background: #fff;
 }
 
 .welcome-content {
@@ -438,7 +432,7 @@ function handleKeyPress(event) {
 /* Fixed footer */
 .app-footer {
     height: 180px;
-    background: white;
+    background: #fff;
     border-top: 1px solid #ddd;
     flex-shrink: 0;
 }

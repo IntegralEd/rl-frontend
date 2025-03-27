@@ -15,7 +15,8 @@
                 aria-label="Chat input field"
                 onkeydown="handleKeyPress(event)" />
             <button class="interaction-button send-button" onclick="sendMessage()" aria-label="Send message">
-                <img src="/assets/images/send-icon.svg" class="interaction-icon" alt="Send" />
+                <img src="/_clients/bhb/assets/images/noun-send-7149925-FFFFFF.png" 
+                     class="interaction-icon" alt="Send" />
             </button>
         </div>
     </div>
@@ -30,7 +31,8 @@
         
         <button class="interaction-button next-button" onclick="Navigation.showSection('chat')" 
             aria-label="Go to next step" disabled>
-            <img src="/assets/images/noun-next-5654311-FFFFFF.svg" class="interaction-icon" alt="Next" />
+            <img src="/_clients/bhb/assets/images/noun-next-5654311-FFFFFF.png" 
+                 class="interaction-icon" alt="Next" />
         </button>
     </div>
 </div>
@@ -38,11 +40,13 @@
 <style>
 .interaction-container {
     width: 100%;
-    height: 100%;
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: #fff;
+    border: 2px solid var(--primary-color);
+    border-radius: 0 0 4px 4px;
 }
 
 .interaction-bar {
