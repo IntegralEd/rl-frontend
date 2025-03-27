@@ -1,21 +1,92 @@
 /* docs/assets/css/ie-central.css */
 
-/* CSS Variables */
+/* Core Layout Variables */
 :root {
     --primary-color: #004080;
     --secondary-color: #0080ff;
     --background-color: #f0f0f0;
-    --font-family: 'Arial', sans-serif;
-    /* ... other variables */
+    --text-color: #333;
+    --header-height: 50px;
+    --sidebar-width: 240px;
+    --max-width: 1200px;
 }
 
 /* Base Styles */
 body {
-    font-family: var(--font-family);
+    font-family: Arial, sans-serif;
     background-color: var(--background-color);
-    color: var(--text-color, #333);
+    color: var(--text-color);
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+}
+
+/* Main Container */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--header-height));
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Content Area */
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.active {
+    display: block !important;
+}
+
+/* Form Elements */
+input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 /* Layout Structure */
@@ -51,14 +122,6 @@ body {
     min-width: 200px;
     background: var(--primary-color);
     padding: 20px;
-}
-
-/* Main content area */
-.content-area {
-    width: 80%;
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
 }
 
 /* Footer areas */

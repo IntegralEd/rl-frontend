@@ -2,10 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IntegralEd Test</title>
+    <link rel="icon" href="/assets/images/logo.ico" type="image/x-icon">
+    
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    
+    <!-- Conditional Styles -->
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/assets/css/dev.css">
+    
 </head>
 <body>
-    <h1>Hello World</h1>
+    <div id="header-bar">
+  <img id="header-logo" src="/assets/images/RecursiveLearningLockup_White.png" alt="Recursive Learning">
+  <a href="#" class="menu-link">[menu url]</a>
+</div>
+
+<style>
+  #header-bar {
+    background-color: #004080;
+    height: 50px;
+    width: 1200px;
+    max-width: 100%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #header-logo {
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .menu-link {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 0 15px;
+    border-bottom: 1px solid #FFFFFF;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .menu-link:hover {
+    opacity: 1;
+  }
+</style>
+
+    
+    <div class="main-container">
+        <div class="content-wrapper">
+            <div id="sidebar">
+  <button onclick="showSection(0)" id="nav-welcome" class="active">Welcome</button>
+  <button onclick="showSection(1)" id="nav-public-chat" disabled>Anonymous Public Chat</button>
+  <button onclick="showSection(2)" id="nav-tools" disabled>Tools</button>
+</div>
+
+            <div class="content-area">
+                <h1>Hello World</h1>
 <p>Testing Jekyll serving...</p> 
+            </div>
+        </div>
+    </div>
+    
+    <!-- Global Scripts -->
+    <script src="/assets/js/navigation.js"></script>
+    <script src="/assets/js/auth.js"></script>
+    
+    <!-- Conditional Scripts -->
+    
 </body>
 </html>
