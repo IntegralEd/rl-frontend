@@ -22,8 +22,8 @@
     
 </head>
 <body>
-    <div class="page-container">
-        
+    
+        <div class="page-container">
             <div id="header-bar">
   <img id="header-logo" src="/assets/images/RecursiveLearningLockup_White.png" alt="Recursive Learning">
   <a href="#" class="menu-link">[menu url]</a>
@@ -119,13 +119,15 @@
 
             <main class="main-container">
                 <div class="content-wrapper">
-                    <div class="chat-container">
-    <div class="chat-layout">
-        <main class="chat-content">
-            <div class="chat-container">
-    <div class="chat-layout">
-        <main class="chat-content">
-            <div class="section active">
+                    <div class="chat-page-container">
+    <div class="chat-container">
+        <div class="chat-layout">
+            <main class="chat-content">
+                <div class="chat-page-container">
+    <div class="chat-container">
+        <div class="chat-layout">
+            <main class="chat-content">
+                <div class="section active">
     <h1>Welcome!</h1>
     <p>Access maternal health resources as a public user. Please note that this is an agreement for public use and not medical advice, in line with our style guide.</p>
 
@@ -150,9 +152,9 @@
         <div class="message assistant">Welcome to the B'more Healthy Babies Maternal Health Chat</div>
     </div>
 </div> 
-        </main>
+            </main>
 
-        <!-- Interaction Container -->
+            <!-- Interaction Container -->
 <div class="interaction-container">
     <!-- Chatbar Variant -->
     <div class="interaction-bar chatbar" role="region" aria-label="Chat compose bar" style="display: none;">
@@ -282,10 +284,20 @@ function handleKeyPress(event) {
     }
 }
 </script> 
+        </div>
     </div>
 </div>
 
 <style>
+    .chat-page-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        background: #f5f5f5;
+    }
+
     .chat-container {
         width: 100%;
         height: 900px;
@@ -314,6 +326,9 @@ function handleKeyPress(event) {
     }
 
     @media (max-width: 768px) {
+        .chat-page-container {
+            padding: 1rem;
+        }
         .chat-content {
             padding: 1rem;
         }
@@ -321,9 +336,9 @@ function handleKeyPress(event) {
 </style>
 
 
-        </main>
+            </main>
 
-        <!-- Interaction Container -->
+            <!-- Interaction Container -->
 <div class="interaction-container">
     <!-- Chatbar Variant -->
     <div class="interaction-bar chatbar" role="region" aria-label="Chat compose bar" style="display: none;">
@@ -481,10 +496,20 @@ function handleKeyPress(event) {
     }
 }
 </script> 
+        </div>
     </div>
 </div>
 
 <style>
+    .chat-page-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        background: #f5f5f5;
+    }
+
     .chat-container {
         width: 100%;
         height: 900px;
@@ -513,6 +538,9 @@ function handleKeyPress(event) {
     }
 
     @media (max-width: 768px) {
+        .chat-page-container {
+            padding: 1rem;
+        }
         .chat-content {
             padding: 1rem;
         }
@@ -520,22 +548,16 @@ function handleKeyPress(event) {
 </style> 
                 </div>
             </main>
-        
-    </div>
-
-    <!-- Scripts -->
+        </div>
     
-        <!-- Default scripts -->
-        <script src="/assets/js/navigation.js" defer></script>
-        <script src="/assets/js/auth.js" defer></script>
-        <!-- Additional page scripts -->
-        
-        
-        <script src="/assets/js/auth.js" defer></script>
-        
-        <script src="/assets/js/navigation.js" defer></script>
-        
-        
+
+    <!-- Scripts - only load once -->
+    
+    
+    <script src="/assets/js/auth.js" defer></script>
+    
+    <script src="/assets/js/navigation.js" defer></script>
+    
     
 </body>
 </html>
