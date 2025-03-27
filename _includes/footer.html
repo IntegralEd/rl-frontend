@@ -49,16 +49,11 @@
 <style>
 .interaction-container {
     width: 100%;
-    height: 180px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     background: white;
-    border-top: 1px solid #ddd;
 }
 
 .interaction-bar {
@@ -135,7 +130,6 @@
 </style>
 
 <script>
-// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     // Show playbar by default
     document.querySelector('.playbar').style.display = 'flex';
