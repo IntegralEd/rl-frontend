@@ -2,48 +2,13 @@
 layout: default
 chat_only: true
 ---
-<div class="chat-page-container">
-    <div class="chat-container">
-        <div class="chat-layout">
-            <main class="chat-content">
-                {{ content }}
-            </main>
+<main class="chat-content">
+    {{ content }}
+</main>
 
-            {% include footer.html %}
-        </div>
-    </div>
-</div>
+{% include footer.html %}
 
 <style>
-    .chat-page-container {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        background: #f5f5f5;
-    }
-
-    .chat-container {
-        width: 100%;
-        height: 900px;
-        max-width: 1200px;
-        margin: 0 auto;
-        position: relative;
-        background: white;
-        overflow: hidden;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .chat-layout {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        position: relative;
-    }
-
     .chat-content {
         flex: 1;
         overflow-y: auto;
@@ -52,9 +17,6 @@ chat_only: true
     }
 
     @media (max-width: 768px) {
-        .chat-page-container {
-            padding: 1rem;
-        }
         .chat-content {
             padding: 1rem;
         }
