@@ -1,58 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }}</title>
-    
-    <!-- Global styles -->
-    <link rel="stylesheet" href="/assets/css/main.css">
-    
-    <!-- Page-specific styles -->
-    {% if page.styles %}
-    {% for style in page.styles %}
-    <link rel="stylesheet" href="{{ style }}">
-    {% endfor %}
-    {% endif %}
-</head>
-<body>
-    <div class="chat-layout">
-        <main class="chat-content">
-            {{ content }}
-        </main>
+---
+layout: default
+chat_only: true
+---
+<div class="chat-layout">
+    <main class="chat-content">
+        {{ content }}
+    </main>
 
-        {% include footer.html %}
-    </div>
+    {% include footer.html %}
+</div>
 
-    <style>
-        .chat-layout {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-        }
+<style>
+    .chat-layout {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+    }
 
+    .chat-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 2rem;
+        margin-bottom: 180px;
+    }
+
+    @media (max-width: 768px) {
         .chat-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-            margin-bottom: 180px;
+            padding: 1rem;
         }
+    }
+</style>
 
-        @media (max-width: 768px) {
-            .chat-content {
-                padding: 1rem;
-            }
-        }
-    </style>
-
-    <!-- Load scripts at end of body -->
-    {% if page.scripts %}
-    {% for script in page.scripts %}
-    <script src="{{ script }}"></script>
-    {% endfor %}
-    {% endif %}
+<!-- Load scripts at end of body -->
+{% if page.scripts %}
+{% for script in page.scripts %}
+<script src="{{ script }}"></script>
+{% endfor %}
+{% endif %}
 </body>
 </html> 

@@ -23,8 +23,10 @@ layout: none
     {% endif %}
 </head>
 <body>
+    {% unless page.chat_only %}
     {% include header.html %}
     {% include sidebar.html %}
+    {% endunless %}
     
     <main class="main-container">
         <div class="content-wrapper">
