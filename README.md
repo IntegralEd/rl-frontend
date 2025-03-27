@@ -701,9 +701,6 @@ This platform is designed to provide a multitenant recursive learning environmen
 - Finalize integration with Make and Airtable to support multitenant systems.
 - Iterate on feedback and refine the chat experience for the MVP release.
 
-
-
-
 ## Jekyll Setup and Deployment
 
 ### Overview
@@ -749,3 +746,88 @@ Our platform uses Jekyll to manage and deploy client-specific chat interfaces. T
 - **Customization**: Client-specific configurations allow for tailored experiences.
 
 This setup streamlines the deployment process and ensures consistency across all client sites.
+
+# Recursive Learning Frontend
+
+## Project Structure
+
+### Layout System
+```
+_layouts/
+  ├── default.html      # Base layout with main structure
+  └── chat.html        # Chat-specific layout
+
+_includes/
+  ├── header.html      # Top-level header with branding
+  ├── sidebar.html     # Vertical navigation
+  ├── chat.html        # Chat interface
+  ├── chatbar.html     # Chat input area
+  ├── welcome_affirmations.html  # Welcome form
+  └── playbar.html     # Navigation controls
+
+assets/
+  ├── css/
+  │   ├── main.css     # Core layout styles
+  │   ├── chat.css     # Chat-specific styles
+  │   └── form.css     # Form styles
+  └── js/
+      ├── navigation.js    # Tab navigation
+      ├── chat.js         # Chat functionality
+      └── auth.js         # Authorization logic
+```
+
+## Implementation Notes
+
+### 1. Layout Structure
+- Base layout uses flexbox/grid for responsive design
+- Header partial defines top-level constraints
+- Sidebar provides vertical navigation
+- Center content area adapts to active section
+
+### 2. User Flow
+1. Welcome Tab
+   - Affirmations checkboxes
+   - Next button (enabled after all checked)
+   - Account creation option
+
+2. Chat Tab
+   - Message history
+   - Input bar
+   - Send functionality
+
+3. Tools Tab
+   - Initially disabled
+   - Unlocks after authorization
+
+### 3. Styling Approach
+- Core layout in main.css
+- Component-specific styles in dedicated files
+- Brand overrides per client
+- Responsive design principles
+
+### 4. Development Guidelines
+- Keep partials modular and reusable
+- Use Jekyll's layout inheritance
+- Maintain consistent spacing and typography
+- Follow accessibility best practices
+
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies: `bundle install`
+3. Run locally: `bundle exec jekyll serve`
+4. Visit: http://localhost:4000
+
+## Client Customization
+Each client can override:
+- Brand colors
+- Logos
+- Typography
+- Layout adjustments
+
+## Development Workflow
+1. Create/modify layouts in `_layouts/`
+2. Add partials in `_includes/`
+3. Style in `assets/css/`
+4. Add functionality in `assets/js/`
+5. Test with `bundle exec jekyll serve`
