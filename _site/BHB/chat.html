@@ -5,29 +5,11 @@
     <title>BHB Chat</title>
 </head>
 <body>
-    <style>
-/* Debug helpers */
-.debug-container { border: 3px dotted #001F40; margin: 2px; }
-.debug-visible { border: 3px solid #004080; }
-.debug-overflow { border: 3px dashed #FF0000; }
-
-/* Basic layout */
-.page-wrapper {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.main-content {
-  display: flex;
-  flex: 1;
-}
-
-/* Sections */
-.section:not(.active) {
-  display: none;
-}
-</style>
+    <!-- Load styles -->
+<link rel="stylesheet" href="/assets/css/debug.css">
+<link rel="stylesheet" href="/assets/css/layout.css">
+<link rel="stylesheet" href="/assets/css/chat.css">
+<link rel="stylesheet" href="/assets/css/buttons.css">
 
 <div class="page-wrapper debug-container">
   <!-- Header -->
@@ -416,6 +398,11 @@
     </div>
   </div>
 </div>
+
+<!-- Load scripts -->
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/navigation.js"></script>
+<script src="/assets/js/chat.js"></script>
 
 <script>
 // Initialize on load

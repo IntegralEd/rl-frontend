@@ -6,8 +6,12 @@
     <title>BHB Chat Assistant</title>
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="/clients/BHB/assets/css/variables.css">
-    <link rel="stylesheet" href="/clients/BHB/assets/css/custom.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/chat.css">
+    <link rel="stylesheet" href="/assets/css/buttons.css">
+    {% if jekyll.environment == 'development' %}
+    <link rel="stylesheet" href="/assets/css/dev.css">
+    {% endif %}
 
     <style>
         :root {

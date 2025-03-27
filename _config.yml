@@ -24,3 +24,9 @@ exclude:
 
 plugins:
   - jekyll-feed
+
+# Development settings
+development:
+  environment: development
+  baseurl: ""
+  url: "http://localhost:4000"
