@@ -1,10 +1,53 @@
 ---
 layout: default
 ---
-<div class="chat-wrapper">
-    {{ content }}
-    
-    {% include chat-interface.html %}
+<div class="chat-layout">
+    <div class="chat-content">
+        <div class="section active" id="welcome-section">
+            {% include welcome_affirmations.html %}
+        </div>
+        <div class="section" id="chat-section">
+            {% include chat-interface.html %}
+        </div>
+        <div class="section" id="tools-section">
+            <h2>Tools</h2>
+            <p>Tools section coming soon...</p>
+        </div>
+    </div>
+    {% include footer.html %}
 </div>
 
-<script src="/assets/js/chat.js"></script> 
+<style>
+.chat-layout {
+    display: flex;
+    flex-direction: column;
+    height: 900px; /* Fixed total height */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.chat-content {
+    flex: 1;
+    height: calc(900px - 230px); /* 900px - (50px header + 180px footer) */
+    padding: 20px;
+    overflow-y: auto;
+    position: relative;
+    margin-top: 50px; /* Account for header */
+}
+
+.section {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.section.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+</style> 
