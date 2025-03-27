@@ -3,20 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Recursive Learning</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    
+    <!-- Global styles -->
     <link rel="stylesheet" href="/assets/css/main.css">
-    <script src="/assets/js/navigation.js"></script>
+    
+    <link rel="stylesheet" href="/assets/css/dev.css">
+    
+
+    <!-- Page-specific styles -->
+    
 </head>
 <body>
-    <div class="chat-layout">
-        <header class="chat-header">
-            <div class="logo-container">
-                <img src="/assets/images/logo.png" alt="Logo" class="logo">
-            </div>
-        </header>
+    <div id="header-bar">
+  <img id="header-logo" src="/assets/images/RecursiveLearningLockup_White.png" alt="Recursive Learning">
+  <a href="#" class="menu-link">[menu url]</a>
+</div>
+
+<style>
+  #header-bar {
+    background-color: #004080;
+    height: 50px;
+    width: 1200px;
+    max-width: 100%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #header-logo {
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .menu-link {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 0 15px;
+    border-bottom: 1px solid #FFFFFF;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .menu-link:hover {
+    opacity: 1;
+  }
+</style>
+
+    <nav class="sidebar-nav">
+    <div class="nav-items">
+        <button onclick="Navigation.showSection(0)" class="nav-item active" data-section="welcome">
+            Welcome
+        </button>
+        <button onclick="Navigation.showSection(1)" class="nav-item" data-section="chat" disabled>
+            Chat
+        </button>
+        <button onclick="Navigation.showSection(2)" class="nav-item" data-section="tools" disabled>
+            Tools
+        </button>
+    </div>
+</nav>
+
+<style>
+.sidebar-nav {
+    width: var(--sidebar-width);
+    background: white;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+}
+
+.nav-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.nav-item {
+    padding: 12px 20px;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-color);
+    transition: all 0.2s;
+}
+
+.nav-item:hover:not(:disabled) {
+    background: var(--secondary-color);
+}
+
+.nav-item.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.nav-item:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+</style>
+
+    
+    <main class="main-container">
+        <div class="content-wrapper">
+            <div class="content-area">
+                <div class="chat-layout">
+    <main class="chat-content">
         
-        <main class="chat-content">
-            
 
 <div id="main-form">
   <!-- Existing content -->
@@ -210,9 +309,9 @@
 </script>
 </body>
 </html>
-        </main>
+    </main>
 
-        <!-- Interaction Container -->
+    <!-- Interaction Container -->
 <div class="interaction-container">
     <!-- Chatbar Variant -->
     <div class="interaction-bar chatbar" role="region" aria-label="Chat compose bar" style="display: none;">
@@ -370,51 +469,199 @@ function handleKeyPress(event) {
     }
 }
 </script> 
+</div>
+
+<style>
+    .chat-layout {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .chat-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 2rem;
+        margin-bottom: 180px;
+    }
+
+    @media (max-width: 768px) {
+        .chat-content {
+            padding: 1rem;
+        }
+    }
+</style> 
+            </div>
+        </div>
+    </main>
+
+    <!-- Interaction Container -->
+<div class="interaction-container">
+    <!-- Chatbar Variant -->
+    <div class="interaction-bar chatbar" role="region" aria-label="Chat compose bar" style="display: none;">
+        <label for="chat-input" class="sr-only">Type your message</label>
+        <input 
+            type="text" 
+            id="chat-input" 
+            class="interaction-input" 
+            placeholder="Type your message here..." 
+            aria-label="Chat input field"
+            onkeydown="handleKeyPress(event)"
+        />
+        <button 
+            class="interaction-button chat-send-button" 
+            onclick="sendMessage()" 
+            aria-label="Send message"
+        >
+            <img 
+                src="/assets/images/send-icon.svg" 
+                width="50" 
+                height="50" 
+                alt="Send" 
+                class="interaction-icon"
+            />
+        </button>
     </div>
 
-    <style>
-        .chat-layout {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-        }
+    <!-- Playbar Variant -->
+    <div class="interaction-bar playbar" role="region" aria-label="Form navigation bar" style="display: flex;">
+        <button 
+            class="interaction-button next-button" 
+            onclick="Navigation.showSection(1)" 
+            aria-label="Go to next step"
+            disabled
+        >
+            <img 
+                src="/assets/images/noun-next-5654311-FFFFFF.svg" 
+                class="interaction-icon" 
+                width="50" 
+                height="50" 
+                alt="Next arrow icon" 
+            />
+            <span class="sr-only">Next</span>
+        </button>
+    </div>
+</div>
 
-        .chat-header {
-            height: 80px;
-            padding: 1rem;
-            background: white;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-        }
+<style>
+.interaction-container {
+    width: 100%;
+    max-width: 1200px;
+    height: 180px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-top: 1px solid #ddd;
+}
 
-        .logo-container {
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
+.interaction-bar {
+    width: 100%;
+    height: 60px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 20px;
+    position: relative;
+    z-index: 100;
+}
 
-        .logo {
-            height: 100%;
-            width: auto;
-            object-fit: contain;
-        }
+.interaction-input {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    margin-right: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    min-height: 40px;
+    resize: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 
-        .chat-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-            margin-bottom: 180px;
-        }
+.interaction-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.2);
+}
 
-        @media (max-width: 768px) {
-            .chat-content {
-                padding: 1rem;
-            }
-        }
-    </style>
+.interaction-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.interaction-button:not(:disabled):hover {
+    transform: scale(1.05);
+}
+
+.interaction-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.interaction-icon {
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    display: block;
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+</style>
+
+<script>
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Show playbar by default
+    document.querySelector('.playbar').style.display = 'flex';
+    document.querySelector('.chatbar').style.display = 'none';
+    
+    // Ensure next button starts disabled
+    const nextButton = document.querySelector('.next-button');
+    if (nextButton) {
+        nextButton.disabled = true;
+    }
+});
+
+function handleKeyPress(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+    }
+}
+</script> 
+
+    <!-- Global scripts -->
+    <script src="/assets/js/navigation.js"></script>
+    <script src="/assets/js/auth.js"></script>
+
+    <!-- Page-specific scripts -->
+    
 </body>
-</html> 
+</html>

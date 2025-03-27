@@ -1,70 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }}</title>
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <script src="/assets/js/navigation.js"></script>
-</head>
-<body>
-    <div class="chat-layout">
-        <header class="chat-header">
-            <div class="logo-container">
-                <img src="/assets/images/logo.png" alt="Logo" class="logo">
-            </div>
-        </header>
-        
-        <main class="chat-content">
-            {{ content }}
-        </main>
+---
+layout: default
+---
+<div class="chat-layout">
+    <main class="chat-content">
+        {{ content }}
+    </main>
 
-        {% include footer.html %}
-    </div>
+    {% include footer.html %}
+</div>
 
-    <style>
-        .chat-layout {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-        }
+<style>
+    .chat-layout {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+    }
 
-        .chat-header {
-            height: 80px;
-            padding: 1rem;
-            background: white;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-        }
+    .chat-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 2rem;
+        margin-bottom: 180px;
+    }
 
-        .logo-container {
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo {
-            height: 100%;
-            width: auto;
-            object-fit: contain;
-        }
-
+    @media (max-width: 768px) {
         .chat-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-            margin-bottom: 180px;
+            padding: 1rem;
         }
-
-        @media (max-width: 768px) {
-            .chat-content {
-                padding: 1rem;
-            }
-        }
-    </style>
-</body>
-</html> 
+    }
+</style> 
