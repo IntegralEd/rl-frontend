@@ -10,12 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
 function initChatInterface(config) {
     // Add thread persistence
     config.threadId = localStorage.getItem('threadId') || null;
+    console.log('Session initialized:', config.threadId ? `Using thread ${config.threadId}` : 'No existing thread');
     
-    const messagesDiv = document.getElementById('messages');
-    const userInput = document.getElementById('user-input');
-    const sendButton = document.getElementById('send-button');
+    const chatWindow = document.getElementById('chat-window');
+    const chatInput = document.getElementById('chat-input');
+    const sendButton = document.querySelector('.send-button');
 
-    if (!messagesDiv || !userInput || !sendButton) {
+    if (!chatWindow || !chatInput || !sendButton) {
         console.error('Error: Required DOM elements not found');
         return;
     }
@@ -25,17 +26,31 @@ function initChatInterface(config) {
 
     // Send message on button click
     sendButton.addEventListener('click', function() {
-        const message = userInput.value.trim();
+        const message = chatInput.value.trim();
         if (message !== '') {
             sendMessage(message, config);
-            userInput.value = '';
+            chatInput.value = '';
         }
     });
 
     // Send message on Enter key
-    userInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
+    chatInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
             sendButton.click();
+        }
+        // Tab handling
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            sendButton.focus();
+        }
+    });
+
+    // Handle enter key on send button when focused
+    sendButton.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            sendMessage();
         }
     });
 
@@ -47,8 +62,14 @@ function initChatInterface(config) {
             Assistant_ID: config.Assistant_ID,
             Org_ID: config.Org_ID,
             message: message,
-            threadId: config.threadId,  // Use threadId consistently
+            threadId: config.threadId
         };
+
+        // Show loading indicator
+        const transmissionIndicator = document.createElement("div");
+        transmissionIndicator.classList.add("message", "assistant");
+        transmissionIndicator.textContent = "Sending...";
+        chatWindow.appendChild(transmissionIndicator);
 
         fetch('https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main', {
             method: 'POST',
@@ -59,6 +80,7 @@ function initChatInterface(config) {
         })
         .then(response => response.json())
         .then(data => {
+            transmissionIndicator.remove();
             if (data && data.response) {
                 displayAssistantMessage(data.response);
                 // Persist threadId
@@ -72,7 +94,7 @@ function initChatInterface(config) {
         })
         .catch(error => {
             console.error('Error:', error);
-            displayAssistantMessage('An error occurred. Please try again later.');
+            transmissionIndicator.textContent = "Failed to send message.";
         });
     }
 
@@ -80,15 +102,15 @@ function initChatInterface(config) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', 'user');
         messageElement.innerText = message;
-        messagesDiv.appendChild(messageElement);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        chatWindow.appendChild(messageElement);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
     }
 
     function displayAssistantMessage(message) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', 'assistant');
         messageElement.innerText = message;
-        messagesDiv.appendChild(messageElement);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        chatWindow.appendChild(messageElement);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
     }
 } 

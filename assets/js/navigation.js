@@ -1,5 +1,5 @@
 // Handles section navigation and state management
-const Navigation = {
+window.Navigation = window.Navigation || {
     init() {
         this.currentSection = 0;
         this.showSection(0);

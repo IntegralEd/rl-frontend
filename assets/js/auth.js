@@ -1,8 +1,8 @@
 // Handles affirmations and section unlocking
-const Auth = {
+window.Auth = window.Auth || {
     init() {
         this.bindEvents();
-        this.checkStoredState();
+        this.checkAffirmations();
     },
 
     bindEvents() {
@@ -12,41 +12,22 @@ const Auth = {
     },
 
     checkAffirmations() {
-        const tos = document.getElementById('tos').checked;
-        const norms = document.getElementById('norms').checked;
-        const acknowledge = document.getElementById('acknowledge').checked;
-        const nextButton = document.getElementById('next-button');
-        const accountButton = document.getElementById('account-button');
+        const allChecked = Array.from(document.querySelectorAll('.affirmation-checkbox'))
+            .every(checkbox => checkbox.checked);
 
-        const allChecked = tos && norms && acknowledge;
-
-        // Enable/disable buttons
-        [nextButton, accountButton].forEach(button => {
-            if (button) {
-                button.classList.toggle('enabled', allChecked);
-                button.disabled = !allChecked;
-            }
-        });
-
-        // Enable chat section in sidebar if all checked
-        const chatNavButton = document.getElementById('nav-public-chat');
-        if (chatNavButton) {
-            chatNavButton.disabled = !allChecked;
+        const unlockButton = document.getElementById('unlock-chat');
+        if (unlockButton) {
+            unlockButton.disabled = !allChecked;
         }
 
         // Store state
-        localStorage.setItem('affirmations_complete', allChecked);
-    },
-
-    checkStoredState() {
-        const affirmationsComplete = localStorage.getItem('affirmations_complete') === 'true';
-        if (affirmationsComplete) {
-            // Re-check boxes and enable buttons
-            ['tos', 'norms', 'acknowledge'].forEach(id => {
-                const checkbox = document.getElementById(id);
-                if (checkbox) checkbox.checked = true;
+        localStorage.setItem('affirmationsChecked', allChecked);
+        
+        // Enable navigation if all checked
+        if (allChecked) {
+            document.querySelectorAll('#sidebar button').forEach(btn => {
+                btn.removeAttribute('disabled');
             });
-            this.checkAffirmations();
         }
     }
 };

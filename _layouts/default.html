@@ -6,44 +6,43 @@ layout: none
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title | default: "Recursive Learning" }}</title>
-    <link rel="icon" href="/assets/images/logo.ico" type="image/x-icon">
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
     
-    <!-- Global Styles -->
+    <!-- Global styles -->
     <link rel="stylesheet" href="/assets/css/main.css">
-    
-    <!-- Conditional Styles -->
-    {% if page.layout == 'chat' %}
-    <link rel="stylesheet" href="/assets/css/chat.css">
-    {% endif %}
-    
-    {% if page.layout == 'form' %}
-    <link rel="stylesheet" href="/assets/css/form.css">
-    {% endif %}
-    
-    {% if jekyll.environment == 'development' %}
+    {% if jekyll.environment == "development" %}
     <link rel="stylesheet" href="/assets/css/dev.css">
+    {% endif %}
+
+    <!-- Page-specific styles -->
+    {% if page.styles %}
+    {% for style in page.styles %}
+    <link rel="stylesheet" href="{{ style }}">
+    {% endfor %}
     {% endif %}
 </head>
 <body>
     {% include header.html %}
+    {% include sidebar.html %}
     
-    <div class="main-container">
+    <main class="main-container">
         <div class="content-wrapper">
-            {% include sidebar.html %}
             <div class="content-area">
                 {{ content }}
             </div>
         </div>
-    </div>
-    
-    <!-- Global Scripts -->
+    </main>
+
+    <!-- Global scripts -->
     <script src="/assets/js/navigation.js"></script>
     <script src="/assets/js/auth.js"></script>
-    
-    <!-- Conditional Scripts -->
-    {% if page.layout == 'chat' %}
-    <script src="/assets/js/chat.js"></script>
+
+    <!-- Page-specific scripts -->
+    {% if page.scripts %}
+    {% for script in page.scripts %}
+    <script src="{{ script }}"></script>
+    {% endfor %}
     {% endif %}
 </body>
 </html>
