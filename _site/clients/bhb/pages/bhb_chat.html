@@ -26,7 +26,7 @@
         <!-- Fixed header -->
         <header class="app-header">
             <img src="/assets/images/RecursiveLearningLockup_White.png" alt="Recursive Learning" class="header-logo">
-            <a href="#" class="menu-link">[menu url]</a>
+            <a href="#" class="menu-link" style="color: white; text-decoration: none;">[menu url]</a>
         </header>
 
         <!-- Main content area -->
@@ -136,13 +136,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 1.5rem;
 }
 
 .welcome-content {
     max-width: 800px;
     width: 100%;
-    padding: 2rem;
+    padding: 1.5rem;
     background: white;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -151,21 +151,22 @@
 
 .welcome-content h1 {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
 }
 
 .welcome-content .affirmations {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    margin: 2rem 0;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
 }
 
 .welcome-content .button {
     display: block;
     width: 100%;
     max-width: 300px;
-    margin: 1rem auto;
+    margin: 1rem auto 0;
     padding: 0.75rem 1.5rem;
     background: var(--primary-color);
     color: white;
@@ -174,6 +175,7 @@
     cursor: pointer;
     font-size: 1rem;
     text-align: center;
+    transition: opacity 0.2s;
 }
 
 .welcome-content .button:disabled {
@@ -229,13 +231,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 1.5rem;
 }
 
 .welcome-content {
     max-width: 800px;
     width: 100%;
-    padding: 2rem;
+    padding: 1.5rem;
     background: white;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -244,21 +246,22 @@
 
 .welcome-content h1 {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
 }
 
 .welcome-content .affirmations {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    margin: 2rem 0;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
 }
 
 .welcome-content .button {
     display: block;
     width: 100%;
     max-width: 300px;
-    margin: 1rem auto;
+    margin: 1rem auto 0;
     padding: 0.75rem 1.5rem;
     background: var(--primary-color);
     color: white;
@@ -267,6 +270,7 @@
     cursor: pointer;
     font-size: 1rem;
     text-align: center;
+    transition: opacity 0.2s;
 }
 
 .welcome-content .button:disabled {
@@ -519,9 +523,13 @@ function handleKeyPress(event) {
 
 .content-stage {
     flex: 1;
-    padding: 2rem;
+    padding: 1.5rem;
     overflow-y: auto;
     background: white;
+}
+
+.welcome-content {
+    padding: 1.5rem;
 }
 
 /* Fixed footer */
