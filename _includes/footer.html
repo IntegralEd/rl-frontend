@@ -2,20 +2,21 @@
 <div class="interaction-container">
     <!-- Chatbar -->
     <div class="interaction-bar chatbar" role="region" aria-label="Chat compose bar" style="display: none;">
-        <div class="interaction-controls">
-            <button class="interaction-button custom-button" onclick="customAction()">
-                <img src="/assets/images/custom-icon.svg" class="interaction-icon" alt="Custom" />
-            </button>
-        </div>
+        <div class="interaction-left"></div>
         
-        <div class="chat-input-group">
-            <label for="chat-input" class="sr-only">Type your message</label>
-            <input type="text" id="chat-input" class="interaction-input" 
-                placeholder="Type your message here..." 
-                aria-label="Chat input field"
-                onkeydown="handleKeyPress(event)" />
+        <div class="interaction-center">
+            <div class="chat-input-group">
+                <label for="chat-input" class="sr-only">Type your message</label>
+                <input type="text" id="chat-input" class="interaction-input" 
+                    placeholder="Type your message here..." 
+                    aria-label="Chat input field"
+                    onkeydown="handleKeyPress(event)" />
+            </div>
+        </div>
+
+        <div class="interaction-right">
             <button class="interaction-button send-button" onclick="sendMessage()" aria-label="Send message">
-                <img src="/_clients/bhb/assets/images/noun-send-7149925-FFFFFF.png" 
+                <img src="/clients/bhb/assets/images/noun-send-7149925-FFFFFF.png" 
                      class="interaction-icon" alt="Send" />
             </button>
         </div>
@@ -23,17 +24,17 @@
 
     <!-- Playbar -->
     <div class="interaction-bar playbar" role="region" aria-label="Form navigation bar" style="display: flex;">
-        <div class="interaction-controls">
-            <button class="interaction-button custom-button" onclick="customAction()">
-                <img src="/assets/images/custom-icon.svg" class="interaction-icon" alt="Custom" />
+        <div class="interaction-left"></div>
+        
+        <div class="interaction-center"></div>
+
+        <div class="interaction-right">
+            <button class="interaction-button next-button" onclick="handleNextClick()" 
+                aria-label="Go to next step" disabled>
+                <img src="/clients/bhb/assets/images/noun-next-5654311-FFFFFF.png" 
+                     class="interaction-icon" alt="Next" />
             </button>
         </div>
-        
-        <button class="interaction-button next-button" onclick="Navigation.showSection('chat')" 
-            aria-label="Go to next step" disabled>
-            <img src="/_clients/bhb/assets/images/noun-next-5654311-FFFFFF.png" 
-                 class="interaction-icon" alt="Next" />
-        </button>
     </div>
 </div>
 
@@ -42,10 +43,7 @@
     width: 100%;
     height: 180px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    border: 2px solid var(--primary-color);
+    background: var(--primary-color, #6A6DB3);
     border-radius: 0 0 4px 4px;
 }
 
@@ -53,38 +51,50 @@
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 2rem;
+    align-items: stretch;
 }
 
-.interaction-controls {
+.interaction-left {
+    width: 180px;
+    flex-shrink: 0;
+}
+
+.interaction-center {
+    flex: 1;
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+}
+
+.interaction-right {
+    width: 180px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
 .chat-input-group {
-    flex: 1;
-    display: flex;
-    gap: 1rem;
-    margin: 0 2rem;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .interaction-input {
-    flex: 1;
-    padding: 0.75rem 1rem;
+    width: 100%;
+    padding: 1rem;
     font-size: 1rem;
     border-radius: 8px;
-    border: 1px solid #ddd;
+    border: none;
+    background: white;
     min-height: 40px;
     resize: none;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .interaction-input:focus {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(44,82,130,0.2);
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.2);
 }
 
 .interaction-button {
@@ -92,14 +102,17 @@
     border: none;
     cursor: pointer;
     padding: 0;
+    width: 70px;
+    height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s;
+    transition: all 0.2s;
+    border-radius: 50%;
 }
 
 .interaction-button:not(:disabled):hover {
-    transform: scale(1.05);
+    background: rgba(255,255,255,0.1);
 }
 
 .interaction-button:disabled {
@@ -108,12 +121,15 @@
 }
 
 .interaction-icon {
-    background-color: var(--primary-color);
+    width: 50px;
+    height: 50px;
+    padding: 10px;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    padding: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+}
+
+.interaction-button:not(:disabled):hover .interaction-icon {
+    background: rgba(255,255,255,0.1);
 }
 
 .sr-only {
@@ -130,10 +146,20 @@
 </style>
 
 <script>
+// Navigation sequence
+const navigationSequence = ['welcome', 'chat', 'tools'];
+
 document.addEventListener('DOMContentLoaded', function() {
     // Show playbar by default
     document.querySelector('.playbar').style.display = 'flex';
     document.querySelector('.chatbar').style.display = 'none';
+    
+    // Enable next button when all checkboxes are checked
+    const checkboxes = document.querySelectorAll('.affirmation-checkbox');
+    if (checkboxes.length > 0) {
+        const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+        document.querySelector('.next-button').disabled = !allChecked;
+    }
 });
 
 function handleKeyPress(event) {
@@ -143,8 +169,24 @@ function handleKeyPress(event) {
     }
 }
 
-function customAction() {
-    // Implement custom action
-    console.log('Custom action triggered');
+function handleNextClick() {
+    const currentIndex = navigationSequence.indexOf(Navigation.currentSection);
+    const nextSection = navigationSequence[currentIndex + 1];
+    
+    if (nextSection) {
+        // Enable the next section in navigation
+        Navigation.enableSection(currentIndex + 1);
+        // Show the next section
+        Navigation.showSection(nextSection);
+    }
 }
+
+// Listen for checkbox changes to enable/disable next button
+document.addEventListener('change', function(event) {
+    if (event.target.matches('.affirmation-checkbox')) {
+        const checkboxes = document.querySelectorAll('.affirmation-checkbox');
+        const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+        document.querySelector('.next-button').disabled = !allChecked;
+    }
+});
 </script> 
