@@ -1,0 +1,86 @@
+I":<!-- Welcome Slide -->
+<div class="slide-content" id="welcome-slide">
+    <div class="section active">
+    <h1>Welcome!</h1>
+    <p>Access maternal health resources as a public user. Please note that this is an agreement for public use and not medical advice, in line with our style guide.</p>
+
+    <div class="affirmations">
+        <label>
+            <input type="checkbox" class="affirmation-checkbox" id="tos" /> I affirm the terms of service.
+        </label>
+        <label>
+            <input type="checkbox" class="affirmation-checkbox" id="norms" /> I affirm the community norms and guidelines.
+        </label>
+        <label>
+            <input type="checkbox" class="affirmation-checkbox" id="acknowledge" /> I acknowledge this is a monitored public health resource.
+        </label>
+    </div>
+
+    <button id="unlock-chat" class="button" disabled="" onclick="Navigation.showSection(1)">Start Chat</button>
+    <button onclick="redirectToIntake()" class="button" id="account-button" disabled="">Create Account to Save Chat</button>
+</div>
+
+<div class="section">
+    <div class="chat-content">
+        <div class="message assistant">Welcome to the B'more Healthy Babies Maternal Health Chat</div>
+    </div>
+</div> 
+</div>
+
+<style>
+.slide-content {
+    height: 100%;
+    width: 100%;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+/* Welcome slide specific styles */
+#welcome-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#welcome-slide .affirmations {
+    margin: 2rem 0;
+    text-align: left;
+}
+
+#welcome-slide .button {
+    margin: 0.5rem;
+}
+
+/* Chat slide specific styles */
+#chat-slide {
+    display: none;
+    padding: 1rem;
+}
+
+#chat-slide.active {
+    display: block;
+}
+
+.message {
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border-radius: 8px;
+    max-width: 80%;
+}
+
+.message.assistant {
+    background: var(--primary-color-light);
+    align-self: flex-start;
+}
+
+.message.user {
+    background: var(--primary-color);
+    color: white;
+    align-self: flex-end;
+    margin-left: auto;
+}
+</style>
+
+:ET

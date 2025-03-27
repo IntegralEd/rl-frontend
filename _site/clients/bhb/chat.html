@@ -22,46 +22,16 @@
     
 </head>
 <body>
-    
-        <div class="page-container">
-            <div id="header-bar">
-  <img id="header-logo" src="/assets/images/RecursiveLearningLockup_White.png" alt="Recursive Learning">
-  <a href="#" class="menu-link">[menu url]</a>
-</div>
-
-<style>
-  #header-bar {
-    background-color: #004080;
-    height: 50px;
-    width: 1200px;
-    max-width: 100%;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  #header-logo {
-    height: 40px;
-    object-fit: contain;
-  }
-
-  .menu-link {
-    color: #FFFFFF;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 0 15px;
-    border-bottom: 1px solid #FFFFFF;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-  }
-
-  .menu-link:hover {
-    opacity: 1;
-  }
-</style>
-
-            <nav class="sidebar-nav">
+    <div class="app-frame">
+        <div class="app-body">
+            <!-- Left Nav - 20% width -->
+            
+            <nav class="course-nav">
+                <div class="course-header">
+                    <h1></h1>
+                    <div class="progress-indicator">% COMPLETE</div>
+                </div>
+                <nav class="sidebar-nav">
     <div class="nav-items">
         <button onclick="Navigation.showSection(0)" class="nav-item active" data-section="welcome">
             Welcome
@@ -117,13 +87,17 @@
 }
 </style>
 
-            <main class="main-container">
-                <div class="content-wrapper">
-                    <div class="chat-page-container">
-    <div class="chat-container">
-        <div class="chat-layout">
-            <main class="chat-content">
-                <div class="section active">
+            </nav>
+            
+            
+            <!-- Main Content - 80% width -->
+            <main class="content-area">
+                <div class="content-header">
+                    <h2>BHB Chat Assistant</h2>
+                </div>
+                <div class="content-canvas">
+                    <div class="section active" id="welcome-section">
+    <div class="section active">
     <h1>Welcome!</h1>
     <p>Access maternal health resources as a public user. Please note that this is an agreement for public use and not medical advice, in line with our style guide.</p>
 
@@ -148,9 +122,101 @@
         <div class="message assistant">Welcome to the B'more Healthy Babies Maternal Health Chat</div>
     </div>
 </div> 
-            </main>
+</div>
+
+<div class="section" id="chat-section">
+    <div class="chat-messages">
+        <div class="message assistant">
+            How can I help you today?
         </div>
-        <!-- Interaction Container -->
+    </div>
+</div>
+
+<style>
+/* Section Styles */
+.section {
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+
+.section.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Welcome Section */
+#welcome-section {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.affirmations {
+    margin: 2rem 0;
+    text-align: left;
+    width: 100%;
+    max-width: 600px;
+}
+
+.affirmations label {
+    display: block;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    background: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0.5rem;
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Chat Section */
+#chat-section {
+    padding: 1rem;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message {
+    padding: 1rem;
+    border-radius: 8px;
+    max-width: 80%;
+    line-height: 1.4;
+}
+
+.message.assistant {
+    background: var(--primary-color-light, #f0f0f0);
+    align-self: flex-start;
+}
+
+.message.user {
+    background: var(--primary-color);
+    color: white;
+    align-self: flex-end;
+}
+</style> 
+                </div>
+                <!-- Interaction Container -->
 <div class="interaction-container">
     <!-- Chatbar Variant -->
     <div class="interaction-bar chatbar" role="region" aria-label="Chat compose bar" style="display: none;">
@@ -201,7 +267,6 @@
 <style>
 .interaction-container {
     width: 100%;
-    max-width: 1200px;
     height: 180px;
     position: absolute;
     bottom: 0;
@@ -308,57 +373,9 @@ function handleKeyPress(event) {
     }
 }
 </script> 
-    </div>
-</div>
-
-<style>
-    .chat-page-container {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        background: #f5f5f5;
-    }
-
-    .chat-container {
-        width: 100%;
-        height: 900px;
-        max-width: 1200px;
-        position: relative;
-        background: white;
-        overflow: hidden;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .chat-layout {
-        display: flex;
-        flex-direction: column;
-        height: calc(100% - 180px);
-        position: relative;
-    }
-
-    .chat-content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 2rem;
-    }
-
-    @media (max-width: 768px) {
-        .chat-page-container {
-            padding: 1rem;
-        }
-        .chat-content {
-            padding: 1rem;
-        }
-    }
-</style> 
-                </div>
             </main>
         </div>
-    
+    </div>
 
     <!-- Scripts - only load once -->
     
@@ -372,24 +389,97 @@ function handleKeyPress(event) {
 </html>
 
 <style>
-.page-container {
-    min-height: 100vh;
+:root {
+    --nav-width: 20%;
+    --primary-color: #C4122F;
+    --content-padding: 2rem;
+}
+
+.app-frame {
+    width: 1200px; /* 16:10 aspect ratio */
+    height: 750px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
+    background: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.chat-page-container {
-    min-height: 100vh;
+.app-body {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background: #f5f5f5;
+    height: 100%;
+    position: relative;
 }
 
-@media (max-width: 768px) {
-    .chat-page-container {
-        padding: 1rem;
-    }
+/* Left Navigation */
+.course-nav {
+    width: var(--nav-width);
+    background: white;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.course-header {
+    padding: var(--content-padding);
+    background: var(--primary-color);
+    color: white;
+}
+
+.course-header h1 {
+    font-size: 1.2rem;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+}
+
+.progress-indicator {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+/* Main Content Area */
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: white;
+}
+
+.content-header {
+    padding: var(--content-padding);
+    border-bottom: 1px solid #ddd;
+}
+
+.content-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.content-canvas {
+    flex: 1;
+    padding: var(--content-padding);
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Chat-only mode adjustments */
+.chat-only .content-area {
+    width: 100%;
+}
+
+/* Footer positioning */
+.interaction-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 180px;
+    background: white;
+    border-top: 1px solid #ddd;
 }
 </style>

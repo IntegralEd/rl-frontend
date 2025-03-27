@@ -16,16 +16,20 @@
     
 </head>
 <body>
+    <div class="app-frame">
+        <div class="app-body">
+            <!-- Left Nav - 20% width -->
+            
+            
+            <!-- Main Content - 80% width -->
+            <main class="content-area">
+                <div class="content-header">
+                    <h2></h2>
+                </div>
+                <div class="content-canvas">
+                    <div class="section active" id="welcome-section">
+    <div class="section active" id="welcome-section">
     
-        <div class="chat-page-container">
-    <div class="chat-container">
-        <div class="chat-layout">
-            <main class="chat-content">
-                <div class="chat-page-container">
-    <div class="chat-container">
-        <div class="chat-layout">
-            <main class="chat-content">
-                
 
 <div id="main-form">
   <!-- Existing content -->
@@ -219,9 +223,194 @@
 </script>
 </body>
 </html>
-            </main>
+</div>
+
+<div class="section" id="chat-section">
+    <div class="chat-messages">
+        <div class="message assistant">
+            How can I help you today?
         </div>
-        <!-- Interaction Container -->
+    </div>
+</div>
+
+<style>
+/* Section Styles */
+.section {
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+
+.section.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Welcome Section */
+#welcome-section {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.affirmations {
+    margin: 2rem 0;
+    text-align: left;
+    width: 100%;
+    max-width: 600px;
+}
+
+.affirmations label {
+    display: block;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    background: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0.5rem;
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Chat Section */
+#chat-section {
+    padding: 1rem;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message {
+    padding: 1rem;
+    border-radius: 8px;
+    max-width: 80%;
+    line-height: 1.4;
+}
+
+.message.assistant {
+    background: var(--primary-color-light, #f0f0f0);
+    align-self: flex-start;
+}
+
+.message.user {
+    background: var(--primary-color);
+    color: white;
+    align-self: flex-end;
+}
+</style> 
+</div>
+
+<div class="section" id="chat-section">
+    <div class="chat-messages">
+        <div class="message assistant">
+            How can I help you today?
+        </div>
+    </div>
+</div>
+
+<style>
+/* Section Styles */
+.section {
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+
+.section.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Welcome Section */
+#welcome-section {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.affirmations {
+    margin: 2rem 0;
+    text-align: left;
+    width: 100%;
+    max-width: 600px;
+}
+
+.affirmations label {
+    display: block;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    background: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0.5rem;
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Chat Section */
+#chat-section {
+    padding: 1rem;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message {
+    padding: 1rem;
+    border-radius: 8px;
+    max-width: 80%;
+    line-height: 1.4;
+}
+
+.message.assistant {
+    background: var(--primary-color-light, #f0f0f0);
+    align-self: flex-start;
+}
+
+.message.user {
+    background: var(--primary-color);
+    color: white;
+    align-self: flex-end;
+}
+</style> 
+                </div>
+                <!-- Interaction Container -->
 <div class="interaction-container">
     <!-- Chatbar Variant -->
     <div class="interaction-bar chatbar" role="region" aria-label="Chat compose bar" style="display: none;">
@@ -272,7 +461,6 @@
 <style>
 .interaction-container {
     width: 100%;
-    max-width: 1200px;
     height: 180px;
     position: absolute;
     bottom: 0;
@@ -379,261 +567,9 @@ function handleKeyPress(event) {
     }
 }
 </script> 
-    </div>
-</div>
-
-<style>
-    .chat-page-container {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        background: #f5f5f5;
-    }
-
-    .chat-container {
-        width: 100%;
-        height: 900px;
-        max-width: 1200px;
-        position: relative;
-        background: white;
-        overflow: hidden;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .chat-layout {
-        display: flex;
-        flex-direction: column;
-        height: calc(100% - 180px);
-        position: relative;
-    }
-
-    .chat-content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 2rem;
-    }
-
-    @media (max-width: 768px) {
-        .chat-page-container {
-            padding: 1rem;
-        }
-        .chat-content {
-            padding: 1rem;
-        }
-    }
-</style> 
             </main>
         </div>
-        <!-- Interaction Container -->
-<div class="interaction-container">
-    <!-- Chatbar Variant -->
-    <div class="interaction-bar chatbar" role="region" aria-label="Chat compose bar" style="display: none;">
-        <label for="chat-input" class="sr-only">Type your message</label>
-        <input 
-            type="text" 
-            id="chat-input" 
-            class="interaction-input" 
-            placeholder="Type your message here..." 
-            aria-label="Chat input field"
-            onkeydown="handleKeyPress(event)"
-        />
-        <button 
-            class="interaction-button chat-send-button" 
-            onclick="sendMessage()" 
-            aria-label="Send message"
-        >
-            <img 
-                src="/assets/images/send-icon.svg" 
-                width="50" 
-                height="50" 
-                alt="Send" 
-                class="interaction-icon"
-            />
-        </button>
     </div>
-
-    <!-- Playbar Variant -->
-    <div class="interaction-bar playbar" role="region" aria-label="Form navigation bar" style="display: flex;">
-        <button 
-            class="interaction-button next-button" 
-            onclick="Navigation.showSection(1)" 
-            aria-label="Go to next step"
-            disabled
-        >
-            <img 
-                src="/assets/images/noun-next-5654311-FFFFFF.svg" 
-                class="interaction-icon" 
-                width="50" 
-                height="50" 
-                alt="Next arrow icon" 
-            />
-            <span class="sr-only">Next</span>
-        </button>
-    </div>
-</div>
-
-<style>
-.interaction-container {
-    width: 100%;
-    max-width: 1200px;
-    height: 180px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    border-top: 1px solid #ddd;
-}
-
-.interaction-bar {
-    width: 100%;
-    height: 60px;
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 10px 20px;
-    position: relative;
-    z-index: 100;
-}
-
-.interaction-input {
-    flex: 1;
-    padding: 12px;
-    font-size: 16px;
-    margin-right: 20px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    min-height: 40px;
-    resize: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.interaction-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.2);
-}
-
-.interaction-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s;
-}
-
-.interaction-button:not(:disabled):hover {
-    transform: scale(1.05);
-}
-
-.interaction-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.interaction-icon {
-    background-color: var(--primary-color);
-    border-radius: 50%;
-    display: block;
-    width: 50px;
-    height: 50px;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
-</style>
-
-<script>
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    // Show playbar by default
-    document.querySelector('.playbar').style.display = 'flex';
-    document.querySelector('.chatbar').style.display = 'none';
-    
-    // Ensure next button starts disabled
-    const nextButton = document.querySelector('.next-button');
-    if (nextButton) {
-        nextButton.disabled = true;
-    }
-});
-
-function handleKeyPress(event) {
-    if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        sendMessage();
-    }
-}
-</script> 
-    </div>
-</div>
-
-<style>
-    .chat-page-container {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        background: #f5f5f5;
-    }
-
-    .chat-container {
-        width: 100%;
-        height: 900px;
-        max-width: 1200px;
-        position: relative;
-        background: white;
-        overflow: hidden;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .chat-layout {
-        display: flex;
-        flex-direction: column;
-        height: calc(100% - 180px);
-        position: relative;
-    }
-
-    .chat-content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 2rem;
-    }
-
-    @media (max-width: 768px) {
-        .chat-page-container {
-            padding: 1rem;
-        }
-        .chat-content {
-            padding: 1rem;
-        }
-    }
-</style> 
-    
 
     <!-- Scripts - only load once -->
     
@@ -641,24 +577,97 @@ function handleKeyPress(event) {
 </html>
 
 <style>
-.page-container {
-    min-height: 100vh;
+:root {
+    --nav-width: 20%;
+    --primary-color: #C4122F;
+    --content-padding: 2rem;
+}
+
+.app-frame {
+    width: 1200px; /* 16:10 aspect ratio */
+    height: 750px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
+    background: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.chat-page-container {
-    min-height: 100vh;
+.app-body {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background: #f5f5f5;
+    height: 100%;
+    position: relative;
 }
 
-@media (max-width: 768px) {
-    .chat-page-container {
-        padding: 1rem;
-    }
+/* Left Navigation */
+.course-nav {
+    width: var(--nav-width);
+    background: white;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.course-header {
+    padding: var(--content-padding);
+    background: var(--primary-color);
+    color: white;
+}
+
+.course-header h1 {
+    font-size: 1.2rem;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+}
+
+.progress-indicator {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+/* Main Content Area */
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: white;
+}
+
+.content-header {
+    padding: var(--content-padding);
+    border-bottom: 1px solid #ddd;
+}
+
+.content-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.content-canvas {
+    flex: 1;
+    padding: var(--content-padding);
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Chat-only mode adjustments */
+.chat-only .content-area {
+    width: 100%;
+}
+
+/* Footer positioning */
+.interaction-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 180px;
+    background: white;
+    border-top: 1px solid #ddd;
 }
 </style>
