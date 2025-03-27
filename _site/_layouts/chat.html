@@ -16,9 +16,10 @@
     
 </head>
 <body>
-    
-    
-    <div class="chat-container">
+    <div class="page-container">
+        
+            <div class="chat-page-container">
+                <div class="chat-container">
     <div class="chat-layout">
         <main class="chat-content">
             <div class="chat-container">
@@ -390,6 +391,9 @@ function handleKeyPress(event) {
         position: relative;
         background: white;
         overflow: hidden;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .chat-layout {
@@ -589,6 +593,9 @@ function handleKeyPress(event) {
         position: relative;
         background: white;
         overflow: hidden;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .chat-layout {
@@ -616,11 +623,34 @@ function handleKeyPress(event) {
 
 </body>
 </html> 
-
-    <!-- Load scripts based on page type -->
-    
-        <!-- Chat page scripts loaded via page.scripts -->
+            </div>
         
+    </div>
+
+    <!-- Page-specific scripts -->
     
 </body>
 </html>
+
+<style>
+.page-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-page-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: #f5f5f5;
+}
+
+@media (max-width: 768px) {
+    .chat-page-container {
+        padding: 1rem;
+    }
+}
+</style>

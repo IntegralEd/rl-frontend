@@ -16,8 +16,9 @@
     
 </head>
 <body>
-    
-    <div id="header-bar">
+    <div class="page-container">
+        
+            <div id="header-bar">
   <img id="header-logo" src="/assets/images/RecursiveLearningLockup_White.png" alt="Recursive Learning">
   <a href="#" class="menu-link">[menu url]</a>
 </div>
@@ -54,7 +55,7 @@
   }
 </style>
 
-    <nav class="sidebar-nav">
+            <nav class="sidebar-nav">
     <div class="nav-items">
         <button onclick="Navigation.showSection(0)" class="nav-item active" data-section="welcome">
             Welcome
@@ -110,9 +111,9 @@
 }
 </style>
 
-    
-    
-    <div class="chat-container">
+            <main class="main-container">
+                <div class="content-wrapper">
+                    <div class="chat-container">
     <div class="chat-layout">
         <main class="chat-content">
             
@@ -481,6 +482,9 @@ function handleKeyPress(event) {
         position: relative;
         background: white;
         overflow: hidden;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .chat-layout {
@@ -508,13 +512,35 @@ function handleKeyPress(event) {
 
 </body>
 </html> 
-
-    <!-- Load scripts based on page type -->
-    
-        <!-- Global scripts for non-chat pages -->
-        <script src="/assets/js/navigation.js"></script>
-        <script src="/assets/js/auth.js"></script>
+                </div>
+            </main>
         
+    </div>
+
+    <!-- Page-specific scripts -->
     
 </body>
 </html>
+
+<style>
+.page-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-page-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: #f5f5f5;
+}
+
+@media (max-width: 768px) {
+    .chat-page-container {
+        padding: 1rem;
+    }
+}
+</style>

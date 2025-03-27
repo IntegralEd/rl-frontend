@@ -23,30 +23,50 @@ layout: none
     {% endif %}
 </head>
 <body>
-    {% unless page.chat_only %}
-    {% include header.html %}
-    {% include sidebar.html %}
-    {% endunless %}
-    
-    {{ content }}
+    <div class="page-container">
+        {% unless page.chat_only %}
+            {% include header.html %}
+            {% include sidebar.html %}
+            <main class="main-container">
+                <div class="content-wrapper">
+                    {{ content }}
+                </div>
+            </main>
+        {% else %}
+            <div class="chat-page-container">
+                {{ content }}
+            </div>
+        {% endunless %}
+    </div>
 
-    <!-- Load scripts based on page type -->
-    {% if page.chat_only %}
-        <!-- Chat page scripts loaded via page.scripts -->
-        {% if page.scripts %}
-        {% for script in page.scripts %}
-        <script src="{{ script }}"></script>
-        {% endfor %}
-        {% endif %}
-    {% else %}
-        <!-- Global scripts for non-chat pages -->
-        <script src="/assets/js/navigation.js"></script>
-        <script src="/assets/js/auth.js"></script>
-        {% if page.scripts %}
-        {% for script in page.scripts %}
-        <script src="{{ script }}"></script>
-        {% endfor %}
-        {% endif %}
+    <!-- Page-specific scripts -->
+    {% if page.scripts %}
+    {% for script in page.scripts %}
+    <script src="{{ script }}"></script>
+    {% endfor %}
     {% endif %}
 </body>
 </html>
+
+<style>
+.page-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-page-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: #f5f5f5;
+}
+
+@media (max-width: 768px) {
+    .chat-page-container {
+        padding: 1rem;
+    }
+}
+</style>
