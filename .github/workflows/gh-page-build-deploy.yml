@@ -27,13 +27,18 @@ jobs:
       - name: Install dependencies
         run: bundle install
       - name: Build site with Jekyll
-        run: bundle exec jekyll build
+        run: |
+          pwd
+          ls -la
+          bundle exec jekyll build --trace
+          ls -la _site/
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3.9.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
+          publish_dir: _site
           publish_branch: gh-pages
           force_orphan: true
           cname: recursivelearning.app
           commit_message: "Deploy updates to GitHub Pages"
+          enable_jekyll: false
