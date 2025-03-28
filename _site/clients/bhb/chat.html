@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recursive Learning</title>
+    <title>B'more for Healthy Babies Chat</title>
     <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
     
     <!-- Global styles -->
@@ -165,13 +165,337 @@ document.addEventListener('click', function(event) {
 
         <main class="app-content">
             
+            <nav class="app-nav">
+                <nav class="sidebar-nav">
+    <div class="nav-items">
+        <button onclick="Navigation.showSection(0)" class="nav-item active" data-section="welcome">
+            Welcome
+        </button>
+        <button onclick="Navigation.showSection(1)" class="nav-item" data-section="chat" disabled>
+            Chat
+        </button>
+        <button onclick="Navigation.showSection(2)" class="nav-item" data-section="tools" disabled>
+            Tools
+        </button>
+    </div>
+</nav>
+
+<style>
+.sidebar-nav {
+    width: var(--sidebar-width);
+    background: white;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+}
+
+.nav-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.nav-item {
+    padding: 12px 20px;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-color);
+    transition: all 0.2s;
+}
+
+.nav-item:hover:not(:disabled) {
+    background: var(--secondary-color);
+}
+
+.nav-item.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.nav-item:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+</style>
+
+            </nav>
+            
             
             <div class="content-stage">
                 <div class="welcome-container">
     <div class="welcome-content">
-        <div class="welcome-container">
-    <div class="welcome-content">
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B'more for Healthy Babies Chat</title>
+    <link rel="stylesheet" href="/clients/bhb/assets/css/main.css">
+    <link rel="stylesheet" href="/clients/bhb/assets/css/custom.css">
+    <link rel="stylesheet" href="/clients/bhb/assets/css/variables.css">
+    <link rel="icon" href="/clients/bhb/assets/images/logo.ico">
+</head>
+<body>
+    <div class="app-container">
+        <!-- App Header with Lockup and Menu -->
+<header class="app-header" role="banner">
+    <div class="header-content">
+        <div class="header-lockup">
+            <img src="/assets/images/RecursiveLearningLockup_White.png" 
+                 alt="Recursive Learning" 
+                 class="header-logo">
+        </div>
         
+        <div class="header-menu">
+            <div class="menu-dropdown">
+                <button class="menu-trigger" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()">
+                    Menu
+                    <svg class="menu-caret" width="10" height="6" viewBox="0 0 10 6">
+                        <path d="M1 1L5 5L9 1" stroke="white" stroke-width="2" fill="none"/>
+                    </svg>
+                </button>
+                <div class="menu-content" id="menuContent">
+                    <a href="#" class="menu-link">Menu sublink</a>
+                    <a href="#" class="menu-link">Doc sublink</a>
+                    <a href="#" class="menu-link">Resources</a>
+                    <a href="#" class="menu-link">Help Center</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.app-header {
+    height: 50px;
+    background: var(--primary-color, #6A6DB3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.header-content {
+    width: 100%;
+    max-width: 1900px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.header-lockup {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    height: 30px;
+}
+
+.header-menu {
+    display: flex;
+    align-items: center;
+}
+
+.menu-dropdown {
+    position: relative;
+}
+
+.menu-trigger {
+    background: none;
+    border: none;
+    color: white;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.menu-caret {
+    transition: transform 0.2s;
+}
+
+.menu-trigger[aria-expanded="true"] .menu-caret {
+    transform: rotate(180deg);
+}
+
+.menu-content {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: var(--primary-color);
+    border-radius: 4px;
+    min-width: 200px;
+    display: none;
+    z-index: 1000;
+    padding: 0.5rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.menu-content.show {
+    display: block;
+}
+
+.menu-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: white;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    line-height: 1.5;
+}
+
+.menu-link:hover {
+    background: rgba(255,255,255,0.1);
+    text-decoration: underline;
+}
+
+.menu-link:last-child {
+    border-bottom: none;
+}
+</style>
+
+<script>
+function toggleMenu() {
+    const trigger = document.querySelector('.menu-trigger');
+    const content = document.querySelector('.menu-content');
+    const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+    
+    trigger.setAttribute('aria-expanded', !isExpanded);
+    content.classList.toggle('show');
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function(event) {
+    const menu = document.querySelector('.menu-dropdown');
+    const trigger = document.querySelector('.menu-trigger');
+    
+    if (!menu.contains(event.target)) {
+        trigger.setAttribute('aria-expanded', 'false');
+        document.querySelector('.menu-content').classList.remove('show');
+    }
+});
+</script> 
+        
+        <main class="app-main">
+            <div class="content-area">
+                <div class="section active" id="welcome">
+                    <!-- _includes/welcome_affirmations.html -->
+<div class="welcome-content">
+    <h1>Welcome!</h1>
+    <p>Access maternal health resources as a public user. Please note that this is an agreement for public use and not medical advice.</p>
+
+    <div class="affirmations">
+        <label class="affirmation-item">
+            <input type="checkbox" class="affirmation-checkbox" data-key="tos">
+            <span>I affirm the terms of service.</span>
+        </label>
+        <label class="affirmation-item">
+            <input type="checkbox" class="affirmation-checkbox" data-key="norms">
+            <span>I affirm the community norms and guidelines.</span>
+        </label>
+        <label class="affirmation-item">
+            <input type="checkbox" class="affirmation-checkbox" data-key="acknowledge">
+            <span>I acknowledge this is a monitored public health resource.</span>
+        </label>
+    </div>
+</div>
+
+<style>
+.welcome-content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+h1 {
+    margin-bottom: 0.75rem;
+    font-size: 1.75rem;
+    color: var(--primary-color, #4a5af7);
+}
+
+p {
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    color: var(--text-color, #333);
+}
+
+.affirmations {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.affirmation-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: var(--surface-color, #f5f5f5);
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.affirmation-item:hover {
+    background: var(--surface-hover-color, #eee);
+}
+
+.affirmation-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary-color, #4a5af7);
+}
+</style>
+
+<script>
+// Pure event emitter - no UI manipulation
+const AffirmationEvents = {
+    init() {
+        this.state = { tos: false, norms: false, acknowledge: false };
+        this.bindEvents();
+    },
+
+    bindEvents() {
+        document.querySelectorAll('.affirmation-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', e => this.handleChange(e));
+        });
+    },
+
+    handleChange(event) {
+        const key = event.target.dataset.key;
+        this.state[key] = event.target.checked;
+        
+        // Emit state change
+        document.dispatchEvent(new CustomEvent('affirmationStateChange', {
+            detail: {
+                state: this.state,
+                complete: Object.values(this.state).every(v => v)
+            }
+        }));
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => AffirmationEvents.init());
+</script>
+
+                </div>
+                <div class="section" id="chat">
+                    ---
+layout: chat
+---
+
 
 <div id="main-form">
   <!-- Existing content -->
@@ -446,102 +770,281 @@ document.addEventListener('showAccountTeaser', () => {
 </script>
 </body>
 </html>
+                </div>
+            </div>
+        </main>
+
+        <!-- _includes/footer.html -->
+<div class="interaction-container">
+    <div class="playbar">
+        <button class="next-button" disabled>
+            <span>Next</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z" fill="currentColor"/>
+            </svg>
+        </button>
+    </div>
+    <div class="chatbar" style="display: none;">
+        <input type="text" class="chat-input" placeholder="Type your message...">
+        <button class="send-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+            </svg>
+        </button>
     </div>
 </div>
 
-<div class="chat-container" style="display: none;">
-    <div class="messages-container"></div>
-</div>
-
 <style>
-.welcome-container {
-    flex: 1;
+.interaction-container {
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
-    max-height: calc(900px - 50px - 180px); /* viewport - header - footer */
-    overflow-y: auto;
-}
-
-.welcome-content {
-    max-width: 800px;
-    width: 100%;
-    padding: 1.5rem;
     background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    padding: 0 1.5rem;
+    border-top: 1px solid var(--border-color, #eee);
 }
 
-.welcome-content h1 {
-    text-align: center;
-    margin-bottom: 1rem;
-    font-size: 1.75rem;
-}
-
-.welcome-content .affirmations {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin: 1.5rem 0;
-}
-
-.welcome-content .button {
-    display: block;
+.playbar, .chatbar {
     width: 100%;
-    max-width: 300px;
-    margin: 1rem auto 0;
-    padding: 0.75rem 1.5rem;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    text-align: center;
-    transition: opacity 0.2s;
-}
-
-.welcome-content .button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.chat-container {
-    flex: 1;
+    max-width: 1200px;
     display: flex;
-    flex-direction: column;
-    background: white;
-    max-height: calc(900px - 50px - 180px); /* viewport - header - footer */
-    overflow-y: auto;
-}
-
-.messages-container {
-    flex: 1;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
     gap: 1rem;
 }
 
-.message {
-    padding: 1rem;
-    border-radius: 8px;
-    max-width: 80%;
+.chat-input {
+    flex: 1;
+    height: 48px;
+    padding: 0 1rem;
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 24px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
 }
 
-.message.assistant {
-    background: var(--primary-color-light);
-    align-self: flex-start;
+.chat-input:focus {
+    outline: none;
+    border-color: var(--primary-color, #4a5af7);
 }
 
-.message.user {
-    background: var(--primary-color);
+.next-button, .send-button {
+    height: 48px;
+    border-radius: 24px;
+    background: var(--primary-color, #4a5af7);
     color: white;
-    align-self: flex-end;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: 0.5;
 }
-</style> 
+
+.next-button {
+    padding: 0 1.5rem;
+}
+
+.next-button span {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+.send-button {
+    width: 48px;
+    opacity: 1;
+}
+
+.next-button.enabled {
+    opacity: 1;
+}
+
+.next-button:hover:not(:disabled), .send-button:hover {
+    background: var(--primary-color-dark, #3b48d9);
+}
+
+.next-button:disabled {
+    cursor: not-allowed;
+}
+</style>
+
+<script>
+// Pure event listener and UI controller
+const FooterEvents = {
+    init() {
+        this.state = {
+            mode: location.pathname.includes('chat') ? 'chat' : 'welcome',
+            affirmationsComplete: false,
+            messageCount: 0
+        };
+        this.setupUI();
+        this.bindEvents();
+    },
+
+    setupUI() {
+        const playbar = document.querySelector('.playbar');
+        const chatbar = document.querySelector('.chatbar');
+        
+        if (this.state.mode === 'chat') {
+            playbar.style.display = 'none';
+            chatbar.style.display = 'flex';
+        }
+    },
+
+    bindEvents() {
+        // Listen for affirmation changes
+        document.addEventListener('affirmationStateChange', e => {
+            this.state.affirmationsComplete = e.detail.complete;
+            this.updateNextButton();
+        });
+
+        // Listen for chat state changes
+        document.addEventListener('chatStateChange', e => {
+            this.state.messageCount = e.detail.messageCount;
+            this.checkTriggers(e.detail);
+        });
+
+        // Handle next button
+        const next = document.querySelector('.next-button');
+        if (next) {
+            next.addEventListener('click', () => this.handleNext());
+        }
+    },
+
+    updateNextButton() {
+        const next = document.querySelector('.next-button');
+        if (next) {
+            next.disabled = !this.state.affirmationsComplete;
+            next.classList.toggle('enabled', this.state.affirmationsComplete);
+        }
+    },
+
+    checkTriggers({ trigger, messageCount }) {
+        // Handle different chat events
+        switch(trigger) {
+            case 'messageAdded':
+                if (messageCount === 3) {
+                    this.emitEvent('showResourceTeaser');
+                }
+                break;
+            case 'responseReceived':
+                if (messageCount === 5) {
+                    this.emitEvent('showAccountTeaser');
+                }
+                break;
+        }
+    },
+
+    handleNext() {
+        this.emitEvent('navigationRequested', {
+            from: this.state.mode,
+            to: 'chat'
+        });
+    },
+
+    emitEvent(name, detail = {}) {
+        document.dispatchEvent(new CustomEvent(name, { detail }));
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => FooterEvents.init());
+</script>
+  
+    </div>
+
+    <style>
+    .app-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background: white;
+        max-width: 1900px;
+        margin: 0 auto;
+    }
+
+    .app-main {
+        flex: 1;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .content-area {
+        height: 100%;
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .section {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .section.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Ensure header spans full width */
+    .app-header {
+        width: 100%;
+        max-width: 1900px;
+        margin: 0 auto;
+    }
+
+    /* Remove any duplicate footers */
+    .interaction-container:not(:last-child) {
+        display: none;
+    }
+    </style>
+
+    <script>
+    // Environment detection
+    const isProd = window.location.hostname === 'recursivelearning.app';
+    const API_ENDPOINT = isProd 
+        ? 'https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main'
+        : '';
+
+    // Initialize analytics
+    document.addEventListener('DOMContentLoaded', () => {
+        // Track page load
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'B'more for Healthy Babies Chat',
+                page_path: '/clients/bhb/chat'
+            });
+        }
+    });
+
+    // Handle iframe messaging
+    window.addEventListener('message', (event) => {
+        // Verify origin
+        if (event.origin !== 'https://recursivelearning.app') return;
+
+        // Handle messages from parent
+        switch(event.data.type) {
+            case 'INIT_CHAT':
+                // Initialize chat with context if provided
+                if (event.data.context) {
+                    document.dispatchEvent(new CustomEvent('initChat', {
+                        detail: event.data.context
+                    }));
+                }
+                break;
+        }
+    });
+    </script>
+</body>
+</html> 
     </div>
 </div>
 
