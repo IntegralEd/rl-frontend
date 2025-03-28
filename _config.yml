@@ -62,6 +62,9 @@ keep_files:
   - .nojekyll
   - CNAME
   - assets/**/*
+  - docs/bhb/static/**/*
+  - docs/elpl/static/**/*
+  - docs/platform/**/*
 
 # API settings
 api_endpoint: "https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main"

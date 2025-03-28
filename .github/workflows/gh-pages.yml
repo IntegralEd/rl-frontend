@@ -34,8 +34,6 @@ jobs:
         rm -rf docs/assets/js
         rm -rf .jekyll-cache/*
         mkdir -p docs/assets
-        # Ensure static directories exist
-        mkdir -p docs/bhb/static docs/elpl/static
 
     - name: Build site
       run: |
