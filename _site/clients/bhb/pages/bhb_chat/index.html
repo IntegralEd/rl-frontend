@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recursive Learning</title>
+    <title>BHB Chat Assistant</title>
     <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
     
     <!-- Global styles -->
@@ -13,6 +13,12 @@
     
 
     <!-- Page-specific styles -->
+    
+    
+    <link rel="stylesheet" href="/assets/css/chat.css">
+    
+    <link rel="stylesheet" href="/_clients/bhb/assets/css/variables.css">
+    
     
 </head>
 <body>
@@ -228,16 +234,18 @@ document.addEventListener('click', function(event) {
             <div class="content-stage">
                 <div class="welcome-container">
     <div class="welcome-content">
-        <!DOCTYPE html>
+        <div class="welcome-container">
+    <div class="welcome-content">
+        &lt;!DOCTYPE html&gt;
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>B'more for Healthy Babies Chat</title>
-    <link rel="stylesheet" href="/clients/bhb/assets/css/main.css">
-    <link rel="stylesheet" href="/clients/bhb/assets/css/custom.css">
-    <link rel="stylesheet" href="/clients/bhb/assets/css/variables.css">
-    <link rel="icon" href="/clients/bhb/assets/images/logo.ico">
+    <link rel="stylesheet" href="/clients/bhb/assets/css/main.css" />
+    <link rel="stylesheet" href="/clients/bhb/assets/css/custom.css" />
+    <link rel="stylesheet" href="/clients/bhb/assets/css/variables.css" />
+    <link rel="icon" href="/clients/bhb/assets/images/logo.ico" />
 </head>
 <body>
     <div class="app-container">
@@ -245,9 +253,7 @@ document.addEventListener('click', function(event) {
 <header class="app-header" role="banner">
     <div class="header-content">
         <div class="header-lockup">
-            <img src="/assets/images/RecursiveLearningLockup_White.png" 
-                 alt="Recursive Learning" 
-                 class="header-logo">
+            <img src="/assets/images/RecursiveLearningLockup_White.png" alt="Recursive Learning" class="header-logo" />
         </div>
         
         <div class="header-menu">
@@ -255,7 +261,7 @@ document.addEventListener('click', function(event) {
                 <button class="menu-trigger" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()">
                     Menu
                     <svg class="menu-caret" width="10" height="6" viewBox="0 0 10 6">
-                        <path d="M1 1L5 5L9 1" stroke="white" stroke-width="2" fill="none"/>
+                        <path d="M1 1L5 5L9 1" stroke="white" stroke-width="2" fill="none" />
                     </svg>
                 </button>
                 <div class="menu-content" id="menuContent">
@@ -397,15 +403,15 @@ document.addEventListener('click', function(event) {
 
     <div class="affirmations">
         <label class="affirmation-item">
-            <input type="checkbox" class="affirmation-checkbox" data-key="tos">
+            <input type="checkbox" class="affirmation-checkbox" data-key="tos" />
             <span>I affirm the terms of service.</span>
         </label>
         <label class="affirmation-item">
-            <input type="checkbox" class="affirmation-checkbox" data-key="norms">
+            <input type="checkbox" class="affirmation-checkbox" data-key="norms" />
             <span>I affirm the community norms and guidelines.</span>
         </label>
         <label class="affirmation-item">
-            <input type="checkbox" class="affirmation-checkbox" data-key="acknowledge">
+            <input type="checkbox" class="affirmation-checkbox" data-key="acknowledge" />
             <span>I acknowledge this is a monitored public health resource.</span>
         </label>
     </div>
@@ -768,8 +774,8 @@ document.addEventListener('showAccountTeaser', () => {
     document.body.appendChild(notification);
 });
 </script>
-</body>
-</html>
+&lt;/body&gt;
+&lt;/html&gt;
                 </div>
             </div>
         </main>
@@ -777,18 +783,18 @@ document.addEventListener('showAccountTeaser', () => {
         <!-- _includes/footer.html -->
 <div class="interaction-container">
     <div class="playbar">
-        <button class="next-button" disabled>
+        <button class="next-button" disabled="">
             <span>Next</span>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z" fill="currentColor"/>
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z" fill="currentColor" />
             </svg>
         </button>
     </div>
     <div class="chatbar" style="display: none;">
-        <input type="text" class="chat-input" placeholder="Type your message...">
+        <input type="text" class="chat-input" placeholder="Type your message..." />
         <button class="send-button">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor" />
             </svg>
         </button>
     </div>
@@ -1140,6 +1146,104 @@ document.addEventListener('DOMContentLoaded', () => FooterEvents.init());
     color: white;
     align-self: flex-end;
 }
+</style>
+
+
+    </div>
+</div>
+
+<div class="chat-container" style="display: none;">
+    <div class="messages-container"></div>
+</div>
+
+<style>
+.welcome-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    max-height: calc(900px - 50px - 180px); /* viewport - header - footer */
+    overflow-y: auto;
+}
+
+.welcome-content {
+    max-width: 800px;
+    width: 100%;
+    padding: 1.5rem;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.welcome-content h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
+}
+
+.welcome-content .affirmations {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+}
+
+.welcome-content .button {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 1rem auto 0;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    transition: opacity 0.2s;
+}
+
+.welcome-content .button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    max-height: calc(900px - 50px - 180px); /* viewport - header - footer */
+    overflow-y: auto;
+}
+
+.messages-container {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message {
+    padding: 1rem;
+    border-radius: 8px;
+    max-width: 80%;
+}
+
+.message.assistant {
+    background: var(--primary-color-light);
+    align-self: flex-start;
+}
+
+.message.user {
+    background: var(--primary-color);
+    color: white;
+    align-self: flex-end;
+}
 </style> 
             </div>
         </main>
@@ -1326,6 +1430,12 @@ document.addEventListener('DOMContentLoaded', () => FooterEvents.init());
         </footer>
     </div>
 
+    
+    
+    <script src="/assets/js/auth.js" defer></script>
+    
+    <script src="/assets/js/navigation.js" defer></script>
+    
     
 </body>
 </html>

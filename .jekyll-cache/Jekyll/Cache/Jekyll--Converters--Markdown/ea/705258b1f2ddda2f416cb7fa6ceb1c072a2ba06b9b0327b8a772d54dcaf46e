@@ -1,4 +1,4 @@
-I"?\<div class="welcome-container">
+I"D\<div class="welcome-container">
     <div class="welcome-content">
         &lt;!DOCTYPE html&gt;
 <html lang="en">
@@ -790,7 +790,7 @@ document.addEventListener('DOMContentLoaded', () => FooterEvents.init());
         if (typeof gtag !== 'undefined') {
             gtag('event', 'page_view', {
                 page_title: 'B'more for Healthy Babies Chat',
-                page_path: '/clients/bhb/chat'
+                page_path: '/clients/bhb/chat.html'
             });
         }
     });
