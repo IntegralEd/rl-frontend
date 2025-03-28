@@ -62,6 +62,12 @@ layout: chat
       if (input.value.trim() === "") return;
       
       messageCount++;
+      
+      // Emit message count event
+      document.dispatchEvent(new CustomEvent('chatMessageCount', {
+          detail: { count: messageCount }
+      }));
+      
       console.log(`Message ${messageCount}: ${window.threadId ? `Using thread ${window.threadId}` : 'No thread exists'}`);
       
       const requestBody = window.threadId ? 
@@ -192,6 +198,30 @@ layout: chat
       .then(data => console.log('Success:', data))
       .catch((error) => console.error('Error:', error));
   }
+
+  // Listen for navigation events
+  document.addEventListener('navigationRequested', (event) => {
+      const { action } = event.detail;
+      if (action === 'next') {
+          const nav = document.querySelector('.app-nav');
+          if (nav) {
+              const chatLink = nav.querySelector('a[href*="chat"]');
+              if (chatLink) chatLink.click();
+          }
+      }
+  });
+
+  // Listen for account teaser events
+  document.addEventListener('showAccountTeaser', () => {
+      // Example: Show a floating notification or modify header
+      const notification = document.createElement('div');
+      notification.className = 'floating-notification';
+      notification.innerHTML = `
+          <p>Want to save your chat history?</p>
+          <button onclick="redirectToIntake()">Create Account</button>
+      `;
+      document.body.appendChild(notification);
+  });
 </script>
 </body>
 </html>

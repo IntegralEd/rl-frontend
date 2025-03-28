@@ -57,6 +57,7 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
+    opacity: 0.5;
 }
 
 .next-button {
@@ -70,6 +71,11 @@
 
 .send-button {
     width: 48px;
+    opacity: 1;
+}
+
+.next-button.enabled {
+    opacity: 1;
 }
 
 .next-button:hover:not(:disabled), .send-button:hover {
@@ -77,15 +83,33 @@
 }
 
 .next-button:disabled {
-    opacity: 0.5;
     cursor: not-allowed;
 }
 </style>
 
 <script>
+// Listen for events from other components
+document.addEventListener('affirmationsComplete', (event) => {
+    const { complete } = event.detail;
+    const nextButton = document.querySelector('.next-button');
+    if (nextButton) {
+        nextButton.disabled = !complete;
+        nextButton.classList.toggle('enabled', complete);
+    }
+});
+
+document.addEventListener('chatMessageCount', (event) => {
+    const { count } = event.detail;
+    // Example: Show account creation teaser after 5 messages
+    if (count === 5) {
+        document.dispatchEvent(new CustomEvent('showAccountTeaser'));
+    }
+});
+
 function handleNext() {
-    const event = new CustomEvent('nextClicked');
-    document.dispatchEvent(event);
+    document.dispatchEvent(new CustomEvent('navigationRequested', {
+        detail: { action: 'next' }
+    }));
 }
 
 // Show chatbar when on chat page
