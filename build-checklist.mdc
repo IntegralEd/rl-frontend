@@ -1,0 +1,49 @@
+# Recursive Learning Build Checklist
+
+## Build Types
+
+### 1. New Site Deployment
+- [ ] Site is ready in `_clients/<client>/pages/`
+- [ ] Remove exclusion from `_config.yml`:
+  ```yaml
+  exclude:
+    # - _clients/<client>/pages/*.md  # Uncomment to deploy
+  ```
+- [ ] Verify site-specific assets are in `_clients/<client>/assets/`
+- [ ] Test locally with `bundle exec jekyll serve`
+- [ ] Commit with message: "Deploy new site: <client>"
+
+### 2. Feature-Wide Update
+- [ ] Changes are in `_includes/` or `_layouts/`
+- [ ] No client-specific exclusions need to change
+- [ ] Test locally with `bundle exec jekyll serve`
+- [ ] Commit with message: "Feature update: <description>"
+
+### 3. Full Rebuild
+- [ ] Comment out all client exclusions in `_config.yml`
+- [ ] Verify all sites are ready for deployment
+- [ ] Test locally with `bundle exec jekyll serve`
+- [ ] Commit with message: "Full rebuild: <reason>"
+
+## Pre-Build Checklist
+- [ ] All working sites are documented
+- [ ] No breaking changes in shared components
+- [ ] Assets are properly organized
+- [ ] API endpoints are correct
+
+## Post-Build Verification
+- [ ] Check GitHub Pages deployment
+- [ ] Verify all intended sites are accessible
+- [ ] Test shared components on each site
+- [ ] Document any issues for next build
+
+## Rollback Plan
+If issues occur:
+1. Revert the last commit
+2. Restore previous `_config.yml`
+3. Trigger new deployment
+
+## Notes
+- Keep track of which sites are in development
+- Document any site-specific requirements
+- Note any shared component dependencies 

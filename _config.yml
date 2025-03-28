@@ -12,28 +12,30 @@ markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
 
 # Collections
 collections:
-  docs:
+  client_pages:
     output: true
-    permalink: /docs/:path/
+    permalink: /:collection/:path/
+    directory: _clients
 
 # Defaults
 defaults:
   - scope:
       path: ""
-      type: "docs"
+      type: "client_pages"
     values:
-      layout: "default"
+      layout: "chat"
 
 # Include these files/folders
 include:
-  - docs/**/*.html
-  - docs/**/static/**/*
-  - assets
-  - _layouts
-  - _includes
+  - assets/**/*
+  - _layouts/**/*
+  - _includes/**/*
+  - _clients/**/*.md
+  - _clients/**/assets/**/*
   - "*.html"
 
 # Exclude from processing
@@ -46,57 +48,23 @@ exclude:
   - .github
   - README.md
   - DEVELOPMENT.md
-
-# Keep files during clean
-keep_files:
-  - .git
-  - .gitignore
-  - docs/**/static/**
-  - assets/util-pages/**
-
-# API settings
-api_endpoint: "https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main"
-
-# Default layouts for different file types
-defaults:
-  - scope:
-      path: ""
-      type: "docs"
-    values:
-      layout: "chat"
-
-# Files to include in build
-include:
-  - assets
-  - _layouts
-  - _includes
-  - docs/**/*.html
-  - docs/**/static/**/*
-
-# Exclude files from processing
-exclude:
-  - Gemfile
-  - Gemfile.lock
-  - node_modules
-  - vendor
-  - .git
-  - .github
-  - README.md
   - CNAME
   - .DS_Store
   - "*.log"
   - _site
   - .jekyll-cache
+  # Exclude client pages that aren't ready for deployment
+  - _clients/bhb/pages/*.md
+  # Add other client pages to exclude as needed
 
-# Keep files in _site
+# Keep files during clean
 keep_files:
   - .nojekyll
   - CNAME
-  - docs/**/static/**
+  - assets/**/*
 
-# Plugins
-plugins:
-  - jekyll-seo-tag
+# API settings
+api_endpoint: "https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main"
 
 # (Comment out or leave out the permalink if not ready to use)
 # permalink: "/:categories/:title.html"
