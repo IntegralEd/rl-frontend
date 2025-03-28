@@ -1,0 +1,178 @@
+<!-- _includes/footer.html -->
+<div class="interaction-container">
+    <div class="playbar">
+        <button class="next-button" disabled>
+            <span>Next</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z" fill="currentColor"/>
+            </svg>
+        </button>
+    </div>
+    <div class="chatbar" style="display: none;">
+        <input type="text" class="chat-input" placeholder="Type your message...">
+        <button class="send-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<style>
+.interaction-container {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    padding: 0 1.5rem;
+    border-top: 1px solid var(--border-color, #eee);
+}
+
+.playbar, .chatbar {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.chat-input {
+    flex: 1;
+    height: 48px;
+    padding: 0 1rem;
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 24px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: var(--primary-color, #4a5af7);
+}
+
+.next-button, .send-button {
+    height: 48px;
+    border-radius: 24px;
+    background: var(--primary-color, #4a5af7);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: 0.5;
+}
+
+.next-button {
+    padding: 0 1.5rem;
+}
+
+.next-button span {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+.send-button {
+    width: 48px;
+    opacity: 1;
+}
+
+.next-button.enabled {
+    opacity: 1;
+}
+
+.next-button:hover:not(:disabled), .send-button:hover {
+    background: var(--primary-color-dark, #3b48d9);
+}
+
+.next-button:disabled {
+    cursor: not-allowed;
+}
+</style>
+
+<script>
+// Pure event listener and UI controller
+const FooterEvents = {
+    init() {
+        this.state = {
+            mode: location.pathname.includes('chat') ? 'chat' : 'welcome',
+            affirmationsComplete: false,
+            messageCount: 0
+        };
+        this.setupUI();
+        this.bindEvents();
+    },
+
+    setupUI() {
+        const playbar = document.querySelector('.playbar');
+        const chatbar = document.querySelector('.chatbar');
+        
+        if (this.state.mode === 'chat') {
+            playbar.style.display = 'none';
+            chatbar.style.display = 'flex';
+        }
+    },
+
+    bindEvents() {
+        // Listen for affirmation changes
+        document.addEventListener('affirmationStateChange', e => {
+            this.state.affirmationsComplete = e.detail.complete;
+            this.updateNextButton();
+        });
+
+        // Listen for chat state changes
+        document.addEventListener('chatStateChange', e => {
+            this.state.messageCount = e.detail.messageCount;
+            this.checkTriggers(e.detail);
+        });
+
+        // Handle next button
+        const next = document.querySelector('.next-button');
+        if (next) {
+            next.addEventListener('click', () => this.handleNext());
+        }
+    },
+
+    updateNextButton() {
+        const next = document.querySelector('.next-button');
+        if (next) {
+            next.disabled = !this.state.affirmationsComplete;
+            next.classList.toggle('enabled', this.state.affirmationsComplete);
+        }
+    },
+
+    checkTriggers({ trigger, messageCount }) {
+        // Handle different chat events
+        switch(trigger) {
+            case 'messageAdded':
+                if (messageCount === 3) {
+                    this.emitEvent('showResourceTeaser');
+                }
+                break;
+            case 'responseReceived':
+                if (messageCount === 5) {
+                    this.emitEvent('showAccountTeaser');
+                }
+                break;
+        }
+    },
+
+    handleNext() {
+        this.emitEvent('navigationRequested', {
+            from: this.state.mode,
+            to: 'chat'
+        });
+    },
+
+    emitEvent(name, detail = {}) {
+        document.dispatchEvent(new CustomEvent(name, { detail }));
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => FooterEvents.init());
+</script>
+  

@@ -831,3 +831,108 @@ Each client can override:
 3. Style in `assets/css/`
 4. Add functionality in `assets/js/`
 5. Test with `bundle exec jekyll serve`
+
+# Recursive Learning Chat Framework
+
+A modular, event-driven chat framework built with Jekyll for embedding context-aware chatbots.
+
+## Architecture
+
+### Core Components
+
+1. **Affirmations Module** (`_includes/welcome_affirmations.html`)
+- Pure event emitter for user agreements
+- State management for multiple checkboxes
+- Emits `affirmationStateChange` events
+
+2. **Chat Module** (`_includes/chat.html`)
+- Handles message exchange with OpenAI Assistant API
+- Maintains chat history and thread state
+- Emits `chatStateChange` events with triggers
+
+3. **Footer Module** (`_includes/footer.html`)
+- UI controller responding to system events
+- Manages navigation and chat input states
+- Handles conditional UI element display
+
+### Event System
+
+```javascript
+// Core Events
+affirmationStateChange -> { state, complete }
+chatStateChange -> { trigger, messageCount, threadId, lastMessage }
+navigationRequested -> { from, to }
+
+// UI Triggers
+showResourceTeaser -> At 3 messages
+showAccountTeaser -> At 5 messages
+```
+
+## Setup
+
+1. Configure Jekyll:
+```bash
+bundle install
+bundle exec jekyll serve
+```
+
+2. Set environment variables:
+```bash
+OPENAI_API_KEY=your_key
+ASSISTANT_ID=your_assistant_id
+```
+
+## Embedding
+
+```html
+<iframe 
+  src="https://recursivelearning.app/chat" 
+  width="100%" 
+  height="600px"
+  allow="clipboard-write"
+>
+</iframe>
+```
+
+## Customization
+
+### CSS Variables
+```css
+:root {
+  --primary-color: #4a5af7;
+  --surface-color: #f5f5f5;
+  --text-color: #333;
+  --border-color: #eee;
+}
+```
+
+### Event Listeners
+```javascript
+window.addEventListener('message', (event) => {
+  if (event.data.type === 'chatStateChange') {
+    // Handle chat state changes
+  }
+});
+```
+
+## Development Progress
+
+- [x] Event-driven architecture
+- [x] OpenAI Assistant integration
+- [x] Modular component system
+- [x] Responsive UI
+- [x] Thread persistence
+- [ ] Multiple assistant support
+- [ ] Analytics integration
+- [ ] A/B testing framework
+
+## Next Steps
+
+1. Create variations with different OpenAI Assistants
+2. Implement analytics tracking
+3. Add A/B testing capabilities
+4. Enhance mobile responsiveness
+
+## License
+
+MIT © IntegralEd

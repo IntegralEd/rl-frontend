@@ -1,0 +1,99 @@
+<!-- _includes/welcome_affirmations.html -->
+<div class="welcome-content">
+    <h1>Welcome!</h1>
+    <p>Access maternal health resources as a public user. Please note that this is an agreement for public use and not medical advice.</p>
+
+    <div class="affirmations">
+        <label class="affirmation-item">
+            <input type="checkbox" class="affirmation-checkbox" data-key="tos">
+            <span>I affirm the terms of service.</span>
+        </label>
+        <label class="affirmation-item">
+            <input type="checkbox" class="affirmation-checkbox" data-key="norms">
+            <span>I affirm the community norms and guidelines.</span>
+        </label>
+        <label class="affirmation-item">
+            <input type="checkbox" class="affirmation-checkbox" data-key="acknowledge">
+            <span>I acknowledge this is a monitored public health resource.</span>
+        </label>
+    </div>
+</div>
+
+<style>
+.welcome-content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+h1 {
+    margin-bottom: 0.75rem;
+    font-size: 1.75rem;
+    color: var(--primary-color, #4a5af7);
+}
+
+p {
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    color: var(--text-color, #333);
+}
+
+.affirmations {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.affirmation-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: var(--surface-color, #f5f5f5);
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.affirmation-item:hover {
+    background: var(--surface-hover-color, #eee);
+}
+
+.affirmation-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary-color, #4a5af7);
+}
+</style>
+
+<script>
+// Pure event emitter - no UI manipulation
+const AffirmationEvents = {
+    init() {
+        this.state = { tos: false, norms: false, acknowledge: false };
+        this.bindEvents();
+    },
+
+    bindEvents() {
+        document.querySelectorAll('.affirmation-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', e => this.handleChange(e));
+        });
+    },
+
+    handleChange(event) {
+        const key = event.target.dataset.key;
+        this.state[key] = event.target.checked;
+        
+        // Emit state change
+        document.dispatchEvent(new CustomEvent('affirmationStateChange', {
+            detail: {
+                state: this.state,
+                complete: Object.values(this.state).every(v => v)
+            }
+        }));
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => AffirmationEvents.init());
+</script>

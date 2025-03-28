@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B'more for Healthy Babies Chat</title>
+    <link rel="stylesheet" href="/clients/bhb/assets/css/main.css">
+    <link rel="stylesheet" href="/clients/bhb/assets/css/custom.css">
+    <link rel="stylesheet" href="/clients/bhb/assets/css/variables.css">
+    <link rel="icon" href="/clients/bhb/assets/images/logo.ico">
+</head>
+<body>
+    <div class="app-container">
+        <!-- App Header with Lockup and Menu -->
+<header class="app-header" role="banner">
+    <div class="header-content">
+        <div class="header-lockup">
+            <img src="/assets/images/RecursiveLearningLockup_White.png" 
+                 alt="Recursive Learning" 
+                 class="header-logo">
+        </div>
+        
+        <div class="header-menu">
+            <div class="menu-dropdown">
+                <button class="menu-trigger" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()">
+                    Menu
+                    <svg class="menu-caret" width="10" height="6" viewBox="0 0 10 6">
+                        <path d="M1 1L5 5L9 1" stroke="white" stroke-width="2" fill="none"/>
+                    </svg>
+                </button>
+                <div class="menu-content" id="menuContent">
+                    <a href="#" class="menu-link">Menu sublink</a>
+                    <a href="#" class="menu-link">Doc sublink</a>
+                    <a href="#" class="menu-link">Resources</a>
+                    <a href="#" class="menu-link">Help Center</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.app-header {
+    height: 50px;
+    background: var(--primary-color, #6A6DB3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.header-content {
+    width: 100%;
+    max-width: 1900px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.header-lockup {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    height: 30px;
+}
+
+.header-menu {
+    display: flex;
+    align-items: center;
+}
+
+.menu-dropdown {
+    position: relative;
+}
+
+.menu-trigger {
+    background: none;
+    border: none;
+    color: white;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.menu-caret {
+    transition: transform 0.2s;
+}
+
+.menu-trigger[aria-expanded="true"] .menu-caret {
+    transform: rotate(180deg);
+}
+
+.menu-content {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: var(--primary-color);
+    border-radius: 4px;
+    min-width: 200px;
+    display: none;
+    z-index: 1000;
+    padding: 0.5rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.menu-content.show {
+    display: block;
+}
+
+.menu-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: white;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    line-height: 1.5;
+}
+
+.menu-link:hover {
+    background: rgba(255,255,255,0.1);
+    text-decoration: underline;
+}
+
+.menu-link:last-child {
+    border-bottom: none;
+}
+</style>
+
+<script>
+function toggleMenu() {
+    const trigger = document.querySelector('.menu-trigger');
+    const content = document.querySelector('.menu-content');
+    const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+    
+    trigger.setAttribute('aria-expanded', !isExpanded);
+    content.classList.toggle('show');
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function(event) {
+    const menu = document.querySelector('.menu-dropdown');
+    const trigger = document.querySelector('.menu-trigger');
+    
+    if (!menu.contains(event.target)) {
+        trigger.setAttribute('aria-expanded', 'false');
+        document.querySelector('.menu-content').classList.remove('show');
+    }
+});
+</script> 
+        
+        <main class="app-main">
+            <div class="content-area">
+                <div class="section active" id="welcome">
+                    <!-- _includes/welcome_affirmations.html -->
+<div class="welcome-content">
+    <h1>Welcome!</h1>
+    <p>Access maternal health resources as a public user. Please note that this is an agreement for public use and not medical advice.</p>
+
+    <div class="affirmations">
+        <label class="affirmation-item">
+            <input type="checkbox" class="affirmation-checkbox" data-key="tos">
+            <span>I affirm the terms of service.</span>
+        </label>
+        <label class="affirmation-item">
+            <input type="checkbox" class="affirmation-checkbox" data-key="norms">
+            <span>I affirm the community norms and guidelines.</span>
+        </label>
+        <label class="affirmation-item">
+            <input type="checkbox" class="affirmation-checkbox" data-key="acknowledge">
+            <span>I acknowledge this is a monitored public health resource.</span>
+        </label>
+    </div>
+</div>
+
+<style>
+.welcome-content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+h1 {
+    margin-bottom: 0.75rem;
+    font-size: 1.75rem;
+    color: var(--primary-color, #4a5af7);
+}
+
+p {
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    color: var(--text-color, #333);
+}
+
+.affirmations {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.affirmation-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: var(--surface-color, #f5f5f5);
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.affirmation-item:hover {
+    background: var(--surface-hover-color, #eee);
+}
+
+.affirmation-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary-color, #4a5af7);
+}
+</style>
+
+<script>
+// Pure event emitter - no UI manipulation
+const AffirmationEvents = {
+    init() {
+        this.state = { tos: false, norms: false, acknowledge: false };
+        this.bindEvents();
+    },
+
+    bindEvents() {
+        document.querySelectorAll('.affirmation-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', e => this.handleChange(e));
+        });
+    },
+
+    handleChange(event) {
+        const key = event.target.dataset.key;
+        this.state[key] = event.target.checked;
+        
+        // Emit state change
+        document.dispatchEvent(new CustomEvent('affirmationStateChange', {
+            detail: {
+                state: this.state,
+                complete: Object.values(this.state).every(v => v)
+            }
+        }));
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => AffirmationEvents.init());
+</script>
+
+                </div>
+                <div class="section" id="chat">
+                    
+
+<div id="main-form">
+  <!-- Existing content -->
+</div>
+
+<div class="chat-container">
+    <div id="chat-window" class="messages"></div>
+</div>
+
+<style>
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message {
+    padding: 1rem;
+    border-radius: 8px;
+    max-width: 80%;
+}
+
+.message.user {
+    align-self: flex-end;
+    background: var(--primary-color, #4a5af7);
+    color: white;
+}
+
+.message.assistant {
+    align-self: flex-start;
+    background: var(--surface-color, #f5f5f5);
+    color: var(--text-color, #333);
+}
+
+.floating-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+</style>
+
+<script>
+// Pure chat event emitter and state manager
+const ChatEvents = {
+    init() {
+        this.state = {
+            messageCount: 0,
+            volleys: 0,
+            threadId: null,
+            messages: []
+        };
+        this.bindEvents();
+    },
+
+    bindEvents() {
+        const input = document.querySelector('.chat-input');
+        const send = document.querySelector('.send-button');
+
+        if (input) {
+            input.addEventListener('keydown', e => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    this.handleMessage(input.value);
+                }
+            });
+        }
+
+        if (send) {
+            send.addEventListener('click', () => {
+                const input = document.querySelector('.chat-input');
+                this.handleMessage(input.value);
+            });
+        }
+    },
+
+    async handleMessage(text) {
+        if (!text.trim()) return;
+
+        // Update state
+        this.state.messageCount++;
+        this.state.messages.push({ type: 'user', text });
+
+        // Add to UI
+        this.addMessageToUI(text, 'user');
+
+        // Clear input
+        document.querySelector('.chat-input').value = '';
+
+        // Emit state change
+        this.emitState('messageAdded');
+
+        try {
+            const response = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: text,
+                    Org_ID: 'BHB',
+                    Source: 'web_chat',
+                    Thread_ID: this.state.threadId,
+                    Assistant_ID: 'asst_IA5PsJxdShVPTAv2xeXTr4Ma',
+                    User_ID: localStorage.getItem('userId') || null,
+                    Action_ID: `msg_${Date.now()}`
+                })
+            });
+
+            const data = await response.json();
+            
+            // Update state with response
+            this.state.messages.push({ type: 'assistant', text: data.response });
+            this.addMessageToUI(data.response, 'assistant');
+            
+            // Track volleys and trigger save
+            this.state.volleys++;
+            if (this.state.volleys >= 5) {
+                saveChat();
+                document.dispatchEvent(new CustomEvent('showAccountTeaser'));
+            }
+
+            // Emit completion
+            this.emitState('responseReceived');
+
+        } catch (error) {
+            console.error('Chat error:', error);
+            this.addMessageToUI('Failed to send message. Please try again.', 'assistant error');
+            this.emitState('error');
+        }
+    },
+
+    addMessageToUI(text, type) {
+        const chatWindow = document.getElementById('chat-window');
+        const message = document.createElement('div');
+        message.classList.add('message', type);
+        message.textContent = text;
+        chatWindow.appendChild(message);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    },
+
+    emitState(trigger) {
+        document.dispatchEvent(new CustomEvent('chatStateChange', {
+            detail: {
+                trigger,
+                messageCount: this.state.messageCount,
+                threadId: this.state.threadId,
+                lastMessage: this.state.messages[this.state.messages.length - 1]
+            }
+        }));
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => ChatEvents.init());
+
+function showSection(index) {
+    document.querySelectorAll('.section').forEach((section, i) => {
+        section.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('#sidebar button').forEach((button, i) => {
+        button.classList.toggle('active', i === index);
+    });
+
+    const chatContainer = document.querySelector(".chat-container");
+    if (index === 1) {
+        document.getElementById("nav-public-chat").removeAttribute("disabled");
+        if (chatContainer) chatContainer.style.display = "flex";
+    } else {
+        if (chatContainer) chatContainer.style.display = "none";
+    }
+}
+
+function redirectToIntake() {
+    const threadId = window.threadId || 'new';
+    window.location.href = `https://bmore.softr.app/user-intake?thread_id=${threadId}`;
+}
+
+function checkAffirmations() {
+    const tos = document.getElementById('tos').checked;
+    const norms = document.getElementById('norms').checked;
+    const acknowledge = document.getElementById('acknowledge').checked;
+    const nextButton = document.getElementById('next-button');
+    const accountButton = document.getElementById('account-button');
+
+    if (nextButton && accountButton) {
+        if (tos && norms && acknowledge) {
+            nextButton.classList.add('enabled');
+            nextButton.disabled = false;
+            accountButton.classList.add('enabled');
+            accountButton.disabled = false;
+        } else {
+            nextButton.classList.remove('enabled');
+            nextButton.disabled = true;
+            accountButton.classList.remove('enabled');
+            accountButton.disabled = true;
+        }
+    }
+}
+
+function saveChat() {
+    const timestamp = new Date().toISOString();
+    const chatSummary = {
+        event_type: "public_chat",
+        session: {
+            timestamp: timestamp,
+            source_url: window.location.href,
+            entry_point: "public_anonymous"
+        },
+        assistant: {
+            id: 'asst_IA5PsJxdShVPTAv2xeXTr4Ma',
+            org: 'BHB',
+            context: 'maternal_health'
+        },
+        interaction_log: {
+            volley_count: ChatEvents.state.volleys,
+            message_count: ChatEvents.state.messageCount,
+            messages: ChatEvents.state.messages
+        }
+    };
+
+    // Send to analytics endpoint
+    fetch(API_ENDPOINT + '/analytics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(chatSummary)
+    })
+    .catch(error => console.error('Analytics error:', error));
+}
+
+// Listen for navigation events
+document.addEventListener('navigationRequested', (event) => {
+    const { action } = event.detail;
+    if (action === 'next') {
+        const nav = document.querySelector('.app-nav');
+        if (nav) {
+            const chatLink = nav.querySelector('a[href*="chat"]');
+            if (chatLink) chatLink.click();
+        }
+    }
+});
+
+// Listen for account teaser events
+document.addEventListener('showAccountTeaser', () => {
+    // Example: Show a floating notification or modify header
+    const notification = document.createElement('div');
+    notification.className = 'floating-notification';
+    notification.innerHTML = `
+        <p>Want to save your chat history?</p>
+        <button onclick="redirectToIntake()">Create Account</button>
+    `;
+    document.body.appendChild(notification);
+});
+</script>
+</body>
+</html>
+                </div>
+            </div>
+        </main>
+
+        <!-- _includes/footer.html -->
+<div class="interaction-container">
+    <div class="playbar">
+        <button class="next-button" disabled>
+            <span>Next</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z" fill="currentColor"/>
+            </svg>
+        </button>
+    </div>
+    <div class="chatbar" style="display: none;">
+        <input type="text" class="chat-input" placeholder="Type your message...">
+        <button class="send-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<style>
+.interaction-container {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    padding: 0 1.5rem;
+    border-top: 1px solid var(--border-color, #eee);
+}
+
+.playbar, .chatbar {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.chat-input {
+    flex: 1;
+    height: 48px;
+    padding: 0 1rem;
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 24px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: var(--primary-color, #4a5af7);
+}
+
+.next-button, .send-button {
+    height: 48px;
+    border-radius: 24px;
+    background: var(--primary-color, #4a5af7);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: 0.5;
+}
+
+.next-button {
+    padding: 0 1.5rem;
+}
+
+.next-button span {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+.send-button {
+    width: 48px;
+    opacity: 1;
+}
+
+.next-button.enabled {
+    opacity: 1;
+}
+
+.next-button:hover:not(:disabled), .send-button:hover {
+    background: var(--primary-color-dark, #3b48d9);
+}
+
+.next-button:disabled {
+    cursor: not-allowed;
+}
+</style>
+
+<script>
+// Pure event listener and UI controller
+const FooterEvents = {
+    init() {
+        this.state = {
+            mode: location.pathname.includes('chat') ? 'chat' : 'welcome',
+            affirmationsComplete: false,
+            messageCount: 0
+        };
+        this.setupUI();
+        this.bindEvents();
+    },
+
+    setupUI() {
+        const playbar = document.querySelector('.playbar');
+        const chatbar = document.querySelector('.chatbar');
+        
+        if (this.state.mode === 'chat') {
+            playbar.style.display = 'none';
+            chatbar.style.display = 'flex';
+        }
+    },
+
+    bindEvents() {
+        // Listen for affirmation changes
+        document.addEventListener('affirmationStateChange', e => {
+            this.state.affirmationsComplete = e.detail.complete;
+            this.updateNextButton();
+        });
+
+        // Listen for chat state changes
+        document.addEventListener('chatStateChange', e => {
+            this.state.messageCount = e.detail.messageCount;
+            this.checkTriggers(e.detail);
+        });
+
+        // Handle next button
+        const next = document.querySelector('.next-button');
+        if (next) {
+            next.addEventListener('click', () => this.handleNext());
+        }
+    },
+
+    updateNextButton() {
+        const next = document.querySelector('.next-button');
+        if (next) {
+            next.disabled = !this.state.affirmationsComplete;
+            next.classList.toggle('enabled', this.state.affirmationsComplete);
+        }
+    },
+
+    checkTriggers({ trigger, messageCount }) {
+        // Handle different chat events
+        switch(trigger) {
+            case 'messageAdded':
+                if (messageCount === 3) {
+                    this.emitEvent('showResourceTeaser');
+                }
+                break;
+            case 'responseReceived':
+                if (messageCount === 5) {
+                    this.emitEvent('showAccountTeaser');
+                }
+                break;
+        }
+    },
+
+    handleNext() {
+        this.emitEvent('navigationRequested', {
+            from: this.state.mode,
+            to: 'chat'
+        });
+    },
+
+    emitEvent(name, detail = {}) {
+        document.dispatchEvent(new CustomEvent(name, { detail }));
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => FooterEvents.init());
+</script>
+  
+    </div>
+
+    <style>
+    .app-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background: white;
+        max-width: 1900px;
+        margin: 0 auto;
+    }
+
+    .app-main {
+        flex: 1;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .content-area {
+        height: 100%;
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .section {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .section.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Ensure header spans full width */
+    .app-header {
+        width: 100%;
+        max-width: 1900px;
+        margin: 0 auto;
+    }
+
+    /* Remove any duplicate footers */
+    .interaction-container:not(:last-child) {
+        display: none;
+    }
+    </style>
+
+    <script>
+    // Environment detection
+    const isProd = window.location.hostname === 'recursivelearning.app';
+    const API_ENDPOINT = isProd 
+        ? 'https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main'
+        : 'http://127.0.0.1:4000/api';
+
+    // Initialize analytics
+    document.addEventListener('DOMContentLoaded', () => {
+        // Track page load
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'B'more for Healthy Babies Chat',
+                page_path: '/bhb/chat'
+            });
+        }
+    });
+
+    // Handle iframe messaging
+    window.addEventListener('message', (event) => {
+        // Verify origin
+        if (event.origin !== 'http://localhost:4000') return;
+
+        // Handle messages from parent
+        switch(event.data.type) {
+            case 'INIT_CHAT':
+                // Initialize chat with context if provided
+                if (event.data.context) {
+                    document.dispatchEvent(new CustomEvent('initChat', {
+                        detail: event.data.context
+                    }));
+                }
+                break;
+        }
+    });
+    </script>
+</body>
+</html> 
