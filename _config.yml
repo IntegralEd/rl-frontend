@@ -21,12 +21,13 @@ defaults:
     values:
       layout: "chat"
 
+# Files to include in build
 include:
-  - _clients
   - assets
   - _layouts
   - _includes
 
+# Files to exclude from build
 exclude:
   - Gemfile
   - Gemfile.lock
@@ -38,7 +39,11 @@ exclude:
   - CNAME
   - .DS_Store
   - "*.log"
-  - bhb     # Exclude standalone bhb directory
+  - _site
+  - .jekyll-cache
+
+# Keep _site clean
+keep_files: []
 
 plugins:
   - jekyll-feed
