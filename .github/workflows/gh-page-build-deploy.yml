@@ -14,13 +14,15 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      RUBY_VERSION: 3.1.0
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1.0
+          ruby-version: ${{ env.RUBY_VERSION }}
           bundler: 2.4.22
       - name: Install dependencies
         run: bundle install
