@@ -271,6 +271,38 @@
                 padding: 0 var(--section-padding);
             }
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: #fff;
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 8px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -294,7 +326,7 @@
                         </button>
                         <div class="menu-content" id="menuContent">
                             <a href="#" class="menu-link" onclick="startOver()">Start Over</a>
-                            <a href="#" class="menu-link">Resources</a>
+                            <a href="#" class="menu-link" onclick="openTicketModal(); return false;">Submit Ticket</a>
                             <a href="#" class="menu-link">Help</a>
                         </div>
                     </div>
@@ -317,6 +349,25 @@
         </div>
     </div>
 
+    <div class="menu-dropdown">
+        <button class="menu-button">
+            <span class="menu-icon">☰</span>
+        </button>
+        <div class="dropdown-content">
+            <a href="#" onclick="openTicketModal(); return false;">Submit Ticket</a>
+            <a href="/resources">Resources</a>
+            <a href="/help">Help</a>
+        </div>
+    </div>
+
+    <div id="ticketModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeTicketModal()">&times;</span>
+            <iframe id="softr-ticket-form"></iframe>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.11/iframeResizer.min.js"></script>
     <script>
         window.ASSISTANT_ID = 'arn:aws:ssm:us-east-2:559050208320:parameter/integraled/eled/OpenAI_Assistant_ID';
         window.chatCore.init();
@@ -390,6 +441,59 @@
             if (!menu.contains(event.target)) {
                 trigger.setAttribute('aria-expanded', 'false');
                 document.querySelector('.menu-content').classList.remove('show');
+            }
+        });
+
+        function openTicketModal() {
+            const modal = document.getElementById('ticketModal');
+            const iframe = document.getElementById('softr-ticket-form');
+            
+            // Build form URL with context
+            const baseFormUrl = 'https://integral-mothership.softr.app/embed/pages/c6b8b431-e9eb-4736-94e4-83e3c4895c27/blocks/form1';
+            const context = {
+                source_url: window.location.href,
+                client_id: window.CHAT_CONFIG?.clientId || 'elpl',
+                thread_id: window.threadId || 'new_chat',
+                page_title: document.title,
+                grade: chatCore.getGrade() || 'not_selected',
+                is_standalone: true
+            };
+            
+            // Append context to form URL
+            const formUrl = `${baseFormUrl}#${encodeURIComponent(JSON.stringify(context))}`;
+            iframe.src = formUrl;
+            
+            // Show modal and initialize resizer
+            modal.style.display = 'block';
+            iFrameResize({ 
+                checkOrigin: false,
+                log: false,
+                heightCalculationMethod: 'lowestElement',
+                onMessage: function(messageData) {
+                    // Handle any messages from the form
+                    console.log('Form message:', messageData);
+                }
+            }, '#softr-ticket-form');
+        }
+
+        function closeTicketModal() {
+            const modal = document.getElementById('ticketModal');
+            modal.style.display = 'none';
+            // Clear iframe src to prevent continued form execution
+            document.getElementById('softr-ticket-form').src = '';
+        }
+
+        // Close modal if clicking outside content
+        document.getElementById('ticketModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTicketModal();
+            }
+        });
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeTicketModal();
             }
         });
     </script>

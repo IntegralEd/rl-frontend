@@ -309,18 +309,20 @@
                      alt="EL Education" 
                      class="header-logo">
                 
-                <div class="menu-dropdown">
-                    <button class="menu-trigger" aria-haspopup="true" 
-                            aria-expanded="false" onclick="toggleMenu()">
-                        Menu
-                        <svg class="menu-caret" width="10" height="6" viewBox="0 0 10 6">
-                            <path d="M1 1L5 5L9 1" stroke="white" stroke-width="2" fill="none"/>
-                        </svg>
-                    </button>
-                    <div class="menu-content" id="menuContent">
-                        <a href="#" class="menu-link" onclick="showGradeSelection()">Select Grade</a>
-                        <a href="#" class="menu-link" onclick="startOver()">Start Over</a>
-                        <a href="#" class="menu-link">Help</a>
+                <div class="header-actions">
+                    <div class="menu-dropdown">
+                        <button class="menu-trigger" aria-haspopup="true" 
+                                aria-expanded="false" onclick="toggleMenu()">
+                            Menu
+                            <svg class="menu-caret" width="10" height="6" viewBox="0 0 10 6">
+                                <path d="M1 1L5 5L9 1" stroke="white" stroke-width="2" fill="none"/>
+                            </svg>
+                        </button>
+                        <div class="menu-content" id="menuContent">
+                            <a href="#" class="menu-link" onclick="startOver()">Start Over</a>
+                            <a href="#" class="menu-link" onclick="openTicketModal(); return false;">Submit Ticket</a>
+                            <a href="#" class="menu-link">Help</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -367,22 +369,36 @@
         </div>
     </div>
 
+    <div id="ticketModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeTicketModal()">&times;</span>
+            <iframe id="softr-ticket-form"></iframe>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.11/iframeResizer.min.js"></script>
     <script>
         // Configure chat before initializing
         window.ASSISTANT_ID = 'arn:aws:ssm:us-east-2:559050208320:parameter/integraled/eled/OpenAI_Assistant_ID';
 
         document.addEventListener("DOMContentLoaded", function() {
-            chatCore.init();
+            // Initialize chat but don't enable UI yet
+            chatCore.init({
+                preloadContext: 'Initialize chat for EL Education Merit Badges.'
+            });
             
-            const savedGrade = chatCore.getGrade();
-            if (savedGrade) {
-                document.getElementById('gradeSelection').classList.remove('active');
-                document.getElementById('chatContainer').classList.add('active');
-            }
+            // Enable UI once context is ready
+            document.addEventListener('chat-context-ready', function() {
+                const savedGrade = chatCore.getGrade();
+                if (savedGrade) {
+                    document.getElementById('gradeSelection').classList.remove('active');
+                    document.getElementById('chatContainer').classList.add('active');
+                }
+            });
 
             const chatInput = document.getElementById("chat-input");
             chatInput.addEventListener("keydown", function(event) {
-                if (event.key === "Enter" && !event.shiftKey) {
+                if (event.key === "Enter" && !event.shiftKey && chatCore.isContextReady()) {
                     event.preventDefault();
                     handleMessageSend();
                 }
@@ -476,6 +492,57 @@
             if (!menu.contains(event.target)) {
                 trigger.setAttribute('aria-expanded', 'false');
                 document.querySelector('.menu-content').classList.remove('show');
+            }
+        });
+
+        function openTicketModal() {
+            const modal = document.getElementById('ticketModal');
+            const iframe = document.getElementById('softr-ticket-form');
+            
+            // Build form URL with context
+            const baseFormUrl = 'https://integral-mothership.softr.app/embed/pages/c6b8b431-e9eb-4736-94e4-83e3c4895c27/blocks/form1';
+            const context = {
+                source_url: window.location.href,
+                client_id: window.CHAT_CONFIG?.clientId || 'elpl',
+                thread_id: window.threadId || 'new_chat',
+                page_title: document.title
+            };
+            
+            // Append context to form URL
+            const formUrl = `${baseFormUrl}#${encodeURIComponent(JSON.stringify(context))}`;
+            iframe.src = formUrl;
+            
+            // Show modal and initialize resizer
+            modal.style.display = 'block';
+            iFrameResize({ 
+                checkOrigin: false,
+                log: false,
+                heightCalculationMethod: 'lowestElement',
+                onMessage: function(messageData) {
+                    // Handle any messages from the form
+                    console.log('Form message:', messageData);
+                }
+            }, '#softr-ticket-form');
+        }
+
+        function closeTicketModal() {
+            const modal = document.getElementById('ticketModal');
+            modal.style.display = 'none';
+            // Clear iframe src to prevent continued form execution
+            document.getElementById('softr-ticket-form').src = '';
+        }
+
+        // Close modal if clicking outside content
+        document.getElementById('ticketModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTicketModal();
+            }
+        });
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeTicketModal();
             }
         });
     </script>
