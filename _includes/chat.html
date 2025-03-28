@@ -66,73 +66,79 @@ layout: chat
 </style>
 
 <script>
-class ChatManager {
-    constructor() {
-        this.messageCount = 0;
-        this.threadId = localStorage.getItem('threadId') || null;
-        this.init();
-    }
-
+// Pure chat event emitter and state manager
+const ChatEvents = {
     init() {
-        this.setupEventListeners();
-        console.log('Chat initialized:', this.threadId ? `Using thread ${this.threadId}` : 'No existing thread');
-    }
+        this.state = {
+            messageCount: 0,
+            threadId: localStorage.getItem('threadId') || null,
+            messages: []
+        };
+        this.bindEvents();
+    },
 
-    setupEventListeners() {
-        const chatInput = document.querySelector('.chat-input');
-        const sendButton = document.querySelector('.send-button');
+    bindEvents() {
+        const input = document.querySelector('.chat-input');
+        const send = document.querySelector('.send-button');
 
-        if (chatInput) {
-            chatInput.addEventListener('keydown', (e) => {
+        if (input) {
+            input.addEventListener('keydown', e => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    this.sendMessage(chatInput.value);
+                    this.handleMessage(input.value);
                 }
             });
         }
 
-        if (sendButton) {
-            sendButton.addEventListener('click', () => {
+        if (send) {
+            send.addEventListener('click', () => {
                 const input = document.querySelector('.chat-input');
-                this.sendMessage(input.value);
+                this.handleMessage(input.value);
             });
         }
-    }
+    },
 
-    async sendMessage(text) {
+    async handleMessage(text) {
         if (!text.trim()) return;
-        
-        this.messageCount++;
-        this.emitMessageCount();
-        
-        const requestBody = this.threadId ? 
-            { message: text, threadId: this.threadId } : 
-            { message: text };
 
-        // Add user message to UI
+        // Update state
+        this.state.messageCount++;
+        this.state.messages.push({ type: 'user', text });
+
+        // Add to UI
         this.addMessageToUI(text, 'user');
-        
+
+        // Clear input
+        document.querySelector('.chat-input').value = '';
+
+        // Emit state change
+        this.emitState('messageAdded');
+
         try {
             const response = await fetch('https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify({
+                    message: text,
+                    threadId: this.state.threadId
+                })
             });
-            
+
             const data = await response.json();
+            
+            // Update state with response
+            this.state.messages.push({ type: 'assistant', text: data.response });
             this.addMessageToUI(data.response, 'assistant');
-            
-            // Clear input
-            document.querySelector('.chat-input').value = '';
-            
-            // Emit chat state
-            this.emitChatState();
-            
+
+            // Emit completion
+            this.emitState('responseReceived');
+
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Chat error:', error);
             this.addMessageToUI('Failed to send message. Please try again.', 'assistant error');
+            this.emitState('error');
         }
-    }
+    },
 
     addMessageToUI(text, type) {
         const chatWindow = document.getElementById('chat-window');
@@ -141,33 +147,21 @@ class ChatManager {
         message.textContent = text;
         chatWindow.appendChild(message);
         chatWindow.scrollTop = chatWindow.scrollHeight;
-    }
+    },
 
-    emitMessageCount() {
+    emitState(trigger) {
         document.dispatchEvent(new CustomEvent('chatStateChange', {
             detail: {
-                messageCount: this.messageCount,
-                threadId: this.threadId,
-                timestamp: new Date().toISOString()
+                trigger,
+                messageCount: this.state.messageCount,
+                threadId: this.state.threadId,
+                lastMessage: this.state.messages[this.state.messages.length - 1]
             }
         }));
     }
+};
 
-    emitChatState() {
-        document.dispatchEvent(new CustomEvent('chatInteractionComplete', {
-            detail: {
-                messageCount: this.messageCount,
-                threadId: this.threadId,
-                lastInteraction: new Date().toISOString()
-            }
-        }));
-    }
-}
-
-// Initialize on DOM load
-document.addEventListener('DOMContentLoaded', () => {
-    window.chatManager = new ChatManager();
-});
+document.addEventListener('DOMContentLoaded', () => ChatEvents.init());
 
 function showSection(index) {
     document.querySelectorAll('.section').forEach((section, i) => {

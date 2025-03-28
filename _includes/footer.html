@@ -95,25 +95,17 @@
 </style>
 
 <script>
-class FooterManager {
-    constructor() {
-        this.state = {
-            affirmationsComplete: false,
-            messageCount: 0,
-            threadId: null,
-            mode: this.detectMode()
-        };
-        this.init();
-    }
-
-    detectMode() {
-        return window.location.pathname.includes('chat') ? 'chat' : 'welcome';
-    }
-
+// Pure event listener and UI controller
+const FooterEvents = {
     init() {
+        this.state = {
+            mode: location.pathname.includes('chat') ? 'chat' : 'welcome',
+            affirmationsComplete: false,
+            messageCount: 0
+        };
         this.setupUI();
-        this.setupEventListeners();
-    }
+        this.bindEvents();
+    },
 
     setupUI() {
         const playbar = document.querySelector('.playbar');
@@ -122,67 +114,65 @@ class FooterManager {
         if (this.state.mode === 'chat') {
             playbar.style.display = 'none';
             chatbar.style.display = 'flex';
-        } else {
-            playbar.style.display = 'flex';
-            chatbar.style.display = 'none';
         }
-    }
+    },
 
-    setupEventListeners() {
-        // Listen for affirmation state changes
-        document.addEventListener('affirmationStateChange', (event) => {
-            const { complete } = event.detail;
-            this.state.affirmationsComplete = complete;
+    bindEvents() {
+        // Listen for affirmation changes
+        document.addEventListener('affirmationStateChange', e => {
+            this.state.affirmationsComplete = e.detail.complete;
             this.updateNextButton();
         });
 
         // Listen for chat state changes
-        document.addEventListener('chatStateChange', (event) => {
-            const { messageCount, threadId } = event.detail;
-            this.state.messageCount = messageCount;
-            this.state.threadId = threadId;
-            this.checkTriggers();
+        document.addEventListener('chatStateChange', e => {
+            this.state.messageCount = e.detail.messageCount;
+            this.checkTriggers(e.detail);
         });
 
-        // Handle next button clicks
-        const nextButton = document.querySelector('.next-button');
-        if (nextButton) {
-            nextButton.addEventListener('click', () => this.handleNext());
+        // Handle next button
+        const next = document.querySelector('.next-button');
+        if (next) {
+            next.addEventListener('click', () => this.handleNext());
         }
-    }
+    },
 
     updateNextButton() {
-        const nextButton = document.querySelector('.next-button');
-        if (nextButton) {
-            nextButton.disabled = !this.state.affirmationsComplete;
-            nextButton.classList.toggle('enabled', this.state.affirmationsComplete);
+        const next = document.querySelector('.next-button');
+        if (next) {
+            next.disabled = !this.state.affirmationsComplete;
+            next.classList.toggle('enabled', this.state.affirmationsComplete);
         }
-    }
+    },
 
-    checkTriggers() {
-        // Example triggers based on message count
-        if (this.state.messageCount === 3) {
-            document.dispatchEvent(new CustomEvent('showResourceTeaser'));
+    checkTriggers({ trigger, messageCount }) {
+        // Handle different chat events
+        switch(trigger) {
+            case 'messageAdded':
+                if (messageCount === 3) {
+                    this.emitEvent('showResourceTeaser');
+                }
+                break;
+            case 'responseReceived':
+                if (messageCount === 5) {
+                    this.emitEvent('showAccountTeaser');
+                }
+                break;
         }
-        if (this.state.messageCount === 5) {
-            document.dispatchEvent(new CustomEvent('showAccountTeaser'));
-        }
-    }
+    },
 
     handleNext() {
-        document.dispatchEvent(new CustomEvent('navigationRequested', {
-            detail: {
-                from: this.state.mode,
-                to: 'chat',
-                state: this.state
-            }
-        }));
-    }
-}
+        this.emitEvent('navigationRequested', {
+            from: this.state.mode,
+            to: 'chat'
+        });
+    },
 
-// Initialize on DOM load
-document.addEventListener('DOMContentLoaded', () => {
-    window.footerManager = new FooterManager();
-});
+    emitEvent(name, detail = {}) {
+        document.dispatchEvent(new CustomEvent(name, { detail }));
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => FooterEvents.init());
 </script>
   
