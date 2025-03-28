@@ -33,8 +33,6 @@ include:
 
 # Exclude files from processing
 exclude:
-  - bhb     # Exclude standalone bhb directory
-  - clients # Exclude regular clients directory to avoid conflicts
   - Gemfile
   - Gemfile.lock
   - node_modules
