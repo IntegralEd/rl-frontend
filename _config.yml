@@ -15,22 +15,22 @@ plugins:
 
 # Collections
 collections:
-  clients:
+  docs:
     output: true
-    permalink: /clients/:path/
+    permalink: /docs/:path/
 
 # Defaults
 defaults:
   - scope:
       path: ""
-      type: "clients"
+      type: "docs"
     values:
       layout: "default"
 
 # Include these files/folders
 include:
-  - _clients/**/*.html
-  - _clients/**/static/**/*
+  - docs/**/*.html
+  - docs/**/static/**/*
   - assets
   - _layouts
   - _includes
@@ -51,7 +51,7 @@ exclude:
 keep_files:
   - .git
   - .gitignore
-  - clients/**/static/**
+  - docs/**/static/**
   - assets/util-pages/**
 
 # API settings
@@ -61,7 +61,7 @@ api_endpoint: "https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/Integ
 defaults:
   - scope:
       path: ""
-      type: "clients"
+      type: "docs"
     values:
       layout: "chat"
 
@@ -70,8 +70,8 @@ include:
   - assets
   - _layouts
   - _includes
-  - _clients/**/*.html
-  - _clients/**/static/**/*
+  - docs/**/*.html
+  - docs/**/static/**/*
 
 # Exclude files from processing
 exclude:
@@ -92,7 +92,7 @@ exclude:
 keep_files:
   - .nojekyll
   - CNAME
-  - clients/**/static/**
+  - docs/**/static/**
 
 # Plugins
 plugins:
