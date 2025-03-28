@@ -11,24 +11,18 @@ api_endpoint: "https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/Integ
 collections:
   clients:
     output: true
-    permalink: /clients/:path
+    permalink: /clients/:path/
 
 # Default layouts
 defaults:
   - scope:
-      path: ""
+      path: "_clients"
       type: "clients"
     values:
-      layout: "client"
-  - scope:
-      path: "bhb"
-    values:
-      client: "bhb"
       layout: "chat"
 
 include:
-  - clients
-  - shared_jekyll
+  - _clients
   - assets
   - _layouts
   - _includes
@@ -44,6 +38,7 @@ exclude:
   - CNAME
   - .DS_Store
   - "*.log"
+  - bhb     # Exclude standalone bhb directory
 
 plugins:
   - jekyll-feed
