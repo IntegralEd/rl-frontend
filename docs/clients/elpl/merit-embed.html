@@ -14,11 +14,10 @@
             --assistant-msg-bg: var(--secondary-color);
             --input-bg: #f5f5f5;
             
-            /* Fixed dimensions for Storyline embed */
+            /* Fixed dimensions for embed */
             --embed-width: 400px;
             --embed-height: 600px;
             --header-height: 40px;
-            --footer-height: 40px;
         }
 
         body {
@@ -29,9 +28,10 @@
             height: var(--embed-height);
             overflow: hidden;
             position: fixed;
+            background: var(--chat-bg);
         }
 
-        .storyline-embed {
+        .embed-container {
             width: 100%;
             height: 100%;
             display: flex;
@@ -39,99 +39,35 @@
             background: var(--chat-bg);
         }
 
-        /* Header styling */
+        /* Header */
         .app-header {
             height: var(--header-height);
             background: var(--primary-color);
             display: flex;
             align-items: center;
-            justify-content: space-between;
             padding: 0 12px;
             width: 100%;
             flex-shrink: 0;
             box-sizing: border-box;
         }
 
-        .header-content {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
         .header-logo {
             height: 24px;
         }
 
-        /* Menu dropdown */
-        .menu-dropdown {
-            position: relative;
-        }
-
-        .menu-trigger {
-            background: none;
-            border: none;
-            color: white;
-            padding: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            font-size: 0.875rem;
-        }
-
-        .menu-caret {
-            transition: transform 0.2s;
-        }
-
-        .menu-trigger[aria-expanded="true"] .menu-caret {
-            transform: rotate(180deg);
-        }
-
-        .menu-content {
-            position: absolute;
-            top: calc(100% + 0.5rem);
-            right: 0;
-            background: var(--primary-color);
-            border-radius: 4px;
-            min-width: 200px;
-            display: none;
-            z-index: 1000;
-            padding: 0.5rem 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .menu-content.show {
-            display: block;
-        }
-
-        .menu-link {
-            display: block;
-            padding: 0.5rem 1rem;
-            color: white;
-            text-decoration: none;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            line-height: 1.5;
-        }
-
-        .menu-link:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
         /* Chat container */
         .chat-container {
-            display: flex;
             flex: 1;
+            display: flex;
             flex-direction: column;
-            height: calc(var(--embed-height) - var(--header-height) - var(--footer-height));
-            box-sizing: border-box;
+            background: white;
+            overflow: hidden;
         }
 
         .chat-window {
             flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: 16px;
             display: flex;
             flex-direction: column;
@@ -145,6 +81,7 @@
             border-radius: 12px;
             font-size: 15px;
             line-height: 1.4;
+            word-break: break-word;
         }
 
         .message.assistant {
@@ -165,6 +102,8 @@
             border-top: 1px solid rgba(0,0,0,0.1);
             display: flex;
             gap: 8px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .input-area input {
@@ -173,6 +112,7 @@
             background: transparent;
             padding: 8px;
             font-size: 15px;
+            min-width: 0;
         }
 
         .input-area input:focus {
@@ -185,48 +125,19 @@
             padding: 8px;
             cursor: pointer;
             color: var(--primary-color);
-        }
-
-        /* Footer */
-        .chat-footer {
-            background: var(--input-bg);
-            border-top: 1px solid rgba(0,0,0,0.1);
-            padding: 0 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.875rem;
-            color: var(--secondary-color);
-            height: var(--footer-height);
-            box-sizing: border-box;
+            flex-shrink: 0;
         }
     </style>
 </head>
 <body>
-    <div class="storyline-embed">
-        <header class="app-header" role="banner">
-            <div class="header-content">
-                <img src="/clients/elpl/images/lockup_white_logo.png" 
-                     alt="EL Education" 
-                     class="header-logo">
-                
-                <div class="menu-dropdown">
-                    <button class="menu-trigger" aria-haspopup="true" 
-                            aria-expanded="false" onclick="toggleMenu()">
-                        Menu
-                        <svg class="menu-caret" width="10" height="6" viewBox="0 0 10 6">
-                            <path d="M1 1L5 5L9 1" stroke="white" stroke-width="2" fill="none"/>
-                        </svg>
-                    </button>
-                    <div class="menu-content" id="menuContent">
-                        <a href="#" class="menu-link" onclick="startOver()">Start Over</a>
-                        <a href="#" class="menu-link">Help</a>
-                    </div>
-                </div>
-            </div>
+    <div class="embed-container">
+        <header class="app-header">
+            <img src="/clients/elpl/images/lockup_white_logo.png" 
+                 alt="EL Education" 
+                 class="header-logo">
         </header>
 
-        <div class="chat-container" id="chatContainer">
+        <div class="chat-container">
             <div class="chat-window" id="chat-window">
                 <div class="message assistant">Welcome to EL Merit Chat. How can I help you today?</div>
             </div>
@@ -238,16 +149,11 @@
                     </svg>
                 </button>
             </div>
-            <div class="chat-footer">
-                <span>EL Education</span>
-            </div>
         </div>
     </div>
 
     <script>
-        // Configure chat
-        window.ASSISTANT_ID = 'arn:aws:ssm:us-east-2:559050208320:parameter/integraled/eled/OpenAI_Assistant_ID';
-
+        // Initialize chat
         document.addEventListener("DOMContentLoaded", function() {
             chatCore.init();
 
@@ -259,22 +165,6 @@
                 }
             });
         });
-
-        function toggleMenu() {
-            const trigger = document.querySelector('.menu-trigger');
-            const content = document.querySelector('.menu-content');
-            const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
-            
-            trigger.setAttribute('aria-expanded', !isExpanded);
-            content.classList.toggle('show');
-        }
-
-        function startOver() {
-            chatCore.reset();
-            const chatWindow = document.getElementById("chat-window");
-            chatWindow.innerHTML = '<div class="message assistant">Welcome to EL Merit Chat. How can I help you today?</div>';
-            toggleMenu();
-        }
 
         function handleMessageSend() {
             const input = document.getElementById("chat-input");
@@ -310,17 +200,6 @@
             input.value = "";
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const menu = document.querySelector('.menu-dropdown');
-            const trigger = document.querySelector('.menu-trigger');
-            
-            if (!menu.contains(event.target)) {
-                trigger.setAttribute('aria-expanded', 'false');
-                document.querySelector('.menu-content').classList.remove('show');
-            }
-        });
     </script>
 </body>
 </html> 
