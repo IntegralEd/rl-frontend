@@ -1,3 +1,6 @@
+# Jekyll configuration for Recursive Learning
+# This file configures the site's collections, defaults, and plugins
+
 title: "Recursive Learning"
 baseurl: ""      # If deploying at domain root, keep empty
 url: "https://recursivelearning.app"
@@ -7,16 +10,17 @@ theme: minima
 # API settings
 api_endpoint: "https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main"
 
-# Collections
+# Collections configuration
 collections:
   clients:
     output: true
     permalink: /clients/:path/
+    layout: chat
 
-# Default layouts
+# Default layouts for different file types
 defaults:
   - scope:
-      path: "_clients"
+      path: ""
       type: "clients"
     values:
       layout: "chat"
@@ -27,8 +31,10 @@ include:
   - _layouts
   - _includes
 
-# Files to exclude from build
+# Exclude files from processing
 exclude:
+  - bhb     # Exclude standalone bhb directory
+  - clients # Exclude regular clients directory to avoid conflicts
   - Gemfile
   - Gemfile.lock
   - node_modules
@@ -42,11 +48,14 @@ exclude:
   - _site
   - .jekyll-cache
 
-# Keep _site clean
-keep_files: []
+# Keep files in _site
+keep_files:
+  - .nojekyll
+  - CNAME
 
+# Plugins
 plugins:
-  - jekyll-feed
+  - jekyll-seo-tag
 
 # (Comment out or leave out the permalink if not ready to use)
 # permalink: "/:categories/:title.html"
