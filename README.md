@@ -747,6 +747,53 @@ Our platform uses Jekyll to manage and deploy client-specific chat interfaces. T
 
 This setup streamlines the deployment process and ensures consistency across all client sites.
 
+## Static HTML Publishing
+
+### Overview
+We maintain a simple, direct approach to publishing static HTML files:
+- Files are served directly from `docs/` by GitHub Pages
+- No build process required for static updates
+- Manual quality control over deployed content
+
+### Directory Structure
+```
+docs/
+├── clients/                    # All client static HTML files
+│   ├── elpl/                  # Each client gets their own directory
+│   │   ├── el-merit-chat.html # Main chat interface
+│   │   └── assets/           # Client-specific assets
+│   ├── bhb/
+│   └── strive-together/
+└── assets/                    # Shared assets
+```
+
+### URL Pattern
+- `https://recursivelearning.app/clients/{client-name}/{page-name}.html`
+- Example: `https://recursivelearning.app/clients/elpl/el-merit-chat.html`
+
+### Development Workflow
+1. **Static Updates**
+   - Edit files directly in `docs/clients/{client-name}/`
+   - Commit and push changes
+   - GitHub Pages serves immediately
+
+2. **New Features/Components**
+   - Develop in `_clients/partials/` or `_clients/templates/`
+   - Build locally to test
+   - Manually copy approved changes to `docs/`
+   - Commit static files directly
+
+3. **Quality Control**
+   - Review changes before committing to `docs/`
+   - Test URLs and asset loading
+   - Verify client-specific configurations
+
+### Benefits
+- Direct control over deployed content
+- No build delays for static updates
+- Clear separation between development and deployment
+- Simple rollback if needed
+
 # Recursive Learning Frontend
 
 Multi-tenant chat interface for education and support, built with Jekyll.
@@ -996,7 +1043,4 @@ window.addEventListener('message', (event) => {
 
 ## License
 
-MIT © IntegralEd# Force rebuild Thu Mar 27 21:03:08 CDT 2025
-# Force rebuild Fri Mar 28 01:41:11 CDT 2025
-# Testing workflow trigger Fri Mar 28 01:44:56 CDT 2025
-# Testing main branch workflow Fri Mar 28 01:46:52 CDT 2025
+MIT © IntegralEd
