@@ -30,6 +30,8 @@ include:
   - assets
   - _layouts
   - _includes
+  - _clients/**/*.html
+  - _clients/**/static/**/*
 
 # Exclude files from processing
 exclude:
@@ -50,6 +52,7 @@ exclude:
 keep_files:
   - .nojekyll
   - CNAME
+  - clients/**/static/**
 
 # Plugins
 plugins:
