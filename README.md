@@ -760,7 +760,7 @@ We maintain a simple, direct approach to publishing static HTML files:
 docs/
 ├── clients/                    # All client static HTML files
 │   ├── elpl/                  # Each client gets their own directory
-│   │   ├── el-merit-chat.html # Main chat interface
+│   │   ├── merit-chat.html # Main chat interface
 │   │   └── assets/           # Client-specific assets
 │   ├── bhb/
 │   └── strive-together/
@@ -769,7 +769,7 @@ docs/
 
 ### URL Pattern
 - `https://recursivelearning.app/clients/{client-name}/{page-name}.html`
-- Example: `https://recursivelearning.app/clients/elpl/el-merit-chat.html`
+- Example: `https://recursivelearning.app/clients/elpl/merit-chat.html`
 
 ### Development Workflow
 1. **Static Updates**

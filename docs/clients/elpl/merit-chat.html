@@ -6,8 +6,8 @@
     <title>EL Merit Chat</title>
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="/clients/elpl/assets/css/variables.css">
-    <link rel="stylesheet" href="/clients/elpl/assets/css/custom.css">
+    <link rel="stylesheet" href="/assets/css/variables.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
 
     <style>
         :root {
@@ -177,16 +177,29 @@
             max-width: 1200px; 
             max-height: 800px;
             margin: 0 auto;
+            padding: 10px; /* Ensure 10px border from content to edge */
         }
 
         #header-bar {
             background: var(--primary-color);
-            height: 60px;
+            height: 40px;
             width: 100%;
             display: flex;
             align-items: center;
-            padding: 0 20px;
-            box-sizing: border-box;
+            padding: 5px 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            padding-top: 40px; /* To prevent overlap with header bar */
+            max-width: 1250px;
+            margin-top: 40px; /* To prevent overlap with header bar */
         }
 
         #sidebar {
@@ -198,6 +211,7 @@
             align-items: flex-start;
             padding: 20px;
             box-sizing: border-box;
+            border-right: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         #sidebar button {
@@ -228,7 +242,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 10px; /* Ensure 10px border from content to edge */
             overflow-y: auto;
             background: var(--background-color);
             box-sizing: border-box;
@@ -248,22 +262,56 @@
 
         /* Update the send button path */
         .send-button {
-            background: url('../assets/images/noun-send-7149925-FFFFFF.png') no-repeat center;
+            background: url('/assets/images/noun-send-7149925-FFFFFF.png') no-repeat center;
             background-size: contain;
             /* Other styles */
         }
 
         /* Update the banner logo path */
         #header-logo {
-            content: url('../assets/images/lockup_white_logo.png'); /* Ensure this path is correct */
+            content: url('/assets/images/lockup_white_logo.png'); /* Ensure this path is correct */
             /* Other styles */
+        }
+
+        .chat-container {
+            display: none;
+            flex-direction: column;
+            height: 700px; /* Ensure this is set */
+        }
+
+        .section.chat-active .chat-container {
+            display: flex;
+        }
+
+        .chat-window {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+            max-width: 700px;
+            height: 900px;
+            overflow: hidden;
+        }
+
+        .input-area {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border-top: 1px solid #ddd;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
     </style>
 </head>
 <body>
     <div id="container">
         <div id="header-bar">
-            <img id="header-logo" src="/clients/elpl/assets/images/lockup_white_logo.png" alt="Client Logo" style="max-height: 50px; margin: 5px;">
+            <img id="header-logo" src="/assets/images/lockup_white_logo.png" alt="Client Logo" style="max-height: 50px; margin: 5px;">
         </div>
         <div class="main-content">
             <div id="sidebar">
@@ -338,7 +386,7 @@
             // On click, open a popout chat window (minimal version for Storyline)
             document.getElementById("open-chat").addEventListener("click", function(){
                 const chatPopout = document.createElement("iframe");
-                chatPopout.src = "teacher-chat.html?popout=true"; // Replace with your minimal embed chat URL
+                chatPopout.src = "merit-chat.html?popout=true"; // Replace with your minimal embed chat URL
                 chatPopout.style.position = "fixed";
                 chatPopout.style.bottom = "80px";
                 chatPopout.style.right = "20px";
