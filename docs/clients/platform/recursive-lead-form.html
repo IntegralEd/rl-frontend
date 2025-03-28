@@ -188,10 +188,20 @@
 
         function validateForm() {
             const email = document.getElementById('signup-email').value.trim();
+            const role = document.getElementById('intake-role').value.trim();
+            const goal = document.getElementById('intake-goal').value.trim();
             const source = document.getElementById('intake-source').value.trim();
+            
+            // Basic email validation
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const isValid = emailPattern.test(email) && source.length > 0;
+            const isValidEmail = emailPattern.test(email);
+            
+            // At least one field must be filled
+            const hasContent = role.length > 0 || goal.length > 0 || source.length > 0;
+            
+            const isValid = isValidEmail && hasContent;
             document.getElementById('submit-button').disabled = !isValid;
+            document.getElementById('nav-submit').disabled = !isValid;
         }
 
         function signup() {
@@ -199,18 +209,22 @@
             const role = document.getElementById('intake-role').value;
             const goal = document.getElementById('intake-goal').value;
             const source = document.getElementById('intake-source').value;
-
+            
             const payload = {
-                Email: email,
-                Intake_Token: "recursive.learning.app/index.html",
-                User_Status: "Lead",
-                User_Intake_Item_01: role,
-                User_Intake_Item_02: goal,
-                User_Intake_Item_03: source,
-                User_Intake_Item_04: null,
-                User_Intake_Item_05: null
+                "event_type": "user_intake",
+                "intake": {
+                    "intake_token": source,
+                    "submitted_at": new Date().toISOString(),
+                    "source": "https://recursivelearning.app/clients/platform/recursive-lead-form.html"
+                },
+                "user_intake_data": {
+                    "user_intake_item_01": email,
+                    "user_intake_item_02": role,
+                    "user_intake_item_03": goal
+                }
             };
 
+            // Send to Make.com webhook
             fetch('https://hook.us1.make.com/gp1ykvaa7e7q5e3xnvjym2g9dkg9vl4y', {
                 method: 'POST',
                 headers: {
@@ -218,12 +232,15 @@
                 },
                 body: JSON.stringify(payload)
             })
-            .then(() => {
-                window.location.href = '/integral-ed/util-pages/integral-landing.html';
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Thank you for your interest! We\'ll be in touch soon.');
+                window.location.href = '/'; // Redirect to home
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('There was an error with your signup.');
+                alert('There was an error submitting your information. Please try again.');
             });
         }
 
