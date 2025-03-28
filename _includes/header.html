@@ -1,24 +1,26 @@
 <!-- App Header with Lockup and Menu -->
 <header class="app-header" role="banner">
-    <div class="header-lockup">
-        <img src="/assets/images/RecursiveLearningLockup_White.png" 
-             alt="Recursive Learning" 
-             class="header-logo">
-    </div>
-    
-    <div class="header-menu">
-        <div class="menu-dropdown">
-            <button class="menu-trigger" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()">
-                Menu
-                <svg class="menu-caret" width="10" height="6" viewBox="0 0 10 6">
-                    <path d="M1 1L5 5L9 1" stroke="white" stroke-width="2" fill="none"/>
-                </svg>
-            </button>
-            <div class="menu-content" id="menuContent">
-                <a href="#" class="menu-link">Menu sublink</a>
-                <a href="#" class="menu-link">Doc sublink</a>
-                <a href="#" class="menu-link">Resources</a>
-                <a href="#" class="menu-link">Help Center</a>
+    <div class="header-content">
+        <div class="header-lockup">
+            <img src="/assets/images/RecursiveLearningLockup_White.png" 
+                 alt="Recursive Learning" 
+                 class="header-logo">
+        </div>
+        
+        <div class="header-menu">
+            <div class="menu-dropdown">
+                <button class="menu-trigger" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()">
+                    Menu
+                    <svg class="menu-caret" width="10" height="6" viewBox="0 0 10 6">
+                        <path d="M1 1L5 5L9 1" stroke="white" stroke-width="2" fill="none"/>
+                    </svg>
+                </button>
+                <div class="menu-content" id="menuContent">
+                    <a href="#" class="menu-link">Menu sublink</a>
+                    <a href="#" class="menu-link">Doc sublink</a>
+                    <a href="#" class="menu-link">Resources</a>
+                    <a href="#" class="menu-link">Help Center</a>
+                </div>
             </div>
         </div>
     </div>
@@ -30,9 +32,18 @@
     background: var(--primary-color, #6A6DB3);
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.header-content {
+    width: 100%;
+    max-width: 1900px;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
     padding: 0 20px;
-    flex-shrink: 0;
 }
 
 .header-lockup {

@@ -71,7 +71,8 @@ const ChatEvents = {
     init() {
         this.state = {
             messageCount: 0,
-            threadId: localStorage.getItem('threadId') || null,
+            volleys: 0,
+            threadId: null,
             messages: []
         };
         this.bindEvents();
@@ -115,12 +116,17 @@ const ChatEvents = {
         this.emitState('messageAdded');
 
         try {
-            const response = await fetch('https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main', {
+            const response = await fetch(API_ENDPOINT, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     message: text,
-                    threadId: this.state.threadId
+                    Org_ID: 'BHB',
+                    Source: 'web_chat',
+                    Thread_ID: this.state.threadId,
+                    Assistant_ID: 'asst_IA5PsJxdShVPTAv2xeXTr4Ma',
+                    User_ID: localStorage.getItem('userId') || null,
+                    Action_ID: `msg_${Date.now()}`
                 })
             });
 
@@ -129,6 +135,13 @@ const ChatEvents = {
             // Update state with response
             this.state.messages.push({ type: 'assistant', text: data.response });
             this.addMessageToUI(data.response, 'assistant');
+            
+            // Track volleys and trigger save
+            this.state.volleys++;
+            if (this.state.volleys >= 5) {
+                saveChat();
+                document.dispatchEvent(new CustomEvent('showAccountTeaser'));
+            }
 
             // Emit completion
             this.emitState('responseReceived');
@@ -208,56 +221,33 @@ function checkAffirmations() {
 }
 
 function saveChat() {
-    const threadId = window.threadId || 'new';
-    const assistantId = 'asst_8Akizj8qAc3itsBD6ypTyO5q';
     const timestamp = new Date().toISOString();
     const chatSummary = {
-        event_type: "rag_chat",
+        event_type: "public_chat",
         session: {
-            id: threadId,
             timestamp: timestamp,
-            source_url: "https://recursivelearning.app/BHB-chat.html",
+            source_url: window.location.href,
             entry_point: "public_anonymous"
         },
-        persona: {
-            role: "community_health_worker",
-            context_source: "bmore_health_resources",
-            interaction_style: "empathetic_guidance"
+        assistant: {
+            id: 'asst_IA5PsJxdShVPTAv2xeXTr4Ma',
+            org: 'BHB',
+            context: 'maternal_health'
         },
         interaction_log: {
-            initial_query: "I need help finding maternal health support",
-            location_context: "Baltimore",
-            identified_needs: ["prenatal_care", "transportation"],
-            resources_shared: [
-                {
-                    type: "program",
-                    name: "B'more for Healthy Babies",
-                    url: "https://integraled.org/bmore/programs/healthy-babies"
-                }
-            ]
-        },
-        outcome: {
-            primary_action: "user_signup",
-            redirect_path: "/user-intake",
-            context_preservation: {
-                needs_assessment: true,
-                location: true,
-                program_interest: ["maternal_health", "transportation"]
-            },
-            instructional_intent: "Guide user through maternal health resource discovery and program enrollment"
+            volley_count: ChatEvents.state.volleys,
+            message_count: ChatEvents.state.messageCount,
+            messages: ChatEvents.state.messages
         }
     };
 
-    fetch('YOUR_WEBHOOK_URL', {
+    // Send to analytics endpoint
+    fetch(API_ENDPOINT + '/analytics', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(chatSummary)
     })
-    .then(response => response.json())
-    .then(data => console.log('Success:', data))
-    .catch((error) => console.error('Error:', error));
+    .catch(error => console.error('Analytics error:', error));
 }
 
 // Listen for navigation events

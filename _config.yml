@@ -1,28 +1,37 @@
 title: Recursive Learning
-description: >-
-  Recursive Learning - Adaptive Learning Platform
+url: https://recursivelearning.app
 baseurl: ""
-url: "https://recursivelearning.app"
 
 # Build settings
 markdown: kramdown
-theme: minima
-plugins:
-  - jekyll-feed
+permalink: pretty
 
 # Collections
 collections:
   clients:
     output: true
-    permalink: /:collection/:path
+    permalink: /:collection/:name
 
-# Collection defaults
+# Default layouts
 defaults:
   - scope:
       path: ""
       type: "clients"
     values:
+      layout: "client"
+  - scope:
+      path: "bhb"
+    values:
+      client: "bhb"
       layout: "chat"
+
+# Production settings
+production_url: "https://recursivelearning.app"
+api_endpoint: "https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main"
+
+# Development settings
+development:
+  api_endpoint: "http://127.0.0.1:4000/api"
 
 # Include directories
 include:
@@ -46,9 +55,3 @@ exclude:
 
 # (Comment out or leave out the permalink if not ready to use)
 # permalink: "/:categories/:title.html"
-
-# Development settings
-development:
-  environment: development
-  baseurl: ""
-  url: "http://localhost:4000"

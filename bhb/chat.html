@@ -1,0 +1,125 @@
+---
+layout: null
+title: B'more for Healthy Babies Chat
+permalink: /bhb/chat
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" href="{{ '/clients/bhb/assets/css/main.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/clients/bhb/assets/css/custom.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/clients/bhb/assets/css/variables.css' | relative_url }}">
+    <link rel="icon" href="{{ '/clients/bhb/assets/images/logo.ico' | relative_url }}">
+</head>
+<body>
+    <div class="app-container">
+        {% include header.html %}
+        
+        <main class="app-main">
+            <div class="content-area">
+                <div class="section active" id="welcome">
+                    {% include welcome_affirmations.html %}
+                </div>
+                <div class="section" id="chat">
+                    {% include chat.html %}
+                </div>
+            </div>
+        </main>
+
+        {% include footer.html %}
+    </div>
+
+    <style>
+    .app-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background: white;
+        max-width: 1900px;
+        margin: 0 auto;
+    }
+
+    .app-main {
+        flex: 1;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .content-area {
+        height: 100%;
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .section {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .section.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Ensure header spans full width */
+    .app-header {
+        width: 100%;
+        max-width: 1900px;
+        margin: 0 auto;
+    }
+
+    /* Remove any duplicate footers */
+    .interaction-container:not(:last-child) {
+        display: none;
+    }
+    </style>
+
+    <script>
+    // Environment detection
+    const isProd = window.location.hostname === 'recursivelearning.app';
+    const API_ENDPOINT = isProd 
+        ? '{{ site.api_endpoint }}'
+        : '{{ site.development.api_endpoint }}';
+
+    // Initialize analytics
+    document.addEventListener('DOMContentLoaded', () => {
+        // Track page load
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: '{{ page.title }}',
+                page_path: '{{ page.permalink }}'
+            });
+        }
+    });
+
+    // Handle iframe messaging
+    window.addEventListener('message', (event) => {
+        // Verify origin
+        if (event.origin !== '{{ site.url }}') return;
+
+        // Handle messages from parent
+        switch(event.data.type) {
+            case 'INIT_CHAT':
+                // Initialize chat with context if provided
+                if (event.data.context) {
+                    document.dispatchEvent(new CustomEvent('initChat', {
+                        detail: event.data.context
+                    }));
+                }
+                break;
+        }
+    });
+    </script>
+</body>
+</html> 
