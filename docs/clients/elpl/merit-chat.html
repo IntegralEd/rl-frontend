@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EL Merit Chat</title>
-    <script src="/clients/elpl/js/chat.js"></script>
-    <script src="/clients/elpl/js/feedback-bubble.js"></script>
-    <script src="/clients/elpl/js/modals/review-modal.js"></script>
     <script src="/clients/elpl/js/chat-core.js"></script>
     <script src="/clients/elpl/js/chat-ui.js"></script>
     <style>
@@ -357,16 +354,8 @@
             <span class="menu-icon">☰</span>
         </button>
         <div class="dropdown-content">
-            <a href="#" onclick="openTicketModal(); return false;">Submit Ticket</a>
             <a href="/resources">Resources</a>
             <a href="/help">Help</a>
-        </div>
-    </div>
-
-    <div id="ticketModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeTicketModal()">&times;</span>
-            <iframe id="softr-ticket-form"></iframe>
         </div>
     </div>
 
@@ -444,59 +433,6 @@
             if (!menu.contains(event.target)) {
                 trigger.setAttribute('aria-expanded', 'false');
                 document.querySelector('.menu-content').classList.remove('show');
-            }
-        });
-
-        function openTicketModal() {
-            const modal = document.getElementById('ticketModal');
-            const iframe = document.getElementById('softr-ticket-form');
-            
-            // Build form URL with context
-            const baseFormUrl = 'https://integral-mothership.softr.app/embed/pages/c6b8b431-e9eb-4736-94e4-83e3c4895c27/blocks/form1';
-            const context = {
-                source_url: window.location.href,
-                client_id: window.CHAT_CONFIG?.clientId || 'elpl',
-                thread_id: window.threadId || 'new_chat',
-                page_title: document.title,
-                grade: chatCore.getGrade() || 'not_selected',
-                is_standalone: true
-            };
-            
-            // Append context to form URL
-            const formUrl = `${baseFormUrl}#${encodeURIComponent(JSON.stringify(context))}`;
-            iframe.src = formUrl;
-            
-            // Show modal and initialize resizer
-            modal.style.display = 'block';
-            iFrameResize({ 
-                checkOrigin: false,
-                log: false,
-                heightCalculationMethod: 'lowestElement',
-                onMessage: function(messageData) {
-                    // Handle any messages from the form
-                    console.log('Form message:', messageData);
-                }
-            }, '#softr-ticket-form');
-        }
-
-        function closeTicketModal() {
-            const modal = document.getElementById('ticketModal');
-            modal.style.display = 'none';
-            // Clear iframe src to prevent continued form execution
-            document.getElementById('softr-ticket-form').src = '';
-        }
-
-        // Close modal if clicking outside content
-        document.getElementById('ticketModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeTicketModal();
-            }
-        });
-
-        // Close modal on escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeTicketModal();
             }
         });
     </script>
