@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <style>
+        :root {
+            --embed-width: 400px;
+            --embed-height: 600px;
+            --modal-width: 900px;
+            --modal-height: 600px;
+            --imperial-purple: #211651;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            {% if include.embed %}
+            width: var(--embed-width);
+            height: var(--embed-height);
+            {% endif %}
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(33, 22, 81, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(33, 22, 81, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(33, 22, 81, 0);
+            }
+        }
+
+        .feedback-bubble {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background-color: var(--imperial-purple);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+            transition: transform 0.3s ease;
+            {% if include.embed %}
+            display: none; /* Hide bubble in embed mode */
+            {% endif %}
+        }
+        
+        .feedback-bubble:hover {
+            transform: scale(1.1);
+        }
+        
+        .feedback-bubble svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        /* Lightbulb animation */
+        @keyframes glow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .lightbulb-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(33,22,81,0) 70%);
+            animation: glow 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .form-container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            position: relative;
+            {% if include.embed %}
+            max-width: var(--embed-width);
+            max-height: var(--embed-height);
+            overflow: hidden;
+            {% else %}
+            max-width: var(--modal-width);
+            max-height: var(--modal-height);
+            {% endif %}
+        }
+
+        .form-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            margin: 0;
+            padding: 0;
+            {% if include.embed %}
+            max-width: var(--embed-width);
+            max-height: var(--embed-height);
+            {% endif %}
+        }
+
+        /* Loading state */
+        .form-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #666;
+            z-index: 1;
+        }
+
+        /* Debug panel (optional) */
+        .debug-panel {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f5f5f5;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            border-top: 1px solid #ddd;
+            {% if include.embed %}
+            max-width: var(--embed-width);
+            {% endif %}
+        }
+
+        .debug-panel.show {
+            display: block;
+        }
+    </style>
+</head>
+<body class="{% if include.embed %}embed{% endif %}">
+    <!-- Feedback bubble (hidden in embed mode) -->
+    <div class="feedback-bubble" aria-label="Open feedback form">
+        <div class="lightbulb-glow"></div>
+        <svg viewBox="0 0 24 24">
+            <path d="M12 2C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm-1.5 14.5h3v-1h-3v1zm2.5-4.76V13h-2v-1.26c-1.5-1.12-2-2.83-2-4.24C9 6.12 10.12 5 12 5s3 1.12 3 3.5c0 1.41-.5 3.12-2 4.24z"/>
+        </svg>
+    </div>
+
+    <div class="form-container">
+        <div class="form-loading">Loading form...</div>
+        <iframe id="feedback-form" 
+                class="form-frame"
+                src="{{ include.form_url | default: 'https://integral-mothership.softr.app/embed/pages/c6b8b431-e9eb-4736-94e4-83e3c4895c27/blocks/form1' }}"
+                scrolling="no">
+        </iframe>
+    </div>
+
+    <!-- Debug panel for development -->
+    <div id="debugPanel" class="debug-panel">
+        <div>Form Context: <span id="formContext"></span></div>
+        <div>Window Size: <span id="windowSize"></span></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.11/iframeResizer.min.js"></script>
+    <script>
+    (function() {
+        const frame = document.getElementById('feedback-form');
+        const loading = document.querySelector('.form-loading');
+        const debugPanel = document.getElementById('debugPanel');
+
+        // Get context from URL hash if available
+        function getFormContext() {
+            try {
+                return JSON.parse(decodeURIComponent(window.location.hash.slice(1)));
+            } catch (e) {
+                return {};
+            }
+        }
+
+        // Initialize form with context
+        function initForm() {
+            const context = getFormContext();
+            const baseUrl = frame.src.split('#')[0];
+            frame.src = `${baseUrl}#${encodeURIComponent(JSON.stringify(context))}`;
+            
+            // Debug info
+            if (context.debug) {
+                debugPanel.classList.add('show');
+                document.getElementById('formContext').textContent = JSON.stringify(context, null, 2);
+                document.getElementById('windowSize').textContent = `${window.innerWidth}x${window.innerHeight}`;
+            }
+        }
+
+        // Initialize iframe resizer
+        iFrameResize({ 
+            checkOrigin: false,
+            log: false,
+            heightCalculationMethod: 'lowestElement',
+            onInit: () => loading.style.display = 'none',
+            onMessage: (data) => {
+                if (data.message?.type === 'form_submit') {
+                    // Handle form submission
+                    window.parent.postMessage({ 
+                        type: 'form_complete',
+                        data: data.message
+                    }, '*');
+                }
+            }
+        }, '#feedback-form');
+
+        // Initialize form
+        initForm();
+
+        // Listen for context updates
+        window.addEventListener('message', (event) => {
+            if (event.data?.type === 'update_context') {
+                const baseUrl = frame.src.split('#')[0];
+                frame.src = `${baseUrl}#${encodeURIComponent(JSON.stringify(event.data.context))}`;
+            }
+        });
+    })();
+    </script>
+</body>
+</html> 
