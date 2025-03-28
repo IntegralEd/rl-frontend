@@ -1,0 +1,95 @@
+<!-- Feedback Bubble -->
+<style>
+    .feedback-bubble {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 48px;
+        height: 48px;
+        background: var(--imperial-purple, #211651);
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: pulse 2s infinite;
+        transition: transform 0.3s ease;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(33, 22, 81, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(33, 22, 81, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(33, 22, 81, 0); }
+    }
+
+    .feedback-bubble:hover {
+        transform: scale(1.1);
+    }
+    
+    .feedback-bubble svg {
+        width: 24px;
+        height: 24px;
+        fill: white;
+    }
+
+    .lightbulb-glow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(33,22,81,0) 70%);
+        animation: glow 2s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    @keyframes glow {
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 1; }
+    }
+</style>
+
+<div class="feedback-bubble" onclick="openFeedbackPopout()" aria-label="Open feedback form">
+    <div class="lightbulb-glow"></div>
+    <svg viewBox="0 0 24 24">
+        <path d="M12 2C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm-1.5 14.5h3v-1h-3v1zm2.5-4.76V13h-2v-1.26c-1.5-1.12-2-2.83-2-4.24C9 6.12 10.12 5 12 5s3 1.12 3 3.5c0 1.41-.5 3.12-2 4.24z"/>
+    </svg>
+</div>
+
+<script>
+    function gatherContext() {
+        return {
+            url: window.location.href,
+            page: window.location.pathname,
+            section: document.title,
+            userId: window.userId || '',
+            chatState: window.chatState || '',
+            domState: document.documentElement.outerHTML
+        };
+    }
+
+    function openFeedbackPopout() {
+        const context = gatherContext();
+        const params = new URLSearchParams(context);
+        
+        // Set webhook URL for the popup
+        window.WEBHOOK_URL = '{{ include.webhook_url }}';
+        
+        const popout = window.open(
+            '/forms/ticket-modal.html?' + params.toString(),
+            'feedback_popout',
+            'width=500,height=700,resizable=yes,scrollbars=yes'
+        );
+
+        // Handle feedback submission
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'FEEDBACK_SUBMITTED') {
+                console.log('Feedback received:', event.data);
+                // Additional handling if needed
+            }
+        });
+    }
+</script> 

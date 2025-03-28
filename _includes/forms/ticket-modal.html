@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Ticket</title>
+    <style>
+        :root {
+            --modal-width: 400px;
+            --modal-height: 580px;
+            --imperial-purple: #211651;
+            --header-height: 40px;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        .modal {
+            width: var(--modal-width);
+            height: var(--modal-height);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .modal-header {
+            height: var(--header-height);
+            background: var(--imperial-purple);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .modal-header:active {
+            cursor: grabbing;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 20px;
+        }
+
+        .modal-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: var(--imperial-purple);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        .context-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .robot-mascot {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            display: block;
+        }
+
+        .file-upload {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-upload label {
+            background: #f5f5f5;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px dashed #ddd;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-upload label:hover {
+            background: #eee;
+        }
+
+        .file-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .hidden-fields {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal">
+        <div class="modal-header" id="dragHandle">
+            <span class="modal-title">Help Us Improve</span>
+            <button class="close-btn" onclick="window.close()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- Robot Mascot -->
+            <svg class="robot-mascot" viewBox="0 0 240 240">
+                <style>
+                    .robot { fill: var(--imperial-purple, #211651); }
+                    .highlight { fill: #fff; opacity: 0.2; }
+                </style>
+                <path class="robot" d="M120 20c-22 0-40 18-40 40v20h80V60c0-22-18-40-40-40zm-60 80c-22 0-40 18-40 40v60h280v-60c0-22-18-40-40-40H60zm20 20h160c11 0 20 9 20 20v20H60v-20c0-11 9-20 20-20zm40 0c-11 0-20 9-20 20s9 20 20 20 20-9 20-20-9-20-20-20zm80 0c-11 0-20 9-20 20s9 20 20 20 20-9 20-20-9-20-20-20z"/>
+                <circle class="highlight" cx="120" cy="40" r="15"/>
+            </svg>
+
+            <form id="ticketForm" onsubmit="handleSubmit(event)">
+                <!-- Hidden Context Fields -->
+                <div class="hidden-fields">
+                    <input type="hidden" id="url" name="url">
+                    <input type="hidden" id="userState" name="userState">
+                    <input type="hidden" id="chatState" name="chatState">
+                    <input type="hidden" id="domState" name="domState">
+                </div>
+
+                <!-- User Input Fields -->
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required 
+                           placeholder="Your name">
+                </div>
+
+                <div class="form-group">
+                    <label for="issue">What's happening?</label>
+                    <textarea id="issue" name="issue" required
+                              placeholder="Describe what you're seeing..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="screenshot">Screenshot</label>
+                    <div class="file-upload">
+                        <label for="screenshot">
+                            <svg width="16" height="16" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M4 5h13v7h2V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7v-2H4V5zm16 7v-3h-2v3h-3v2h3v3h2v-3h3v-2h-3zm-5-7H6v2h9V5z"/>
+                            </svg>
+                            Add Screenshot
+                        </label>
+                        <input type="file" id="screenshot" name="screenshot" 
+                               accept="image/*" onchange="handleFileSelect(event)">
+                    </div>
+                    <img id="preview" class="file-preview">
+                </div>
+
+                <div class="form-group">
+                    <label for="expected">What should happen?</label>
+                    <textarea id="expected" name="expected" required
+                              placeholder="What did you expect?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email for Follow-up (optional)</label>
+                    <input type="email" id="email" name="email" 
+                           placeholder="your@email.com">
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Make modal draggable
+        const modal = document.querySelector('.modal');
+        const dragHandle = document.getElementById('dragHandle');
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        dragHandle.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+            isDragging = true;
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                xOffset = currentX;
+                yOffset = currentY;
+                modal.style.transform = 
+                    `translate(${currentX}px, ${currentY}px)`;
+            }
+        }
+
+        function dragEnd() {
+            isDragging = false;
+        }
+
+        // Handle file selection
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Gather context on load
+        window.addEventListener('load', () => {
+            // URL context
+            document.getElementById('url').value = window.location.href;
+
+            // Get context from URL params
+            const params = new URLSearchParams(window.location.search);
+            const context = {
+                page: params.get('page'),
+                section: params.get('section'),
+                userId: params.get('userId'),
+                chatState: params.get('chatState'),
+                domState: params.get('domState')
+            };
+
+            // Set hidden fields
+            document.getElementById('userState').value = context.userId || '';
+            document.getElementById('chatState').value = context.chatState || '';
+            document.getElementById('domState').value = context.domState || '';
+        });
+
+        // Handle form submission
+        function handleSubmit(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            // Convert screenshot to base64 if exists
+            const screenshot = document.getElementById('preview');
+            if (screenshot.src) {
+                data.screenshot = screenshot.src;
+            }
+
+            // Post to webhook if available
+            const WEBHOOK_URL = window.opener?.WEBHOOK_URL;
+            if (WEBHOOK_URL) {
+                fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+            }
+
+            // Post to parent
+            if (window.opener) {
+                window.opener.postMessage({
+                    type: 'FEEDBACK_SUBMITTED',
+                    data
+                }, '*');
+            }
+
+            alert('Thank you for your feedback!');
+            window.close();
+        }
+    </script>
+</body>
+</html> 
