@@ -1,0 +1,99 @@
+<!-- Review Bubble Partial -->
+<!-- Usage: 
+     {% include review-bubble.html 
+        mode="client_review"
+        client_id=page.client_id 
+        form_url=page.form_url 
+     %}
+-->
+<script>
+(function() {
+    // Configuration can be overridden by page variables
+    const BUBBLE_CONFIG = {
+        mode: '{{ include.mode | default: "client_review" }}',
+        client_id: '{{ include.client_id | default: "default" }}',
+        forms: {
+            client_review: '{{ include.form_url | default: "https://integral-mothership.softr.app/embed/pages/c6b8b431-e9eb-4736-94e4-83e3c4895c27/blocks/form1" }}',
+            user_feedback: '{{ include.feedback_url | default: "https://integral-mothership.softr.app/embed/pages/feedback" }}',
+            support: '{{ include.support_url | default: "https://integral-mothership.softr.app/embed/pages/support" }}'
+        },
+        position: '{{ include.position | default: "bottom-right" }}',
+        labels: {
+            client_review: '{{ include.review_label | default: "Leave Feedback" }}',
+            user_feedback: '{{ include.feedback_label | default: "Help us Improve" }}',
+            support: '{{ include.support_label | default: "Get Support" }}'
+        }
+    };
+
+    // Load review modal script if not already loaded
+    if (!window.ReviewModal) {
+        const script = document.createElement('script');
+        script.src = '/clients/{{ include.client_id | default: "default" }}/js/modals/review-modal.js';
+        script.onload = initBubble;
+        document.head.appendChild(script);
+    } else {
+        initBubble();
+    }
+
+    function initBubble() {
+        // Initialize with page-specific config
+        const reviewModal = new ReviewModal({
+            mode: BUBBLE_CONFIG.mode,
+            forms: BUBBLE_CONFIG.forms,
+            position: BUBBLE_CONFIG.position,
+            labels: BUBBLE_CONFIG.labels,
+            // Additional context providers
+            contextProviders: {
+                // Add xAPI context if available
+                xapi: () => {
+                    if (window.ADL && window.ADL.XAPIWrapper) {
+                        return {
+                            actor: ADL.XAPIWrapper.lrs.actor,
+                            activity: window.location.pathname,
+                            timestamp: new Date().toISOString()
+                        };
+                    }
+                    return null;
+                },
+                // Add Storyline variables if available
+                storyline: () => {
+                    if (window.GetPlayer) {
+                        const player = GetPlayer();
+                        return {
+                            slide: player.GetCurrentSlideIndex(),
+                            variables: player.GetVariableValues()
+                        };
+                    }
+                    return null;
+                },
+                // Add chat context
+                chat: () => {
+                    if (window.chatCore) {
+                        return {
+                            grade: chatCore.getGrade(),
+                            thread_id: window.threadId,
+                            message_count: chatCore.getMessageCount()
+                        };
+                    }
+                    return null;
+                }
+            }
+        });
+
+        // Initialize the bubble
+        reviewModal.init();
+
+        // Export for page-level access
+        window.reviewBubble = {
+            modal: reviewModal,
+            setMode: (mode) => reviewModal.setMode(mode),
+            config: BUBBLE_CONFIG
+        };
+    }
+})();
+</script>
+
+<!-- Optional: Include iframe-resizer if not already present -->
+{% unless include.no_iframe_resizer %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.11/iframeResizer.min.js"></script>
+{% endunless %} 
