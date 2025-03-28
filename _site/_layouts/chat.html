@@ -155,7 +155,6 @@ document.addEventListener('click', function(event) {
         <main class="app-content">
             
             
-            <!-- Content stage -->
             <div class="content-stage">
                 <div class="welcome-container">
     <div class="welcome-content">
@@ -364,11 +363,12 @@ document.addEventListener('click', function(event) {
 
 <style>
 .welcome-container {
-    height: 100%;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
+    min-height: 0; /* Important for flex scroll */
 }
 
 .welcome-content {
@@ -416,10 +416,11 @@ document.addEventListener('click', function(event) {
 }
 
 .chat-container {
-    height: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     background: white;
+    min-height: 0; /* Important for flex scroll */
 }
 
 .messages-container {
@@ -457,11 +458,12 @@ document.addEventListener('click', function(event) {
 
 <style>
 .welcome-container {
-    height: 100%;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
+    min-height: 0; /* Important for flex scroll */
 }
 
 .welcome-content {
@@ -509,10 +511,11 @@ document.addEventListener('click', function(event) {
 }
 
 .chat-container {
-    height: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     background: white;
+    min-height: 0; /* Important for flex scroll */
 }
 
 .messages-container {
@@ -544,39 +547,29 @@ document.addEventListener('click', function(event) {
             </div>
         </main>
 
-        <!-- Fixed footer -->
         <footer class="app-footer">
             <!-- _includes/footer.html -->
 <div class="interaction-container">
-    <!-- Chatbar -->
-    <div class="interaction-bar chatbar" role="region" aria-label="Chat compose bar" style="display: none;">
-        <div class="input-wrapper">
-            <input type="text" id="chat-input" class="interaction-input" 
-                placeholder="Type your message here!" 
-                aria-label="Chat input field"
-                onkeydown="handleKeyPress(event)" />
-            <button class="action-button send-button" onclick="sendMessage()" aria-label="Send message">
-                <img src="/clients/bhb/assets/images/noun-send-7149925-FFFFFF.png" 
-                     class="action-icon" alt="Send" />
-            </button>
-        </div>
+    <div class="playbar">
+        <button class="next-button" onclick="handleNext()">
+            <span>Next</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z" fill="currentColor"/>
+            </svg>
+        </button>
     </div>
-
-    <!-- Playbar -->
-    <div class="interaction-bar playbar" role="region" aria-label="Form navigation bar" style="display: flex;">
-        <div class="input-wrapper">
-            <button class="action-button next-button" onclick="handleNextClick()" 
-                aria-label="Go to next step" disabled>
-                <img src="/clients/bhb/assets/images/noun-next-5654311-FFFFFF.png" 
-                     class="action-icon" alt="Next" />
-            </button>
-        </div>
+    <div class="chatbar" style="display: none;">
+        <input type="text" class="chat-input" placeholder="Type your message...">
+        <button class="send-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+            </svg>
+        </button>
     </div>
 </div>
 
 <style>
 .interaction-container {
-    width: 100%;
     height: 180px;
     display: flex;
     align-items: center;
@@ -584,103 +577,72 @@ document.addEventListener('click', function(event) {
     background: white;
 }
 
-.interaction-bar {
-    width: 1200px;
-    padding: 0 20px;
-}
-
-.input-wrapper {
+.playbar, .chatbar {
     width: 100%;
-    position: relative;
+    max-width: 1200px;
+    padding: 0 1rem;
     display: flex;
     align-items: center;
 }
 
-.interaction-input {
-    width: 100%;
-    height: 50px;
-    padding: 0 60px 0 20px;
-    font-size: 16px;
+.chat-input {
+    flex: 1;
+    height: 48px;
+    padding: 0 1rem;
     border: 1px solid #ddd;
-    border-radius: 4px;
-    outline: none;
+    border-radius: 24px;
+    font-size: 1rem;
+    margin-right: 0.5rem;
 }
 
-.action-button {
-    position: absolute;
-    right: 5px;
-    width: 50px;
-    height: 50px;
+.next-button, .send-button {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    background: #4a5af7;
+    color: white;
     border: none;
-    background: var(--primary-color);
-    border-radius: 50%;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    padding: 0;
+    transition: background 0.2s;
 }
 
-.action-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.next-button {
+    width: auto;
+    padding: 0 1.5rem;
 }
 
-.action-icon {
-    width: 24px;
-    height: 24px;
+.next-button span {
+    margin-right: 0.5rem;
 }
 
-/* For playbar, center the button vertically */
-.playbar .input-wrapper {
-    height: 180px;
-    justify-content: flex-end;
-}
-
-.playbar .action-button {
-    position: static;
-}
-
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    white-space: nowrap;
-    border: 0;
+.next-button:hover, .send-button:hover {
+    background: #3b48d9;
 }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Show playbar by default
-    document.querySelector('.playbar').style.display = 'flex';
-    document.querySelector('.chatbar').style.display = 'none';
-});
-
-function handleKeyPress(event) {
-    if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        sendMessage();
-    }
+function handleNext() {
+    const event = new CustomEvent('nextClicked');
+    document.dispatchEvent(event);
 }
 
-function handleNextClick() {
-    const currentIndex = navigationSequence.indexOf(Navigation.currentSection);
-    const nextSection = navigationSequence[currentIndex + 1];
+// Show chatbar when on chat page
+document.addEventListener('DOMContentLoaded', () => {
+    const isChat = window.location.pathname.includes('chat');
+    const playbar = document.querySelector('.playbar');
+    const chatbar = document.querySelector('.chatbar');
     
-    if (nextSection) {
-        Navigation.enableSection(currentIndex + 1);
-        Navigation.showSection(nextSection);
+    if (isChat) {
+        playbar.style.display = 'none';
+        chatbar.style.display = 'flex';
+    } else {
+        playbar.style.display = 'flex';
+        chatbar.style.display = 'none';
     }
-}
-
-function sendMessage() {
-    alert("Send message clicked (stub).");
-}
+});
 </script>
   
         </footer>
@@ -706,7 +668,7 @@ function sendMessage() {
 .app-content {
     display: flex;
     flex: 1;
-    position: relative;
+    min-height: 0; /* Important for nested flex scrolling */
 }
 
 .app-nav {
@@ -717,13 +679,10 @@ function sendMessage() {
 
 .content-stage {
     flex: 1;
-    padding: 1.5rem;
     overflow-y: auto;
     background: #fff;
-}
-
-.welcome-content {
-    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Fixed footer */
@@ -739,10 +698,6 @@ function sendMessage() {
     .app-frame {
         width: 100%;
         margin: 0;
-    }
-    
-    .content-stage {
-        padding: 1rem;
     }
 }
 </style>

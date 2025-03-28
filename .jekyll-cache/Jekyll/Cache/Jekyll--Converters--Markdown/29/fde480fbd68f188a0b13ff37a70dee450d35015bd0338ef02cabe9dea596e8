@@ -1,4 +1,4 @@
-I"5<div class="welcome-container">
+I"‘<div class="welcome-container">
     <div class="welcome-content">
         <div class="section active">
     <h1>Welcome!</h1>
@@ -34,11 +34,12 @@
 
 <style>
 .welcome-container {
-    height: 100%;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
+    min-height: 0; /* Important for flex scroll */
 }
 
 .welcome-content {
@@ -86,10 +87,11 @@
 }
 
 .chat-container {
-    height: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     background: white;
+    min-height: 0; /* Important for flex scroll */
 }
 
 .messages-container {

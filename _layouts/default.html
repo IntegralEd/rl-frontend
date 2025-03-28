@@ -33,13 +33,11 @@ layout: none
             </nav>
             {% endunless %}
             
-            <!-- Content stage -->
             <div class="content-stage">
                 {{ content }}
             </div>
         </main>
 
-        <!-- Fixed footer -->
         <footer class="app-footer">
             {% include footer.html %}
         </footer>
@@ -69,7 +67,7 @@ layout: none
 .app-content {
     display: flex;
     flex: 1;
-    position: relative;
+    min-height: 0; /* Important for nested flex scrolling */
 }
 
 .app-nav {
@@ -80,13 +78,10 @@ layout: none
 
 .content-stage {
     flex: 1;
-    padding: 1.5rem;
     overflow-y: auto;
     background: #fff;
-}
-
-.welcome-content {
-    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Fixed footer */
@@ -102,10 +97,6 @@ layout: none
     .app-frame {
         width: 100%;
         margin: 0;
-    }
-    
-    .content-stage {
-        padding: 1rem;
     }
 }
 </style>

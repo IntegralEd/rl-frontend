@@ -8,21 +8,17 @@
 <div class="affirmations">
   <label class="affirmation-item">
     <input type="checkbox" class="affirmation-checkbox" onchange="checkAffirmations()">
-    <span>I understand this is an AI-powered learning assistant</span>
+    <span>I affirm the terms of service.</span>
   </label>
   <label class="affirmation-item">
     <input type="checkbox" class="affirmation-checkbox" onchange="checkAffirmations()">
-    <span>I will use this tool responsibly and ethically</span>
+    <span>I affirm the community norms and guidelines.</span>
   </label>
   <label class="affirmation-item">
     <input type="checkbox" class="affirmation-checkbox" onchange="checkAffirmations()">
-    <span>I agree to follow the learning guidelines provided</span>
+    <span>I acknowledge this is a monitored public health resource.</span>
   </label>
 </div>
-
-<button class="button next-button" disabled onclick="startChat()">
-  Start Learning
-</button>
 
 <style>
 h1 {
@@ -61,17 +57,20 @@ p {
 function checkAffirmations() {
     const checkboxes = document.querySelectorAll('.affirmation-checkbox');
     const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-    document.querySelector('.next-button').disabled = !allChecked;
     
-    // Show playbar when all checked
-    const playbar = document.querySelector('.playbar');
-    if (playbar) {
-        playbar.style.display = allChecked ? 'flex' : 'none';
+    // Show/hide footer based on checkbox state
+    const footer = document.querySelector('.app-footer');
+    if (footer) {
+        footer.style.display = allChecked ? 'block' : 'none';
     }
 }
 
-function startChat() {
-    const event = new CustomEvent('affirmationsComplete');
-    document.dispatchEvent(event);
-}
+// Listen for next button click from footer
+document.addEventListener('nextClicked', () => {
+    const nav = document.querySelector('.app-nav');
+    if (nav) {
+        const chatLink = nav.querySelector('a[href*="chat"]');
+        if (chatLink) chatLink.click();
+    }
+});
 </script>
