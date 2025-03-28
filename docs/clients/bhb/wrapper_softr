@@ -1,0 +1,52 @@
+ <!-- Page Custom Code Start -->
+  <div id="chat-container" style="width: 90%; max-width: 1200px; margin: 0 auto; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 12px; background-color: #fff;">
+  <div id="loading-message" style="text-align: center; padding: 20px;">
+      <h3 id="welcome-message" style="font-family: var(--font-primary, Arial, sans-serif); color: #333;">Welcome <span id="user-name">there</span>!</h3>
+      <p id="loading-text" style="font-family: var(--font-primary, Arial, sans-serif); color: #666;">We're preparing your personalized assistant...</p>
+      <div class="spinner">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+      </div>
+  </div>
+  <iframe id="iframe-container" style="width: 100%; height: 85vh; border: none; border-radius: 12px; display: none;"></iframe>
+</div>
+    <iframe id="iframe-container" style="width: 100%; height: 85vh; border: none; border-radius: 12px; display: none;"></iframe>
+</div>
+<script>
+    console.log("softr.html is loaded");
+    (function() {
+        const chatPageUrl = 'https://recursivelearning.app/clients/BHB/BHB-chat.html';
+
+        function createIframe(userData) {
+            const iframe = document.getElementById('iframe-container');
+            const iframeUrl = `${chatPageUrl}?User_ID=${userData.record_id}&Name=${userData.Name}&Organization=${userData.Organization}`;
+            iframe.src = iframeUrl;
+            iframe.style.display = 'block';
+
+            const loadingMessage = document.getElementById('loading-message');
+            loadingMessage.style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Softr !== 'undefined' && typeof Softr.user?.get === 'function') {
+                Softr.user.get()
+                    .then(userData => {
+                        if (userData && userData.airtable_record_id) {
+                            document.getElementById('user-name').textContent = userData.Name || 'friend';
+                            createIframe(userData);
+                        } else {
+                            createIframe({ record_id: 'anonymous', Name: 'friend', Organization: 'Bmore' });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error getting Softr user data:', error);
+                        createIframe({ record_id: 'anonymous', Name: 'there', Organization: 'Bmore' });
+                    });
+            } else {
+                createIframe({ record_id: 'anonymous', Name: 'there', Organization: 'Bmore' });
+            }
+        });
+    })();
+</script>
+<!-- Page Custom Code End -->

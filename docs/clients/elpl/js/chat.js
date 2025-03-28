@@ -4,16 +4,96 @@ const LAMBDA_ENDPOINT = 'https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/
 // State Management
 let messageCount = 0;
 let selectedGrade = null;
+let contextReady = false;
+let userContext = null;
 
-// Initialize chat session
-function initChat() {
+// Initialize chat session with context awareness
+function initChat(options = {}) {
     if (!window.ASSISTANT_ID) {
         console.error('No ASSISTANT_ID provided. Set window.ASSISTANT_ID before initializing chat.');
         return;
     }
+
+    // Load existing thread if available
     window.threadId = localStorage.getItem('threadId') || null;
-    console.log(`Chat initialized: ${messageCount} messages, ${window.threadId ? `thread ${window.threadId}` : 'no thread'}`);
-    console.log(`Using assistant: ${window.ASSISTANT_ID}`);
+    
+    // Check for Softr context
+    if (typeof Softr !== 'undefined' && typeof Softr.user?.get === 'function') {
+        Softr.user.get()
+            .then(userData => {
+                if (userData && userData.airtable_record_id) {
+                    userContext = {
+                        userId: userData.airtable_record_id,
+                        name: userData.Name,
+                        organization: userData.Organization
+                    };
+                } else {
+                    userContext = getContextFromUrl();
+                }
+                setContextReady();
+            })
+            .catch(error => {
+                console.error('Error getting Softr user data:', error);
+                userContext = getContextFromUrl();
+                setContextReady();
+            });
+    } else {
+        // Not in Softr, try URL params
+        userContext = getContextFromUrl();
+        setContextReady();
+    }
+    
+    console.log('Chat initializing:', {
+        assistant: window.ASSISTANT_ID,
+        thread: window.threadId,
+        context: contextReady ? 'ready' : 'waiting',
+        messages: messageCount
+    });
+
+    // If preload context is provided, start a thread with it
+    if (options.preloadContext) {
+        startContextThread(options.preloadContext);
+    }
+}
+
+function getContextFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+        userId: params.get('User_ID') || 'anonymous',
+        name: params.get('Name') || 'friend',
+        organization: params.get('Organization') || 'Unknown'
+    };
+}
+
+function setContextReady() {
+    contextReady = true;
+    console.log('Context ready:', userContext);
+    document.dispatchEvent(new Event('chat-context-ready'));
+}
+
+async function startContextThread(context) {
+    try {
+        const response = await sendMessage(context, { isContext: true });
+        if (response.Thread_ID) {
+            window.threadId = response.Thread_ID;
+            localStorage.setItem('threadId', window.threadId);
+        }
+    } catch (error) {
+        console.error('Failed to start context thread:', error);
+    }
+}
+
+function validateThread() {
+    if (!window.threadId) return false;
+    
+    // Check if thread matches current assistant
+    return sendMessage('validate', { validate: true })
+        .then(() => true)
+        .catch(() => {
+            console.log('Thread validation failed, resetting session');
+            resetSession();
+            return false;
+        });
 }
 
 function sanitizeResponse(text) {
@@ -34,7 +114,10 @@ function sanitizeResponse(text) {
 // Message handling
 function sendMessage(input, options = {}) {
     if (!window.ASSISTANT_ID) {
-        throw new Error('No ASSISTANT_ID provided. Set window.ASSISTANT_ID before sending messages.');
+        throw new Error('No ASSISTANT_ID provided');
+    }
+    if (!contextReady && !options.isContext) {
+        throw new Error('Context not ready');
     }
     if (input.trim() === "") return;
     
@@ -45,14 +128,16 @@ function sendMessage(input, options = {}) {
         assistantId: window.ASSISTANT_ID,
         debug: true,
         ...(options.grade && { grade: options.grade }),
-        ...(window.threadId && { threadId: window.threadId })
+        ...(window.threadId && { threadId: window.threadId }),
+        ...(userContext && { userContext }),
+        ...(options.isContext && { isContext: true }),
+        ...(options.validate && { validate: true })
     };
     
     console.log(`Message ${messageCount} request:`, {
         assistantId: requestBody.assistantId,
-        grade: requestBody.grade,
         threadId: requestBody.threadId,
-        message: input.substring(0, 50) + (input.length > 50 ? '...' : '')
+        preview: input.substring(0, 50) + (input.length > 50 ? '...' : '')
     });
     
     return fetch(LAMBDA_ENDPOINT, {
@@ -60,30 +145,23 @@ function sendMessage(input, options = {}) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody)
     })
-    .then(response => {
-        console.log('Response headers:', response.headers);
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
-        console.log(`Message ${messageCount} raw response:`, data);
-        
-        if (!data.response) {
-            throw new Error('No response received from assistant');
+        if (!data.response && !options.validate) {
+            throw new Error('No response received');
         }
         
-        // Sanitize the response
-        data.response = sanitizeResponse(data.response);
+        if (data.Thread_ID) {
+            window.threadId = data.Thread_ID;
+            localStorage.setItem('threadId', window.threadId);
+        }
         
-        console.log(`Message ${messageCount} sanitized response:`, {
-            threadId: data.Thread_ID,
-            responsePreview: data.response.substring(0, 50) + '...'
-        });
-        
+        data.response = options.validate ? data.response : sanitizeResponse(data.response);
         return data;
     })
     .catch(error => {
-        console.error('Error in message handling:', error);
-        throw new Error('Failed to process the message. Please try again.');
+        console.error('Error:', error);
+        throw error;
     });
 }
 
@@ -112,5 +190,7 @@ window.chatCore = {
     send: sendMessage,
     reset: resetSession,
     setGrade,
-    getGrade
+    getGrade,
+    isContextReady: () => contextReady,
+    validateThread
 }; 
