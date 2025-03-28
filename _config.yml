@@ -1,21 +1,61 @@
-# Jekyll configuration for Recursive Learning
-# This file configures the site's collections, defaults, and plugins
+# Jekyll configuration for Recursive Learning Frontend
+# Updated: 2024-03-28 - Trigger clean build with new workflow
 
-title: "Recursive Learning"
-baseurl: ""      # If deploying at domain root, keep empty
+# Site settings
+title: Recursive Learning
+description: Context-aware learning platform
+baseurl: ""
 url: "https://recursivelearning.app"
+
+# Build settings
 markdown: kramdown
 theme: minima
+plugins:
+  - jekyll-feed
 
-# API settings
-api_endpoint: "https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main"
-
-# Collections configuration
+# Collections
 collections:
   clients:
     output: true
     permalink: /clients/:path/
-    layout: chat
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "clients"
+    values:
+      layout: "default"
+
+# Include these files/folders
+include:
+  - _clients/**/*.html
+  - _clients/**/static/**/*
+  - assets
+  - _layouts
+  - _includes
+  - "*.html"
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - .github
+  - README.md
+  - DEVELOPMENT.md
+
+# Keep files during clean
+keep_files:
+  - .git
+  - .gitignore
+  - clients/**/static/**
+  - assets/util-pages/**
+
+# API settings
+api_endpoint: "https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main"
 
 # Default layouts for different file types
 defaults:
