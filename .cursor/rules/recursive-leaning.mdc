@@ -15,15 +15,22 @@ alwaysApply: true
 
 **Primary Hosting Domain**: [https://recursivelearning.app](mdc:https:/recursivelearning.app)
 
+**URL Structure**:
+- Static Pages: `/{client}/static/{page}.html`
+  - Example: `/bhb/static/bhb-chat-static-template.html`
+- Dynamic Pages: `/{client}/{page}.html`
+  - Example: `/bhb/chat.html`
+- Platform Pages: `/platform/{page}.html`
+
 **Deployment Options**:
 
-- `index.html` standalone embed on a client’s site or inside Storyline.
+- `index.html` standalone embed on a client's site or inside Storyline.
 - `index.html` in Storyline for session/user variable management and routing.
 
 ## MVP Testing Implementations:
 
 - **BHB Maternal Health Chat** - Hosted on client website & Softr.
-- **Customer Support ‘Business Assistant’** - Hosted on IntegralEd GH pages.
+- **Customer Support 'Business Assistant'** - Hosted on IntegralEd GH pages.
 
 **Lambda Function ARN**: `arn:aws:lambda:us-east-2:559050208320:function:IntegralEd-Main`
 

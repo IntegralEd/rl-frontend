@@ -1,0 +1,51 @@
+# Build Process Checklist
+
+## Directory Structure
+```
+docs/
+├── {client}/              # Client-specific directory
+│   ├── static/           # Static HTML files
+│   │   └── *.html       # Static implementations
+│   └── *.html           # Jekyll-built pages
+├── platform/             # Platform-wide pages
+└── assets/              # Shared assets
+```
+
+## Build Types
+
+### New Site Deployment
+- [ ] Create client directory in `docs/`
+- [ ] Add static implementation to `docs/{client}/static/`
+- [ ] Create Jekyll source in `_clients/{client}/pages/`
+- [ ] Test locally with `bundle exec jekyll serve`
+- [ ] Verify URLs follow pattern:
+  - Static: `/{client}/static/{page}.html`
+  - Dynamic: `/{client}/{page}.html`
+
+### Feature-Wide Update
+- [ ] Update shared assets in `docs/assets/`
+- [ ] Test across all client implementations
+- [ ] Verify console logs in both static and dynamic versions
+
+### Full Rebuild
+- [ ] Clean `docs/` directory
+- [ ] Rebuild Jekyll site
+- [ ] Verify all static files are preserved
+- [ ] Test all URLs
+
+## Pre-Build Checklist
+- [ ] All static files in correct `static/` subdirectories
+- [ ] Jekyll source files have correct permalinks
+- [ ] Console logging added for debugging
+- [ ] Local test successful
+
+## Post-Build Verification
+- [ ] Check GitHub Actions build logs
+- [ ] Verify URLs are accessible
+- [ ] Test console logs in browser
+- [ ] Document any issues in MDC files
+
+## Rollback Plan
+1. Revert to last known good commit
+2. Restore static files from backup
+3. Update MDC documentation 

@@ -28,16 +28,14 @@ jobs:
 
     - name: Clean and prepare docs directory
       run: |
-        rm -rf docs/*
+        # Only clean Jekyll-generated files, preserve static assets
+        rm -rf docs/_site
+        rm -rf docs/assets/css
+        rm -rf docs/assets/js
         rm -rf .jekyll-cache/*
         mkdir -p docs/assets
-        mkdir -p docs/bhb
-        mkdir -p docs/elpl
-        cp _clients/bhb/bhb-chat-static-template.html docs/bhb/
-        cp _clients/elpl/el-merit-chat.html docs/elpl/
-        echo "Copied static pages:"
-        ls -la docs/bhb/
-        ls -la docs/elpl/
+        # Ensure static directories exist
+        mkdir -p docs/bhb/static docs/elpl/static
 
     - name: Build site
       run: |

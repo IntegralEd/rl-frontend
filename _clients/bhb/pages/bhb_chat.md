@@ -1,6 +1,7 @@
 ---
 layout: chat
 title: BHB Chat Assistant
+permalink: /bhb/chat.html
 styles:
   - /assets/css/chat.css
   - /_clients/bhb/assets/css/variables.css
