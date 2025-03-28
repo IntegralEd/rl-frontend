@@ -30,6 +30,7 @@
             display: flex;
             justify-content: center;
             background: var(--chat-bg);
+            overflow-x: hidden;
         }
 
         .app-container {
@@ -39,6 +40,9 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
+            background: var(--chat-bg);
+            overflow: hidden;
+            position: relative;
         }
 
         /* Header styling */
@@ -101,15 +105,23 @@
             right: 0;
             background: var(--primary-color);
             border-radius: 4px;
-            min-width: 200px;
+            width: 200px;
             display: none;
             z-index: 1000;
             padding: 0.5rem 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform-origin: top right;
+            transform: scale(0.95);
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
         }
 
         .menu-content.show {
             display: block;
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
         }
 
         .menu-link {
@@ -137,16 +149,21 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin: var(--section-padding);
+            overflow: hidden;
+            position: relative;
         }
 
         .chat-window {
             flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: var(--section-padding);
             display: flex;
             flex-direction: column;
             gap: 12px;
             min-height: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .message {
@@ -155,6 +172,7 @@
             border-radius: 12px;
             font-size: 15px;
             line-height: 1.4;
+            word-break: break-word;
         }
 
         .message.assistant {
@@ -175,6 +193,8 @@
             border-top: 1px solid rgba(0,0,0,0.1);
             display: flex;
             gap: 8px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .input-area input {
@@ -183,6 +203,7 @@
             background: transparent;
             padding: 8px;
             font-size: 15px;
+            min-width: 0;
         }
 
         .input-area input:focus {
@@ -195,6 +216,7 @@
             padding: 8px;
             cursor: pointer;
             color: var(--primary-color);
+            flex-shrink: 0;
         }
 
         /* Responsive adjustments */
@@ -217,19 +239,17 @@
                      alt="EL Education" 
                      class="header-logo">
                 
-                <div class="header-actions">
-                    <div class="menu-dropdown">
-                        <button class="menu-trigger" aria-haspopup="true" 
-                                aria-expanded="false" onclick="toggleMenu()">
-                            Menu
-                            <svg class="menu-caret" width="10" height="6" viewBox="0 0 10 6">
-                                <path d="M1 1L5 5L9 1" stroke="white" stroke-width="2" fill="none"/>
-                            </svg>
-                        </button>
-                        <div class="menu-content" id="menuContent">
-                            <a href="#" class="menu-link" onclick="startOver()">Start Over</a>
-                            <a href="#" class="menu-link">Help</a>
-                        </div>
+                <div class="menu-dropdown">
+                    <button class="menu-trigger" aria-haspopup="true" 
+                            aria-expanded="false" onclick="toggleMenu()">
+                        Menu
+                        <svg class="menu-caret" width="10" height="6" viewBox="0 0 10 6">
+                            <path d="M1 1L5 5L9 1" stroke="white" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <div class="menu-content" id="menuContent">
+                        <a href="#" class="menu-link" onclick="startOver()">Start Over</a>
+                        <a href="#" class="menu-link">Help</a>
                     </div>
                 </div>
             </div>
