@@ -1,7 +1,7 @@
 <!-- _includes/footer.html -->
 <div class="interaction-container">
     <div class="playbar">
-        <button class="next-button" onclick="handleNext()" disabled>
+        <button class="next-button" disabled>
             <span>Next</span>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z" fill="currentColor"/>
@@ -26,6 +26,7 @@
     justify-content: center;
     background: white;
     padding: 0 1.5rem;
+    border-top: 1px solid var(--border-color, #eee);
 }
 
 .playbar, .chatbar {
@@ -34,16 +35,22 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    gap: 1rem;
 }
 
 .chat-input {
     flex: 1;
     height: 48px;
     padding: 0 1rem;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color, #ddd);
     border-radius: 24px;
     font-size: 1rem;
-    margin-right: 0.5rem;
+    transition: border-color 0.2s;
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: var(--primary-color, #4a5af7);
 }
 
 .next-button, .send-button {
@@ -88,43 +95,94 @@
 </style>
 
 <script>
-// Listen for events from other components
-document.addEventListener('affirmationsComplete', (event) => {
-    const { complete } = event.detail;
-    const nextButton = document.querySelector('.next-button');
-    if (nextButton) {
-        nextButton.disabled = !complete;
-        nextButton.classList.toggle('enabled', complete);
+class FooterManager {
+    constructor() {
+        this.state = {
+            affirmationsComplete: false,
+            messageCount: 0,
+            threadId: null,
+            mode: this.detectMode()
+        };
+        this.init();
     }
-});
 
-document.addEventListener('chatMessageCount', (event) => {
-    const { count } = event.detail;
-    // Example: Show account creation teaser after 5 messages
-    if (count === 5) {
-        document.dispatchEvent(new CustomEvent('showAccountTeaser'));
+    detectMode() {
+        return window.location.pathname.includes('chat') ? 'chat' : 'welcome';
     }
-});
 
-function handleNext() {
-    document.dispatchEvent(new CustomEvent('navigationRequested', {
-        detail: { action: 'next' }
-    }));
+    init() {
+        this.setupUI();
+        this.setupEventListeners();
+    }
+
+    setupUI() {
+        const playbar = document.querySelector('.playbar');
+        const chatbar = document.querySelector('.chatbar');
+        
+        if (this.state.mode === 'chat') {
+            playbar.style.display = 'none';
+            chatbar.style.display = 'flex';
+        } else {
+            playbar.style.display = 'flex';
+            chatbar.style.display = 'none';
+        }
+    }
+
+    setupEventListeners() {
+        // Listen for affirmation state changes
+        document.addEventListener('affirmationStateChange', (event) => {
+            const { complete } = event.detail;
+            this.state.affirmationsComplete = complete;
+            this.updateNextButton();
+        });
+
+        // Listen for chat state changes
+        document.addEventListener('chatStateChange', (event) => {
+            const { messageCount, threadId } = event.detail;
+            this.state.messageCount = messageCount;
+            this.state.threadId = threadId;
+            this.checkTriggers();
+        });
+
+        // Handle next button clicks
+        const nextButton = document.querySelector('.next-button');
+        if (nextButton) {
+            nextButton.addEventListener('click', () => this.handleNext());
+        }
+    }
+
+    updateNextButton() {
+        const nextButton = document.querySelector('.next-button');
+        if (nextButton) {
+            nextButton.disabled = !this.state.affirmationsComplete;
+            nextButton.classList.toggle('enabled', this.state.affirmationsComplete);
+        }
+    }
+
+    checkTriggers() {
+        // Example triggers based on message count
+        if (this.state.messageCount === 3) {
+            document.dispatchEvent(new CustomEvent('showResourceTeaser'));
+        }
+        if (this.state.messageCount === 5) {
+            document.dispatchEvent(new CustomEvent('showAccountTeaser'));
+        }
+    }
+
+    handleNext() {
+        document.dispatchEvent(new CustomEvent('navigationRequested', {
+            detail: {
+                from: this.state.mode,
+                to: 'chat',
+                state: this.state
+            }
+        }));
+    }
 }
 
-// Show chatbar when on chat page
+// Initialize on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-    const isChat = window.location.pathname.includes('chat');
-    const playbar = document.querySelector('.playbar');
-    const chatbar = document.querySelector('.chatbar');
-    
-    if (isChat) {
-        playbar.style.display = 'none';
-        chatbar.style.display = 'flex';
-    } else {
-        playbar.style.display = 'flex';
-        chatbar.style.display = 'none';
-    }
+    window.footerManager = new FooterManager();
 });
 </script>
   
