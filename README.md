@@ -749,6 +749,67 @@ This setup streamlines the deployment process and ensures consistency across all
 
 # Recursive Learning Frontend
 
+Multi-tenant chat interface for education and support, built with Jekyll.
+
+## Development Setup
+
+### Prerequisites
+- Ruby 3.1.0
+- Bundler 2.4.22
+
+### Local Development
+```bash
+# Install dependencies
+bundle install
+
+# Start local server
+bundle exec jekyll serve
+```
+
+Visit `http://localhost:4000/bhb/chat` for local testing.
+
+### Environment Configuration
+- Development API endpoint is configured in `_config.yml`
+- Production endpoint: `https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main`
+
+## Deployment
+
+### GitHub Pages Setup
+The site deploys automatically to GitHub Pages when pushing to `main` branch.
+
+Key configuration:
+1. Custom domain: recursivelearning.app
+2. Build requirements:
+   - Ruby 3.1.0
+   - Bundler 2.4.22
+   - Jekyll 4.2.x
+
+### Client-Specific Assets
+Client assets are organized in `_clients/<client_name>/`:
+```
+_clients/
+  bhb/
+    assets/
+      images/
+      css/
+      js/
+```
+
+### Production URLs
+- BHB Chat: https://recursivelearning.app/bhb/chat
+- Other clients follow same pattern: `/client-name/chat`
+
+## API Integration
+Chat components send:
+- Org_ID
+- Source
+- Thread_ID (if known)
+- Assistant_ID
+- User_ID (if known)
+- Action_ID
+
+After 5 chat volleys, prompts for account creation.
+
 ## Project Structure
 
 ### Layout System
