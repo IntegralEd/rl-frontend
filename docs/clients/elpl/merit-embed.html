@@ -368,6 +368,9 @@
     </div>
 
     <script>
+        // Configure chat before initializing
+        window.ASSISTANT_ID = 'arn:aws:ssm:us-east-2:559050208320:parameter/integraled/eled/OpenAI_Assistant_ID';
+
         document.addEventListener("DOMContentLoaded", function() {
             chatCore.init();
             

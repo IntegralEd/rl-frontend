@@ -1,6 +1,5 @@
 // Chat Core Configuration
 const LAMBDA_ENDPOINT = 'https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main';
-const ASSISTANT_ID = 'asst_QoAA395ibbyMImFJERbG2hKT';
 
 // State Management
 let messageCount = 0;
@@ -8,9 +7,13 @@ let selectedGrade = null;
 
 // Initialize chat session
 function initChat() {
+    if (!window.ASSISTANT_ID) {
+        console.error('No ASSISTANT_ID provided. Set window.ASSISTANT_ID before initializing chat.');
+        return;
+    }
     window.threadId = localStorage.getItem('threadId') || null;
     console.log(`Chat initialized: ${messageCount} messages, ${window.threadId ? `thread ${window.threadId}` : 'no thread'}`);
-    console.log(`Using assistant: ${ASSISTANT_ID}`);
+    console.log(`Using assistant: ${window.ASSISTANT_ID}`);
 }
 
 function sanitizeResponse(text) {
@@ -30,13 +33,17 @@ function sanitizeResponse(text) {
 
 // Message handling
 function sendMessage(input, options = {}) {
+    if (!window.ASSISTANT_ID) {
+        throw new Error('No ASSISTANT_ID provided. Set window.ASSISTANT_ID before sending messages.');
+    }
     if (input.trim() === "") return;
     
     messageCount++;
     
     const requestBody = {
         message: input,
-        assistantId: ASSISTANT_ID,
+        assistantId: window.ASSISTANT_ID,
+        debug: true,
         ...(options.grade && { grade: options.grade }),
         ...(window.threadId && { threadId: window.threadId })
     };
@@ -44,7 +51,8 @@ function sendMessage(input, options = {}) {
     console.log(`Message ${messageCount} request:`, {
         assistantId: requestBody.assistantId,
         grade: requestBody.grade,
-        threadId: requestBody.threadId
+        threadId: requestBody.threadId,
+        message: input.substring(0, 50) + (input.length > 50 ? '...' : '')
     });
     
     return fetch(LAMBDA_ENDPOINT, {
@@ -52,7 +60,10 @@ function sendMessage(input, options = {}) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody)
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('Response headers:', response.headers);
+        return response.json();
+    })
     .then(data => {
         console.log(`Message ${messageCount} raw response:`, data);
         
