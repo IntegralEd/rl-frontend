@@ -1,202 +1,97 @@
 <!-- _includes/footer.html -->
 <div class="interaction-container">
-  
-    <!-- Chatbar -->
-    <div class="interaction-bar chatbar" role="region" aria-label="Chat compose bar" style="display: none;">
-      <div class="interaction-left"></div>
-      <div class="interaction-center">
-        <div class="chat-input-group">
-          <label for="chat-input" class="sr-only">Type your message</label>
-          <input 
-            type="text" 
-            id="chat-input" 
-            class="interaction-input" 
-            placeholder="Type your message here…" 
-            aria-label="Chat input field"
-            onkeydown="handleKeyPress(event)" 
-          />
-        </div>
-      </div>
-      <div class="interaction-right">
-        <button class="interaction-button send-button" onclick="sendMessage()" aria-label="Send message">
-          <img 
-            src="/clients/bhb/assets/images/noun-send-7149925-FFFFFF.png" 
-            class="interaction-icon" 
-            alt="Send"
-            onerror="this.style.display='none'; this.parentElement.appendChild(document.createTextNode('Send'));" 
-          />
+    <div class="playbar">
+        <button class="next-button" onclick="handleNext()">
+            <span>Next</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z" fill="currentColor"/>
+            </svg>
         </button>
-      </div>
     </div>
-  
-    <!-- Playbar -->
-    <div class="interaction-bar playbar" role="region" aria-label="Form navigation bar" style="display: flex;">
-      <div class="interaction-left"></div>
-      <div class="interaction-center">
-        <!-- Could place instructions or next-step text here -->
-      </div>
-      <div class="interaction-right">
-        <button class="interaction-button next-button" onclick="handleNextClick()" aria-label="Go to next step" disabled>
-          <img 
-            src="/clients/bhb/assets/images/noun-next-5654311-FFFFFF.png" 
-            class="interaction-icon" 
-            alt="Next"
-            onerror="this.style.display='none'; this.parentElement.appendChild(document.createTextNode('Next'));" 
-          />
+    <div class="chatbar" style="display: none;">
+        <input type="text" class="chat-input" placeholder="Type your message...">
+        <button class="send-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+            </svg>
         </button>
-      </div>
     </div>
-  </div>
-  
-  <style>
-  .interaction-container {
-    width: 100%;
-    height: 80px;
-    display: flex;
-    flex-shrink: 0;
-    background: var(--primary-color, #6A6DB3);
-    box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
-  }
-  .interaction-bar {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: stretch;
-  }
-  .interaction-left, .interaction-right {
-    width: 80px;
-    flex-shrink: 0;
+</div>
+
+<style>
+.interaction-container {
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .interaction-center {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .chat-input-group {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  .interaction-input {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border-radius: 6px;
-    border: none;
     background: white;
-    min-height: 36px;
-    box-sizing: border-box;
-  }
-  .interaction-input:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
-  }
-  .interaction-button {
-    background: none;
+}
+
+.playbar, .chatbar {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.chat-input {
+    flex: 1;
+    height: 48px;
+    padding: 0 1rem;
+    border: 1px solid #ddd;
+    border-radius: 24px;
+    font-size: 1rem;
+    margin-right: 0.5rem;
+}
+
+.next-button, .send-button {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    background: #4a5af7;
+    color: white;
     border: none;
     cursor: pointer;
-    padding: 0;
-    width: 70px;
-    height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
-    border-radius: 50%;
-    position: relative;
-  }
-  .interaction-button:not(:disabled):hover {
-    background: rgba(255,255,255,0.1);
-  }
-  .interaction-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  .interaction-icon {
-    width: 50px;
-    height: 50px;
-    padding: 10px;
-    border-radius: 50%;
-    transition: all 0.2s;
-  }
-  .interaction-button:not(:disabled):hover .interaction-icon {
-    background: rgba(255,255,255,0.1);
-  }
-  /* Icon fallbacks */
-  .interaction-button.send-button .interaction-icon {
-    background-image: url('/clients/bhb/assets/images/noun-send-7149925-FFFFFF.png');
-    background-size: 30px;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  .interaction-button.next-button .interaction-icon {
-    background-image: url('/clients/bhb/assets/images/noun-next-5654311-FFFFFF.png');
-    background-size: 30px;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  /* Fallback text */
-  .interaction-button.send-button::after,
-  .interaction-button.next-button::after {
-    content: attr(aria-label);
-    position: absolute;
-    bottom: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.75rem;
-    color: white;
-    opacity: 0;
-    transition: opacity 0.2s;
-    white-space: nowrap;
-  }
-  .interaction-button:hover::after {
-    opacity: 0.8;
-  }
-  /* Error state */
-  .interaction-button.error::before {
-    content: attr(aria-label);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-    color: white;
-  }
-  .interaction-button.error .interaction-icon {
-    opacity: 0;
-  }
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    white-space: nowrap;
-    border: 0;
-  }
-  </style>
-  
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('.playbar').style.display = 'flex';
-    document.querySelector('.chatbar').style.display = 'none';
-  });
-  function handleKeyPress(event) {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      sendMessage();
+    transition: background 0.2s;
+}
+
+.next-button {
+    width: auto;
+    padding: 0 1.5rem;
+}
+
+.next-button span {
+    margin-right: 0.5rem;
+}
+
+.next-button:hover, .send-button:hover {
+    background: #3b48d9;
+}
+</style>
+
+<script>
+function handleNext() {
+    const event = new CustomEvent('nextClicked');
+    document.dispatchEvent(event);
+}
+
+// Show chatbar when on chat page
+document.addEventListener('DOMContentLoaded', () => {
+    const isChat = window.location.pathname.includes('chat');
+    const playbar = document.querySelector('.playbar');
+    const chatbar = document.querySelector('.chatbar');
+    
+    if (isChat) {
+        playbar.style.display = 'none';
+        chatbar.style.display = 'flex';
+    } else {
+        playbar.style.display = 'flex';
+        chatbar.style.display = 'none';
     }
-  }
-  function handleNextClick() {
-    alert("Next step clicked (stub).");
-  }
-  function sendMessage() {
-    alert("Send message clicked (stub).");
-  }
-  </script>
+});
+</script>
   
