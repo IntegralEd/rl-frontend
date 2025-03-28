@@ -6,6 +6,7 @@
     <title>EL Merit Chat</title>
     <script src="/clients/elpl/js/chat.js"></script>
     <script src="/clients/elpl/js/feedback-bubble.js"></script>
+    <script src="/clients/elpl/js/modals/review-modal.js"></script>
     <style>
         :root {
             --primary-color: #C6123F; /* EL Education Crimson */
@@ -369,7 +370,27 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.11/iframeResizer.min.js"></script>
     <script>
-        window.ASSISTANT_ID = 'arn:aws:ssm:us-east-2:559050208320:parameter/integraled/eled/OpenAI_Assistant_ID';
+        // Configure chat
+        window.CHAT_CONFIG = {
+            clientId: 'elpl',
+            assistantId: 'arn:aws:ssm:us-east-2:559050208320:parameter/integraled/eled/OpenAI_Assistant_ID'
+        };
+
+        // Initialize review modal in client review mode
+        const reviewModal = new ReviewModal({
+            mode: 'client_review',
+            forms: {
+                client_review: 'https://integral-mothership.softr.app/embed/pages/c6b8b431-e9eb-4736-94e4-83e3c4895c27/blocks/form1'
+            }
+        });
+        reviewModal.init();
+
+        // Later, can switch modes:
+        // reviewModal.setMode('user_feedback');
+        // or
+        // reviewModal.setMode('support');
+
+        // Initialize chat
         window.chatCore.init();
 
         document.addEventListener("DOMContentLoaded", function() {
