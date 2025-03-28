@@ -26,11 +26,25 @@ jobs:
     - name: Install dependencies
       run: bundle install
 
+    - name: Clean and prepare docs directory
+      run: |
+        rm -rf docs/*
+        rm -rf .jekyll-cache/*
+        mkdir -p docs/assets
+        mkdir -p docs/bhb
+        mkdir -p docs/elpl
+        cp _clients/bhb/bhb-chat-static-template.html docs/bhb/
+        cp _clients/elpl/el-merit-chat.html docs/elpl/
+        echo "Copied static pages:"
+        ls -la docs/bhb/
+        ls -la docs/elpl/
+
     - name: Build site
       run: |
         pwd
         ls -la
         bundle exec jekyll build --trace --destination docs
+        echo "Built docs directory structure:"
         ls -la docs/
 
     - name: Deploy to GitHub Pages
@@ -41,5 +55,12 @@ jobs:
         publish_branch: gh-pages
         force_orphan: true
         cname: recursivelearning.app
-        commit_message: Deploy updates to GitHub Pages
-        enable_jekyll: false 
+        commit_message: |
+          Deploy updates to GitHub Pages
+          
+          Please verify:
+          1. Check build-checklist.mdc for deployment type
+          2. Verify all intended sites are accessible
+          3. Test shared components if this is a feature update
+        enable_jekyll: false
+        keep_files: false 
