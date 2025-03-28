@@ -58,10 +58,11 @@ function checkAffirmations() {
     const checkboxes = document.querySelectorAll('.affirmation-checkbox');
     const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
     
-    // Show/hide footer based on checkbox state
-    const footer = document.querySelector('.app-footer');
-    if (footer) {
-        footer.style.display = allChecked ? 'block' : 'none';
+    // Enable/disable footer next button
+    const nextButton = document.querySelector('.next-button');
+    if (nextButton) {
+        nextButton.disabled = !allChecked;
+        nextButton.style.opacity = allChecked ? '1' : '0.5';
     }
 }
 

@@ -1,7 +1,7 @@
 <!-- _includes/footer.html -->
 <div class="interaction-container">
     <div class="playbar">
-        <button class="next-button" onclick="handleNext()">
+        <button class="next-button" onclick="handleNext()" disabled>
             <span>Next</span>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z" fill="currentColor"/>
@@ -25,14 +25,15 @@
     align-items: center;
     justify-content: center;
     background: white;
+    padding: 0 1.5rem;
 }
 
 .playbar, .chatbar {
     width: 100%;
     max-width: 1200px;
-    padding: 0 1rem;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
 }
 
 .chat-input {
@@ -46,30 +47,38 @@
 }
 
 .next-button, .send-button {
-    width: 48px;
     height: 48px;
     border-radius: 24px;
-    background: #4a5af7;
+    background: var(--primary-color, #4a5af7);
     color: white;
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s;
+    transition: all 0.2s;
 }
 
 .next-button {
-    width: auto;
     padding: 0 1.5rem;
 }
 
 .next-button span {
     margin-right: 0.5rem;
+    font-size: 1rem;
 }
 
-.next-button:hover, .send-button:hover {
-    background: #3b48d9;
+.send-button {
+    width: 48px;
+}
+
+.next-button:hover:not(:disabled), .send-button:hover {
+    background: var(--primary-color-dark, #3b48d9);
+}
+
+.next-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 </style>
 

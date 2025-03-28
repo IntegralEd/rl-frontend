@@ -55,7 +55,7 @@ layout: none
 /* Base container */
 .app-frame {
     width: 1200px;
-    min-height: 900px;
+    height: 900px; /* Fixed height instead of min-height */
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -67,18 +67,20 @@ layout: none
 .app-content {
     display: flex;
     flex: 1;
-    min-height: 0; /* Important for nested flex scrolling */
+    height: calc(900px - 50px - 180px); /* Explicit height: viewport - header - footer */
+    overflow: hidden; /* Prevent content from expanding frame */
 }
 
 .app-nav {
     width: 240px;
     border-right: 1px solid #ddd;
     flex-shrink: 0;
+    overflow-y: auto;
 }
 
 .content-stage {
     flex: 1;
-    overflow-y: auto;
+    overflow: hidden;
     background: #fff;
     display: flex;
     flex-direction: column;
