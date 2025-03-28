@@ -7,6 +7,8 @@
     <script src="/clients/elpl/js/chat.js"></script>
     <script src="/clients/elpl/js/feedback-bubble.js"></script>
     <script src="/clients/elpl/js/modals/review-modal.js"></script>
+    <script src="/clients/elpl/js/chat-core.js"></script>
+    <script src="/clients/elpl/js/chat-ui.js"></script>
     <style>
         :root {
             --primary-color: #C6123F; /* EL Education Crimson */
@@ -368,25 +370,11 @@
         </div>
     </div>
 
-    {% include review-bubble.html 
-        mode="client_review"
-        client_id="elpl"
-        form_url="https://integral-mothership.softr.app/embed/pages/c6b8b431-e9eb-4736-94e4-83e3c4895c27/blocks/form1"
-        position="bottom-right"
-        review_label="Share Feedback"
-    %}
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.11/iframeResizer.min.js"></script>
     <script>
-        // Configure chat
-        window.CHAT_CONFIG = {
-            clientId: 'elpl',
-            assistantId: 'arn:aws:ssm:us-east-2:559050208320:parameter/integraled/eled/OpenAI_Assistant_ID'
-        };
-
         // Initialize chat
-        window.chatCore.init();
-
+        const chatCore = new ChatCore();
+        const chatUI = new ChatUI(chatCore);
+        
         document.addEventListener("DOMContentLoaded", function() {
             const chatInput = document.getElementById("chat-input");
             chatInput.addEventListener("keydown", function(event) {
@@ -511,13 +499,6 @@
                 closeTicketModal();
             }
         });
-
-        // Example of switching review mode after a certain time
-        setTimeout(() => {
-            if (window.reviewBubble) {
-                window.reviewBubble.setMode('user_feedback');
-            }
-        }, 1000 * 60 * 30); // Switch to user feedback after 30 minutes
     </script>
 </body>
 </html> 
