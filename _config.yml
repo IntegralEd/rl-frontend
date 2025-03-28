@@ -25,13 +25,8 @@ defaults:
       client: "bhb"
       layout: "chat"
 
-# Production settings
-production_url: "https://recursivelearning.app"
+# API settings
 api_endpoint: "https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main"
-
-# Development settings
-development:
-  api_endpoint: "http://127.0.0.1:4000/api"
 
 # Include directories
 include:
