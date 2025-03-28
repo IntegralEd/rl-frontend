@@ -10,6 +10,22 @@ let selectedGrade = null;
 function initChat() {
     window.threadId = localStorage.getItem('threadId') || null;
     console.log(`Chat initialized: ${messageCount} messages, ${window.threadId ? `thread ${window.threadId}` : 'no thread'}`);
+    console.log(`Using assistant: ${ASSISTANT_ID}`);
+}
+
+function sanitizeResponse(text) {
+    try {
+        // Remove non-printable characters except newlines
+        text = text.replace(/[^\x20-\x7E\n]/g, '');
+        // Remove multiple spaces
+        text = text.replace(/\s+/g, ' ');
+        // Remove multiple newlines
+        text = text.replace(/\n+/g, '\n');
+        return text.trim();
+    } catch (e) {
+        console.error('Error sanitizing response:', e);
+        return 'I apologize, but I received an invalid response. Please try again.';
+    }
 }
 
 // Message handling
@@ -17,7 +33,6 @@ function sendMessage(input, options = {}) {
     if (input.trim() === "") return;
     
     messageCount++;
-    console.log(`Message ${messageCount} sent${options.grade ? ` for grade ${options.grade}` : ''}`);
     
     const requestBody = {
         message: input,
@@ -26,6 +41,12 @@ function sendMessage(input, options = {}) {
         ...(window.threadId && { threadId: window.threadId })
     };
     
+    console.log(`Message ${messageCount} request:`, {
+        assistantId: requestBody.assistantId,
+        grade: requestBody.grade,
+        threadId: requestBody.threadId
+    });
+    
     return fetch(LAMBDA_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -33,8 +54,25 @@ function sendMessage(input, options = {}) {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(`Message ${messageCount} completed, response received`);
+        console.log(`Message ${messageCount} raw response:`, data);
+        
+        if (!data.response) {
+            throw new Error('No response received from assistant');
+        }
+        
+        // Sanitize the response
+        data.response = sanitizeResponse(data.response);
+        
+        console.log(`Message ${messageCount} sanitized response:`, {
+            threadId: data.Thread_ID,
+            responsePreview: data.response.substring(0, 50) + '...'
+        });
+        
         return data;
+    })
+    .catch(error => {
+        console.error('Error in message handling:', error);
+        throw new Error('Failed to process the message. Please try again.');
     });
 }
 

@@ -255,6 +255,50 @@
             cursor: pointer;
             color: var(--primary-color);
         }
+
+        /* Footer */
+        .chat-footer {
+            background: var(--input-bg);
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding: var(--nav-padding);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--secondary-color);
+            height: 40px;
+            box-sizing: border-box;
+        }
+
+        .chat-footer-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-footer-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-button {
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            padding: 4px 8px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .footer-button:hover {
+            background: rgba(0,0,0,0.05);
+        }
     </style>
 </head>
 <body>
@@ -306,6 +350,19 @@
                         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
                     </svg>
                 </button>
+            </div>
+            <div class="chat-footer">
+                <div class="chat-footer-left">
+                    <span>EL Education</span>
+                </div>
+                <div class="chat-footer-right">
+                    <button class="footer-button" onclick="showGradeSelection()">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 1L15 15H1L8 1Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        Grade Level
+                    </button>
+                </div>
             </div>
         </div>
     </div>
