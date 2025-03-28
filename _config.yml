@@ -1,10 +1,11 @@
-title: Recursive Learning
-url: https://recursivelearning.app
-baseurl: ""
-
-# Build settings
+title: "Recursive Learning"
+baseurl: ""      # If deploying at domain root, keep empty
+url: "https://recursivelearning.app"
 markdown: kramdown
-permalink: pretty
+theme: minima
+
+# API settings
+api_endpoint: "https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main"
 
 # Collections
 collections:
@@ -25,17 +26,13 @@ defaults:
       client: "bhb"
       layout: "chat"
 
-# API settings
-api_endpoint: "https://tixnmh1pe8.execute-api.us-east-2.amazonaws.com/prod/IntegralEd-Main"
-
-# Include directories
 include:
-  - BHB
+  - clients
+  - shared_jekyll
   - assets
   - _layouts
   - _includes
 
-# Exclude from processing
 exclude:
   - Gemfile
   - Gemfile.lock
@@ -47,6 +44,9 @@ exclude:
   - CNAME
   - .DS_Store
   - "*.log"
+
+plugins:
+  - jekyll-feed
 
 # (Comment out or leave out the permalink if not ready to use)
 # permalink: "/:categories/:title.html"
