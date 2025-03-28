@@ -763,13 +763,18 @@ docs/
 │   │   ├── merit-chat.html # Main chat interface
 │   │   └── assets/           # Client-specific assets
 │   ├── bhb/
-│   └── strive-together/
+│   ├── strive-together/
+│   └── platform/              # Platform default pages and assets
 └── assets/                    # Shared assets
+    ├── css/                  # Global styles
+    ├── js/                   # Global scripts
+    └── images/              # Global images
 ```
 
 ### URL Pattern
 - `https://recursivelearning.app/clients/{client-name}/{page-name}.html`
 - Example: `https://recursivelearning.app/clients/elpl/merit-chat.html`
+- Example: `https://recursivelearning.app/clients/platform/recursive-lead-form.html`
 
 ### Development Workflow
 1. **Static Updates**
