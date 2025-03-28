@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EL Merit Chat</title>
-    <script src="/clients/elpl/js/chat-core.js"></script>
-    <script src="/clients/elpl/js/chat-ui.js"></script>
+    <script src="/clients/elpl/js/chat.js"></script>
     <style>
         :root {
             --primary-color: #C6123F; /* EL Education Crimson */
@@ -136,13 +135,13 @@
         .menu-link {
             display: block;
             padding: 0.5rem 1rem;
-                color: white;
+            color: white;
             text-decoration: none;
             font-size: 0.875rem;
             transition: all 0.2s;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             line-height: 1.5;
-            }
+        }
 
         .menu-link:hover {
             background: rgba(255,255,255,0.1);
@@ -272,38 +271,6 @@
                 padding: 0 var(--section-padding);
             }
         }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 1000;
-        }
-
-        .modal-content {
-            position: relative;
-            background: #fff;
-            width: 90%;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            border-radius: 8px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .close-modal {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-        }
     </style>
 </head>
 <body>
@@ -327,6 +294,7 @@
                         </button>
                         <div class="menu-content" id="menuContent">
                             <a href="#" class="menu-link" onclick="startOver()">Start Over</a>
+                            <a href="#" class="menu-link">Resources</a>
                             <a href="#" class="menu-link">Help</a>
                         </div>
                     </div>
@@ -349,21 +317,10 @@
         </div>
     </div>
 
-    <div class="menu-dropdown">
-        <button class="menu-button">
-            <span class="menu-icon">☰</span>
-        </button>
-        <div class="dropdown-content">
-            <a href="/resources">Resources</a>
-            <a href="/help">Help</a>
-        </div>
-    </div>
-
     <script>
-        // Initialize chat
-        const chatCore = new ChatCore();
-        const chatUI = new ChatUI(chatCore);
-        
+        window.ASSISTANT_ID = 'arn:aws:ssm:us-east-2:559050208320:parameter/integraled/eled/OpenAI_Assistant_ID';
+        window.chatCore.init();
+
         document.addEventListener("DOMContentLoaded", function() {
             const chatInput = document.getElementById("chat-input");
             chatInput.addEventListener("keydown", function(event) {
