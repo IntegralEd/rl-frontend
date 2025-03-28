@@ -139,10 +139,87 @@
             background: rgba(255,255,255,0.1);
         }
 
+        /* Grade selection */
+        .grade-selection {
+            display: flex;
+            flex-direction: column;
+            padding: var(--section-padding);
+            gap: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: var(--section-padding);
+            max-width: 600px;
+            width: 100%;
+            align-self: center;
+            box-sizing: border-box;
+        }
+
+        .grade-selection h2 {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            margin: 0;
+            text-align: center;
+        }
+
+        .grade-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .grade-option {
+            padding: 1rem;
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: white;
+            color: var(--secondary-color);
+        }
+
+        .grade-option:hover {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .grade-option.selected {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .next-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: all 0.2s;
+            width: 100%;
+            max-width: 200px;
+            align-self: center;
+        }
+
+        .next-button.enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .next-button.enabled:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
         /* Chat container */
         .chat-container {
+            display: none;
             flex: 1;
-            display: flex;
             flex-direction: column;
             min-height: 0;
             background: white;
@@ -151,6 +228,10 @@
             margin: var(--section-padding);
             overflow: hidden;
             position: relative;
+        }
+
+        .chat-container.active {
+            display: flex;
         }
 
         .chat-window {
@@ -225,8 +306,13 @@
                 padding: 0 var(--section-padding);
             }
             
-            .chat-container {
+            .chat-container,
+            .grade-selection {
                 margin: var(--nav-padding);
+            }
+
+            .grade-options {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -248,6 +334,7 @@
                         </svg>
                     </button>
                     <div class="menu-content" id="menuContent">
+                        <a href="#" class="menu-link" onclick="showGradeSelection()">Change Grade</a>
                         <a href="#" class="menu-link" onclick="startOver()">Start Over</a>
                         <a href="#" class="menu-link">Help</a>
                     </div>
@@ -255,7 +342,20 @@
             </div>
         </header>
 
-        <div class="chat-container">
+        <div class="grade-selection" id="gradeSelection">
+            <h2>Select Your Grade Level</h2>
+            <div class="grade-options">
+                <button class="grade-option" onclick="selectGrade(this, 'K')">Kindergarten</button>
+                <button class="grade-option" onclick="selectGrade(this, '1')">Grade 1</button>
+                <button class="grade-option" onclick="selectGrade(this, '2')">Grade 2</button>
+                <button class="grade-option" onclick="selectGrade(this, '3')">Grade 3</button>
+                <button class="grade-option" onclick="selectGrade(this, '4')">Grade 4</button>
+                <button class="grade-option" onclick="selectGrade(this, '5')">Grade 5</button>
+            </div>
+            <button class="next-button" id="nextButton" onclick="startChat()">Start Chat</button>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
             <div class="chat-window" id="chat-window">
                 <div class="message assistant">Welcome to EL Merit Chat. How can I help you today?</div>
             </div>
@@ -275,6 +375,13 @@
         document.addEventListener("DOMContentLoaded", function() {
             chatCore.init();
 
+            // Check for saved grade
+            const savedGrade = chatCore.getGrade();
+            if (savedGrade) {
+                document.getElementById('gradeSelection').style.display = 'none';
+                document.getElementById('chatContainer').classList.add('active');
+            }
+
             const chatInput = document.getElementById("chat-input");
             chatInput.addEventListener("keydown", function(event) {
                 if (event.key === "Enter" && !event.shiftKey) {
@@ -283,6 +390,29 @@
                 }
             });
         });
+
+        function selectGrade(element, grade) {
+            document.querySelectorAll('.grade-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            chatCore.setGrade(grade);
+            document.getElementById('nextButton').classList.add('enabled');
+        }
+
+        function startChat() {
+            const grade = chatCore.getGrade();
+            if (!grade) return;
+            
+            document.getElementById('gradeSelection').style.display = 'none';
+            document.getElementById('chatContainer').classList.add('active');
+        }
+
+        function showGradeSelection() {
+            document.getElementById('gradeSelection').style.display = 'flex';
+            document.getElementById('chatContainer').classList.remove('active');
+            toggleMenu();
+        }
 
         function handleMessageSend() {
             const input = document.getElementById("chat-input");
@@ -300,8 +430,8 @@
             transmissionIndicator.textContent = "...";
             chatWindow.appendChild(transmissionIndicator);
 
-            // Send via chat core
-            chatCore.send(input.value)
+            // Send via chat core with grade context
+            chatCore.send(input.value, { grade: chatCore.getGrade() })
                 .then(data => {
                     transmissionIndicator.remove();
                     const responseMessage = document.createElement("div");
@@ -321,9 +451,14 @@
 
         function startOver() {
             chatCore.reset();
-            const chatWindow = document.getElementById("chat-window");
-            chatWindow.innerHTML = '<div class="message assistant">Welcome to EL Merit Chat. How can I help you today?</div>';
-            toggleMenu();
+            chatCore.setGrade(null);
+            
+            document.querySelectorAll('.grade-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            document.getElementById('nextButton').classList.remove('enabled');
+            
+            showGradeSelection();
         }
 
         function toggleMenu() {
