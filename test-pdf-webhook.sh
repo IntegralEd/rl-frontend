@@ -15,23 +15,19 @@ echo "Testing StriveTogether Goal Setter Webhook"
 RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$WEBHOOK_URL" \
   -H "Content-Type: application/json" \
   -d '{
-    "webhook_data": {
-      "name": "Jordan Smith",
-      "email": "jordan.smith@school.edu",
-      "user_id": "",
-      "thread_id": "thread_abc123",
-      "assistant_id": "asst_IA5PsJxdShVPTAv2xeXTr4Ma",
-      "subject_and_grade": "5th Grade Science",
-      "learning_target": "Students will be able to analyze and explain the relationships within an ecosystem",
-      "measure_of_success": "80% of students will score proficient or above on the ecosystem assessment",
-      "classroom_goal_statement": "By the end of the unit, students will demonstrate understanding of ecosystem relationships through a combination of written assessments and hands-on projects",
-      "org_id": "recsK5zK0CouK5ebW",
-      "intake_token": "goalsetter_chat",
-      "source": "url"
-    },
-    "template_id": "st_goal_setter",
-    "client_id": "st",
-    "version": "1.0"
+    "name": "Jordan Smith",
+    "email": "jordan.smith@school.edu",
+    "user_id": "",
+    "thread_id": "thread_abc123",
+    "assistant_id": "asst_IA5PsJxdShVPTAv2xeXTr4Ma",
+    "subject_and_grade": "5th Grade Science",
+    "learning_target": "Students will be able to analyze and explain the relationships within an ecosystem",
+    "measure_of_success": "80% of students will score proficient or above on the ecosystem assessment",
+    "classroom_goal_statement": "By the end of the unit, students will demonstrate understanding of ecosystem relationships through a combination of written assessments and hands-on projects",
+    "org_id": "recsK5zK0CouK5ebW",
+    "intake_token": "goalsetter_chat",
+    "source": "url",
+    "url": "https://recursivelearning.app/clients/st/goal-setter.html"
   }')
 
 STATUS_CODE=$(echo "$RESPONSE" | tail -n1)
