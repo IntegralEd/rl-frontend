@@ -13,6 +13,9 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Create .nojekyll file
+      run: touch ./docs/.nojekyll
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3.9.1
       with:
@@ -29,5 +32,7 @@ jobs:
           2. All intended sites are accessible
           3. Test shared components if this is a feature update
         enable_jekyll: false
+        disable_nojekyll: false
+        keep_files: false
 
 # API settings 
