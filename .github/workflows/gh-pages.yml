@@ -1,4 +1,4 @@
-name: Build and Deploy Jekyll Site
+name: Deploy Static Files
 
 on:
   push:
@@ -6,42 +6,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    env:
-      RUBY_VERSION: 3.1.0
-
     steps:
     - uses: actions/checkout@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ env.RUBY_VERSION }}
-        bundler: '2.4.22'
-        bundler-cache: false
-
-    - name: Install dependencies
-      run: bundle install
-
-    - name: Clean and prepare docs directory
-      run: |
-        # Only clean Jekyll-generated files, preserve static assets
-        rm -rf docs/_site
-        rm -rf docs/assets/css
-        rm -rf docs/assets/js
-        rm -rf .jekyll-cache/*
-        mkdir -p docs/assets
-
-    - name: Build site
-      run: |
-        pwd
-        ls -la
-        bundle exec jekyll build --trace --destination docs
-        echo "Built docs directory structure:"
-        ls -la docs/
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3.9.1
@@ -52,20 +22,12 @@ jobs:
         force_orphan: true
         cname: recursivelearning.app
         commit_message: |
-          Deploy updates to GitHub Pages
+          Deploy static files to GitHub Pages
           
           Please verify:
-          1. Check build-checklist.mdc for deployment type
-          2. Verify all intended sites are accessible
+          1. All static files are present
+          2. All intended sites are accessible
           3. Test shared components if this is a feature update
         enable_jekyll: false
-        keep_files: |
-          .nojekyll
-          CNAME
-          assets/**/*
-          docs/bhb/static/**/*
-          docs/elpl/static/**/*
-          docs/platform/**/*
-          docs/clients/st/**/*
 
 # API settings 
