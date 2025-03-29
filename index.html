@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recursive Learning App</title>
-    <link rel="stylesheet" href="platform/css/main.css">
-    <link rel="stylesheet" href="platform/css/recursive-platform.css">
-    <link rel="icon" href="platform/images/logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/clients/platform/css/main.css">
+    <link rel="stylesheet" href="/clients/platform/css/recursive-platform.css">
+    <link rel="icon" href="/clients/platform/images/logo.ico" type="image/x-icon">
     <style>
         :root {
             --primary-color: #007BFF; /* Example primary color */
@@ -142,17 +142,18 @@
 <body>
     <div id="main-container">
         <h3>Welcome to Recursive Learning</h3>
-        <img src="platform/images/logo.png" alt="Recursive Learning Logo">
-        <div class="verb-container">
+        <img src="/clients/platform/images/logo.png" alt="Recursive Learning Logo">
+        <div class="verb-container" id="verb-container">
             Learn • Reflect • Improve
         </div>
+        <div id="curious-button" onclick="window.location.href='/clients/platform/recursive-lead-form.html'">👀 Curious?</div>
     </div>
 
     <!-- Hidden Directory Panel -->
     <div id="directory-panel">
         <div class="directory-header">Live Pages Directory</div>
         <div class="directory-item">
-            <a href="/st/goal-setter.html">StriveTogether Goal Setter</a>
+            <a href="/st/goalsetter.html">StriveTogether Goal Setter</a>
         </div>
         <div class="directory-item">
             <a href="/clients/platform/recursive-lead-form.html">Lead Form</a>
@@ -171,11 +172,14 @@
     <script>
         const verbs = ["Listening...", "Reflecting...", "Explaining...", "Teaching...", "Reaching...", "Growing...", "Evolving..."];
         let currentIndex = 0;
+        const verbContainer = document.getElementById("verb-container");
 
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % verbs.length;
-            document.getElementById("verb-container").innerText = verbs[currentIndex];
-        }, 2000);
+        if (verbContainer) {
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % verbs.length;
+                verbContainer.innerText = verbs[currentIndex];
+            }, 2000);
+        }
 
         // Secret key handler (press 'd' 3 times quickly)
         let keyPresses = [];
