@@ -1,0 +1,79 @@
+# Chat Handoff Implementation
+
+## Current Status
+
+The form -> chat handoff needs implementation for:
+
+1. **Assistant Preloading**
+   - Target Assistant ID: `asst_IA5PsJxdShVPTAv2xeXTr4Ma`
+   - Need to preload assistant with form context before user sees first message
+   - Should show loading state during preload
+
+2. **Form Data Structure**
+   ```json
+   {
+     "user_data": {
+       "name": "string || 'anonymous'",
+       "email": "string || 'anonymous@public.test'",
+       "thread_id": "string",
+       "assistant_id": "asst_IA5PsJxdShVPTAv2xeXTr4Ma",
+       "org_id": "recsK5zK0CouK5ebW",
+       "intake_token": "goalsetter_chat"
+     },
+     "form_context": {
+       "standards": {
+         "consider": "boolean",
+         "link": "string",
+         "details": "string"
+       },
+       "reflection": {
+         "include": "boolean",
+         "previousCycle": "string"
+       }
+     }
+   }
+   ```
+
+3. **Implementation Steps Needed**
+   - [ ] Add loading state UI during assistant preload
+   - [ ] Implement assistant preload in `startInterview()`
+   - [ ] Add error handling for failed preload
+   - [ ] Structure first message to assistant with form context
+   - [ ] Handle anonymous user routing in Make.com (100/110 status)
+   - [ ] Add thread persistence for returning users
+
+4. **Expected Flow**
+   ```mermaid
+   sequenceDiagram
+     participant U as User
+     participant F as Form
+     participant A as Assistant
+     participant M as Make.com
+     
+     U->>F: Complete form
+     F->>M: Send form data
+     M-->>F: Return thread_id
+     F->>A: Preload context
+     A-->>F: Ready state
+     F->>U: Show first message
+   ```
+
+## Testing Plan
+
+1. Form Submission Cases:
+   - [ ] Named user with email
+   - [ ] Anonymous user
+   - [ ] Partial form completion
+   - [ ] All fields completed
+
+2. Assistant Response:
+   - [ ] Verify context in first message
+   - [ ] Check loading states
+   - [ ] Test error recovery
+   - [ ] Validate thread persistence
+
+## Related Files
+
+- `st/goal-setter.html`: Main implementation
+- `clients/platform/js/chat.js`: Core chat functionality
+- `.cursor/rules/webhook-schema.json`: Data structure 

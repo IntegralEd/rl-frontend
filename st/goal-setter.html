@@ -251,8 +251,8 @@
         }
 
         /* Chat input styling */
-        .chatbar {
-            display: flex;
+        .chatbar, .playbar {
+            display: none;  /* Hidden by default */
             align-items: center;
             gap: 20px;
             width: calc(100% - var(--nav-width));
@@ -266,20 +266,54 @@
             box-sizing: border-box;
         }
 
+        .chatbar.active, .playbar.active {
+            display: flex;
+        }
+
+        .send-button {
+            width: var(--chat-button-size);
+            height: var(--chat-button-size);
+            min-width: var(--chat-button-size);
+            min-height: var(--chat-button-size);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #E87722;  /* ST Orange for send button */
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .send-button:hover {
+            background: #d66a1c;  /* Darker orange on hover */
+            transform: scale(1.05);
+        }
+
+        .send-button img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);  /* Make icon white */
+        }
+
         .chat-input {
             width: 100%;
             height: 48px;
             padding: 0 20px;
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--border-color);
             border-radius: 24px;
             font-size: 16px;
             font-family: var(--client-font-body);
-            transition: border-color 0.2s ease;
+            transition: all 0.2s ease;
+            background: white;
         }
 
         .chat-input:focus {
             outline: none;
-            border-color: var(--secondary-color);
+            border-color: #E87722;
+            box-shadow: 0 0 0 2px rgba(232, 119, 34, 0.1);
         }
 
         /* Footer styling */
@@ -292,15 +326,6 @@
             padding: 0;
             border-top: 1px solid var(--border-color);
             position: relative;
-        }
-
-        .playbar {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            width: calc(100% - var(--nav-width));
-            padding: 20px 40px;
-            box-sizing: border-box;
         }
 
         /* Chat container */
@@ -529,18 +554,19 @@
 
         function checkFormCompletion() {
             const nextButton = document.querySelector('.next-button');
-            const hasStandardsInput = formState.standardsChoice === 'yes' ? 
-                (document.getElementById('standards-link').value.trim() || 
-                 document.getElementById('standards-detail-input').value.trim()) : true;
-            const hasReflectionInput = formState.reflectionChoice === 'yes' ? 
-                document.getElementById('reflection-input').value.trim() : true;
+            // Allow proceeding if ANY radio is selected
+            const isComplete = formState.standardsChoice || formState.reflectionChoice;
             
-            // Enable next if either question is answered with "no" or has content when "yes"
-            const isComplete = formState.standardsChoice && formState.reflectionChoice && 
-                             hasStandardsInput && hasReflectionInput;
-
             nextButton.classList.toggle('enabled', isComplete);
             nextButton.disabled = !isComplete;
+
+            if (isComplete) {
+                nextButton.style.background = '#E87722';
+                nextButton.style.cursor = 'pointer';
+            } else {
+                nextButton.style.background = '#ccc';
+                nextButton.style.cursor = 'not-allowed';
+            }
         }
 
         function sendToWebhook() {
@@ -685,16 +711,17 @@
             document.getElementById('interview-section').style.display = tabName === 'interview' ? 'block' : 'none';
             document.getElementById('tools-section').style.display = tabName === 'tools' ? 'block' : 'none';
 
-            // Show correct footer
+            // Toggle chatbar/playbar based on section
             const playbar = document.querySelector('.playbar');
             const chatbar = document.querySelector('.chatbar');
             
+            playbar.classList.toggle('active', tabName === 'welcome');
+            chatbar.classList.toggle('active', tabName === 'interview');
+
+            // Focus chat input when switching to interview
             if (tabName === 'interview') {
-                playbar.style.display = 'none';
-                chatbar.style.display = 'flex';
-            } else {
-                playbar.style.display = 'flex';
-                chatbar.style.display = 'none';
+                const chatInput = document.querySelector('.chat-input');
+                chatInput.focus();
             }
         }
 
