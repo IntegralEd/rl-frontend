@@ -67,16 +67,16 @@
         .left-nav {
             width: var(--nav-width);
             border-right: 2px solid var(--primary-color);
-            padding: 24px 0;
+            padding: 16px 0;
             background: white;
             height: 100%;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
         .nav-tab {
-            padding: 16px 24px;
+            padding: 12px 16px;
             width: 100%;
             text-align: left;
             border: none;
@@ -90,17 +90,17 @@
 
         .nav-tab.active {
             font-weight: bold;
-            color: var(--primary-color);
+            color: #E87722;
         }
 
         .nav-tab.active::after {
             content: '';
             position: absolute;
             bottom: 0;
-            left: 24px;
-            right: 24px;
+            left: 16px;
+            right: 16px;
             height: 3px;
-            background: var(--primary-color);
+            background: #E87722;
         }
 
         /* Content Area */
@@ -124,7 +124,8 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: bold;
+            font-weight: normal;
+            font-family: Arial, sans-serif;
         }
 
         .radio-group {
@@ -285,23 +286,24 @@
             min-height: 0; /* Allow flex shrinking */
         }
 
+        /* Chat bubbles */
         .message {
             max-width: 80%;
             padding: 16px;
             border-radius: 16px;
             font-size: 16px;
             line-height: 1.4;
-            color: #2b2b2b;
+            color: #FFFFFF;
         }
 
         .message.assistant {
             align-self: flex-start;
-            background: #A0D8CE;
+            background: #425563;
         }
 
         .message.user {
             align-self: flex-end;
-            background: #EAC18C;
+            background: #E87722;
         }
 
         @media (max-width: 1220px) {
@@ -423,6 +425,17 @@
             reflectionDetail: ''
         };
 
+        // Track interview variables
+        let interviewState = {
+            teachingContext: '',
+            learningTarget: '',
+            successCriteria: '',
+            teacherGoalStatement: '',
+            studentGoalStatement: '',
+            messageCount: 0,
+            isComplete: false
+        };
+
         function handleStandardsChoice() {
             const radios = document.getElementsByName('academic-standards');
             const standardsDetail = document.getElementById('standards-detail');
@@ -481,19 +494,45 @@
             nextButton.disabled = !isComplete;
         }
 
+        function sendToWebhook() {
+            const payload = {
+                event_type: "goal_setting_complete",
+                timestamp: new Date().toISOString(),
+                variables: {
+                    teaching_context: interviewState.teachingContext,
+                    learning_target: interviewState.learningTarget,
+                    success_criteria: interviewState.successCriteria,
+                    teacher_goal_statement: interviewState.teacherGoalStatement,
+                    student_goal_statement: interviewState.studentGoalStatement
+                },
+                form_context: formState,
+                source: window.location.href
+            };
+
+            fetch('https://hook.us1.make.com/f6no146taqm5cdss37za7siawjy8fnut', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Webhook response:', data);
+                // Enable tools tab after successful submission
+                document.querySelector('.nav-tab[onclick="switchTab(\'tools\')"]').disabled = false;
+            })
+            .catch(error => console.error('Webhook error:', error));
+        }
+
         function startInterview() {
             // Capture final form state
             formState.standardsLink = document.getElementById('standards-link')?.value || '';
             formState.standardsDetail = document.getElementById('standards-detail-input')?.value || '';
             formState.reflectionDetail = document.getElementById('reflection-input')?.value || '';
             
-            // Enable interview tab
+            // Enable interview tab and switch
             document.querySelector('.nav-tab[onclick="switchTab(\'interview\')"]').disabled = false;
-            
-            // Switch to interview
             switchTab('interview');
             
-            // Prepare initial context message
             const contextMessage = {
                 standards: {
                     consider: formState.standardsChoice === 'yes',
@@ -513,11 +552,8 @@
                 chatCore.init({
                     context: contextMessage,
                     onReady: () => {
-                        // Send initial message and handle response
                         chatCore.send(initialMessage).then(response => {
                             const chatContainer = document.querySelector('.chat-container');
-                            
-                            // Clear welcome message
                             chatContainer.innerHTML = '';
                             
                             // Add system message
@@ -531,14 +567,13 @@
                             assistantBubble.className = 'message assistant';
                             assistantBubble.textContent = response;
                             chatContainer.appendChild(assistantBubble);
+
+                            interviewState.messageCount += 2;
                         });
                     }
                 });
             }
         }
-
-        // Message counter
-        let messageCount = 0;
 
         function sendMessage() {
             const input = document.querySelector('.chat-input');
@@ -547,7 +582,7 @@
             
             if (!message) return;
             
-            messageCount++;
+            interviewState.messageCount++;
             
             // Add user message
             const userBubble = document.createElement('div');
@@ -560,7 +595,7 @@
             
             if (window.chatCore) {
                 chatCore.send(message).then(response => {
-                    messageCount++;
+                    interviewState.messageCount++;
                     
                     // Add assistant message
                     const assistantBubble = document.createElement('div');
@@ -569,9 +604,12 @@
                     chatContainer.appendChild(assistantBubble);
                     chatContainer.scrollTop = chatContainer.scrollHeight;
 
-                    // Enable tools after sufficient interaction
-                    if (messageCount >= 6) {
-                        document.querySelector('.nav-tab[onclick="switchTab(\'tools\')"]').disabled = false;
+                    // Check if response contains a summary (indicating interview completion)
+                    if (response.includes("Here's a summary of your goals:")) {
+                        interviewState.isComplete = true;
+                        // Extract variables from the assistant's summary
+                        // This will be handled by the assistant's structured response
+                        sendToWebhook();
                     }
                 });
             }
@@ -584,7 +622,7 @@
             document.querySelectorAll('.nav-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
-            event.target.classList.add('active');
+            document.querySelector(`.nav-tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
 
             // Show correct section
             document.getElementById('welcome-section').style.display = tabName === 'welcome' ? 'block' : 'none';
