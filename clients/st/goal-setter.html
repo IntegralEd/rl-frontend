@@ -516,17 +516,23 @@
 
         function sendToWebhook() {
             const payload = {
-                event_type: "goal_setting_complete",
-                timestamp: new Date().toISOString(),
-                variables: {
-                    teaching_context: interviewState.teachingContext,
-                    learning_target: interviewState.learningTarget,
-                    success_criteria: interviewState.successCriteria,
-                    teacher_goal_statement: interviewState.teacherGoalStatement,
-                    student_goal_statement: interviewState.studentGoalStatement
+                user_data: {
+                    name: formState.name || '',
+                    email: formState.email || '',
+                    user_id: formState.userId || '',
+                    thread_id: window.threadId || '',
+                    assistant_id: 'asst_IA5PsJxdShVPTAv2xeXTr4Ma',
+                    org_id: 'recsK5zK0CouK5ebW',
+                    intake_token: 'goalsetter_chat',
+                    source: 'url',
+                    url: window.location.href
                 },
-                form_context: formState,
-                source: window.location.href
+                document_data: {
+                    subject_and_grade: interviewState.teachingContext || '',
+                    learning_target: interviewState.learningTarget || '',
+                    measure_of_success: interviewState.successCriteria || '',
+                    classroom_goal_statement: interviewState.teacherGoalStatement || ''
+                }
             };
 
             fetch('https://hook.us1.make.com/f6no146taqm5cdss37za7siawjy8fnut', {
