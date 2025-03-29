@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StriveTogether Goal Setter</title>
-    <link rel="stylesheet" href="variables.css">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/variables.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
+
     <style>
         :root {
             /* Core Layout Dimensions */
@@ -16,6 +20,22 @@
             --footer-height: 100px;
             --border-color: #eee;
             --page-margin: 20px;
+
+            /* Branding Colors */
+            --primary-color: #425563; /* ST Primary */
+            --secondary-color: #E87722; /* ST Orange */
+            --tertiary-color: #4fa997; /* ST Teal */
+            --background-color: #f9f9f9;
+            --text-color: #2b2b2b;
+            --cta-text-color: #ffffff;
+
+            /* Typography */
+            --client-font-h1: 'Arial, sans-serif';
+            --client-font-h2: 'Arial, sans-serif';
+            --client-font-body: 'Arial, sans-serif';
+            --client-font-size-h1: 28px;
+            --client-font-size-h2: 24px;
+            --client-font-size-body: 16px;
         }
 
         body {
@@ -54,6 +74,7 @@
         .header-logo {
             height: 35px;
             margin: 7.5px 0;
+            content: url('/clients/st/assets/images/ST TH Powered By White Logo.png');
         }
 
         /* Main Layout */
@@ -198,14 +219,16 @@
             cursor: not-allowed;
         }
 
-        .next-button img, .send-button img {
-            width: 60px;
-            height: 60px;
-            transition: all 0.3s ease;
+        .next-button img {
+            width: 30px;
+            height: 30px;
+            content: url('/clients/st/assets/images/noun-next-5654311-FFFFFF.png');
         }
 
-        .next-button img {
-            filter: grayscale(100%) opacity(40%);
+        .send-button img {
+            width: 30px;
+            height: 30px;
+            content: url('/clients/st/assets/images/noun-send-7149925-FFFFFF.png');
         }
 
         .next-button.enabled {

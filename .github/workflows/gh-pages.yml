@@ -59,4 +59,13 @@ jobs:
           2. Verify all intended sites are accessible
           3. Test shared components if this is a feature update
         enable_jekyll: false
-        keep_files: false 
+        keep_files: |
+          .nojekyll
+          CNAME
+          assets/**/*
+          docs/bhb/static/**/*
+          docs/elpl/static/**/*
+          docs/platform/**/*
+          docs/clients/st/**/*
+
+# API settings 
