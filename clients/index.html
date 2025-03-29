@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recursive Learning App</title>
+    <link rel="stylesheet" href="platform/css/main.css">
     <link rel="stylesheet" href="platform/css/recursive-platform.css">
     <link rel="icon" href="platform/images/logo.ico" type="image/x-icon">
     <style>
@@ -23,6 +24,51 @@
             margin: 0;
             position: relative;
         }
+
+        /* Directory Panel Styles */
+        #directory-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .directory-item {
+            padding: 8px;
+            margin: 4px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .directory-item:hover {
+            background: #f0f0f0;
+        }
+
+        .directory-item a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+        }
+
+        .directory-item a:hover {
+            color: var(--primary-color);
+        }
+
+        .directory-header {
+            font-weight: bold;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
         img {
             max-width: 150px;
             border-radius: 50%;
@@ -95,10 +141,31 @@
 </head>
 <body>
     <div id="main-container">
-        <img src="platform/images/avatar.png" alt="Avatar">
-        <div class="verb-container" id="verb-container">Listening...</div>
-        <div id="curious-button" onclick="window.location.href='platform/recursive-lead-form.html'">👀 Curious?</div>
-        <div style="text-align: center;">&#x25BC;</div>
+        <h3>Welcome to Recursive Learning</h3>
+        <img src="platform/images/logo.png" alt="Recursive Learning Logo">
+        <div class="verb-container">
+            Learn • Reflect • Improve
+        </div>
+    </div>
+
+    <!-- Hidden Directory Panel -->
+    <div id="directory-panel">
+        <div class="directory-header">Live Pages Directory</div>
+        <div class="directory-item">
+            <a href="/st/goal-setter.html">StriveTogether Goal Setter</a>
+        </div>
+        <div class="directory-item">
+            <a href="/clients/platform/recursive-lead-form.html">Lead Form</a>
+        </div>
+        <div class="directory-item">
+            <a href="/clients/integral-ed/util-pages/pre-auth-chat.html">Pre-Auth Chat</a>
+        </div>
+        <div class="directory-item">
+            <a href="/clients/integral-ed/util-pages/quick-access.html">Quick Access</a>
+        </div>
+        <div class="directory-item">
+            <a href="/clients/bhb/BHB-chat.html">BHB Chat</a>
+        </div>
     </div>
 
     <script>
@@ -109,6 +176,24 @@
             currentIndex = (currentIndex + 1) % verbs.length;
             document.getElementById("verb-container").innerText = verbs[currentIndex];
         }, 2000);
+
+        // Secret key handler (press 'd' 3 times quickly)
+        let keyPresses = [];
+        let lastKeyPress = 0;
+
+        document.addEventListener('keydown', function(e) {
+            const now = Date.now();
+            if (now - lastKeyPress > 1000) {
+                keyPresses = [];
+            }
+            keyPresses.push(e.key);
+            lastKeyPress = now;
+
+            if (keyPresses.slice(-3).join('') === 'ddd') {
+                const panel = document.getElementById('directory-panel');
+                panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            }
+        });
     </script>
 </body>
 </html>
