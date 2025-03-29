@@ -22,7 +22,7 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs
         publish_branch: gh-pages
-        force_orphan: true
+        force_orphan: false
         cname: recursivelearning.app
         commit_message: |
           Deploy static files to GitHub Pages
@@ -33,6 +33,6 @@ jobs:
           3. Test shared components if this is a feature update
         enable_jekyll: false
         disable_nojekyll: false
-        keep_files: false
+        keep_files: true
 
 # API settings 
