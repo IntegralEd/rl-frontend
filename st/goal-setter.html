@@ -7,8 +7,8 @@
     <title>StriveTogether Goal Setter</title>
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="clients/platform/css/variables.css">
-    <link rel="stylesheet" href="clients/platform/css/custom.css">
+    <link rel="stylesheet" href="/platform/css/variables.css">
+    <link rel="stylesheet" href="/platform/css/custom.css">
 
     <style>
         :root {
@@ -21,6 +21,8 @@
             --footer-height: 100px;
             --border-color: #eee;
             --page-margin: 20px;
+            --chat-button-size: 60px;
+            --play-button-size: 60px;
 
             /* Branding Colors */
             --primary-color: #425563; /* ST Primary */
@@ -75,7 +77,7 @@
         .header-logo {
             height: 35px;
             margin: 7.5px 0;
-            content: url('assets/images/ST TH Powered By White Logo.png');
+            content: url('/platform/images/ST TH Powered By White Logo.png');
         }
 
         /* Main Layout */
@@ -221,11 +223,17 @@
         }
 
         .next-button::after {
-            content: url('assets/images/noun-next-5654311-FFFFFF.png');
+            content: '';
+            width: 24px;
+            height: 24px;
+            content: url('/platform/images/noun-next-5654311-FFFFFF.png');
         }
 
         .send-button::after {
-            content: url('assets/images/noun-send-7149925-FFFFFF.png');
+            content: '';
+            width: 24px;
+            height: 24px;
+            content: url('/platform/images/noun-send-7149925-FFFFFF.png');
         }
 
         .next-button.enabled {
@@ -326,6 +334,27 @@
             background: #E87722;
         }
 
+        /* Chat and Play buttons */
+        .chat-button, .play-button {
+            width: var(--chat-button-size);
+            height: var(--chat-button-size);
+            min-width: var(--chat-button-size);
+            min-height: var(--chat-button-size);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-color);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .chat-button img, .play-button img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
         @media (max-width: 1220px) {
             body {
                 padding: 0;
@@ -341,7 +370,7 @@
 <body>
     <div class="app-container">
         <header class="app-header">
-            <img src="assets/images/ST TH Powered By White Logo.png" 
+            <img src="/platform/images/ST TH Powered By White Logo.png" 
                  alt="StriveTogether" 
                  class="header-logo">
         </header>
@@ -420,7 +449,7 @@
         <div class="interaction-container">
             <div class="playbar">
                 <button class="next-button" disabled>
-                    <img src="assets/images/noun-next-5654311-FFFFFF.png" alt="Next">
+                    <img src="/platform/images/noun-next-5654311-FFFFFF.png" alt="Next">
                 </button>
             </div>
             <div class="chatbar" style="display: none;">
@@ -429,7 +458,7 @@
                        placeholder="Type your message..."
                        onkeydown="handleChatKeypress(event)">
                 <button class="send-button" onclick="sendMessage()">
-                    <img src="assets/images/noun-send-7149925-FFFFFF.png" alt="Send">
+                    <img src="/platform/images/noun-send-7149925-FFFFFF.png" alt="Send">
                 </button>
             </div>
         </div>
