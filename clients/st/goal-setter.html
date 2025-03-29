@@ -517,15 +517,16 @@
         function sendToWebhook() {
             const payload = {
                 user_data: {
-                    name: formState.name || '',
-                    email: formState.email || '',
+                    name: formState.name || 'anonymous',
+                    email: formState.email || 'anonymous@public.com',
                     user_id: formState.userId || '',
                     thread_id: window.threadId || '',
                     assistant_id: 'asst_IA5PsJxdShVPTAv2xeXTr4Ma',
                     org_id: 'recsK5zK0CouK5ebW',
                     intake_token: 'goalsetter_chat',
                     source: 'url',
-                    url: window.location.href
+                    url: window.location.href,
+                    is_anonymous: !formState.name || !formState.email
                 },
                 document_data: {
                     subject_and_grade: interviewState.teachingContext || '',
