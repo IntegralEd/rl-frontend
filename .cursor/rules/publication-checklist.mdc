@@ -1,0 +1,80 @@
+# Publication Checklist for Root-Based Deployment
+
+## URL Schema
+- Root: `https://recursivelearning.app/`
+- Client Pages: `/{client}/{page}.html`
+  - Example: `/clients/st/goal-setter.html`
+- Shared Assets: `/assets/{type}/{name}`
+  - Example: `/assets/css/variables.css`
+  - Example: `/assets/images/logo.png`
+
+## Pages to Update
+
+### StriveTogether (st)
+- [ ] `/clients/st/goal-setter.html`
+  - Update CSS paths to `/assets/css/...`
+  - Update image paths to `/assets/images/...`
+- [ ] `/clients/st/st-goalsetter-chat.html`
+  - Update CSS paths
+  - Update image paths
+
+### ELPL
+- [ ] `/clients/elpl/merit-chat.html`
+  - Update CSS paths
+  - Update image paths
+- [ ] `/clients/elpl/merit-embed.html`
+  - Update CSS paths
+  - Update image paths
+
+### BHB
+- [ ] `/clients/bhb/BHB-chat.html`
+  - Update CSS paths
+  - Update image paths
+
+### Integral Ed
+- [ ] `/clients/integral-ed/integral-landing.html`
+  - Update CSS paths
+  - Update image paths
+- [ ] `/clients/integral-ed/util-pages/*`
+  - Update all utility page paths
+
+### Platform
+- [ ] `/clients/platform/chat-template.html`
+  - Update CSS paths
+  - Update image paths
+- [ ] `/clients/platform/recursive-lead-form.html`
+  - Update CSS paths
+  - Update image paths
+- [ ] `/clients/platform/test-template.html`
+  - Update CSS paths
+  - Update image paths
+
+## Shared Assets to Verify
+- [ ] `/assets/css/`
+  - variables.css
+  - custom.css
+  - chat.css
+  - main.css
+  - recursive-platform.css
+- [ ] `/assets/js/`
+  - chat.js
+  - chat-widget.js
+  - navigation.js
+  - urlConfig.js
+- [ ] `/assets/images/`
+  - All shared images
+
+## Deployment Steps
+1. [ ] Remove gh-pages workflow
+2. [ ] Delete gh-pages branch
+3. [ ] Configure GitHub Pages to serve from main branch root
+4. [ ] Update all file paths to use root-relative paths
+5. [ ] Test all pages locally
+6. [ ] Deploy and verify all pages are accessible
+7. [ ] Document new URL schema for stakeholders
+
+## Notes
+- All paths should be root-relative (starting with /)
+- Keep client-specific assets in their respective directories
+- Shared assets should be in the root /assets directory
+- Test all pages in incognito mode to verify paths 

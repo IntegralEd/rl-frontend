@@ -7,8 +7,8 @@
     <title>StriveTogether Goal Setter</title>
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="../../assets/css/variables.css">
-    <link rel="stylesheet" href="../../assets/css/custom.css">
+    <link rel="stylesheet" href="../platform/css/variables.css">
+    <link rel="stylesheet" href="../platform/css/custom.css">
 
     <style>
         :root {
@@ -75,7 +75,7 @@
         .header-logo {
             height: 35px;
             margin: 7.5px 0;
-            content: url('/clients/st/assets/images/ST TH Powered By White Logo.png');
+            content: url('assets/images/ST TH Powered By White Logo.png');
         }
 
         /* Main Layout */
@@ -220,16 +220,12 @@
             cursor: not-allowed;
         }
 
-        .next-button img {
-            width: 30px;
-            height: 30px;
-            content: url('/clients/st/assets/images/noun-next-5654311-FFFFFF.png');
+        .next-button::after {
+            content: url('assets/images/noun-next-5654311-FFFFFF.png');
         }
 
-        .send-button img {
-            width: 30px;
-            height: 30px;
-            content: url('/clients/st/assets/images/noun-send-7149925-FFFFFF.png');
+        .send-button::after {
+            content: url('assets/images/noun-send-7149925-FFFFFF.png');
         }
 
         .next-button.enabled {
@@ -345,7 +341,7 @@
 <body>
     <div class="app-container">
         <header class="app-header">
-            <img src="/clients/st/assets/images/ST TH Powered By White Logo.png" 
+            <img src="assets/images/ST TH Powered By White Logo.png" 
                  alt="StriveTogether" 
                  class="header-logo">
         </header>
@@ -424,7 +420,7 @@
         <div class="interaction-container">
             <div class="playbar">
                 <button class="next-button" disabled>
-                    <img src="/clients/st/assets/images/noun-next-5654311-FFFFFF.png" alt="Next">
+                    <img src="assets/images/noun-next-5654311-FFFFFF.png" alt="Next">
                 </button>
             </div>
             <div class="chatbar" style="display: none;">
@@ -433,7 +429,7 @@
                        placeholder="Type your message..."
                        onkeydown="handleChatKeypress(event)">
                 <button class="send-button" onclick="sendMessage()">
-                    <img src="/clients/st/assets/images/noun-send-7149925-FFFFFF.png" alt="Send">
+                    <img src="assets/images/noun-send-7149925-FFFFFF.png" alt="Send">
                 </button>
             </div>
         </div>

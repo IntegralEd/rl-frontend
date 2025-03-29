@@ -32,14 +32,14 @@
   --client-high-contrast-mode: true;
 
   /* Assets */
-  --client-logo: url('../assets/images/logo.png');
-  --client-avatar: url('../assets/images/avatar.png');
+  --client-logo: url('assets/images/logo.png');
+  --client-avatar: url('assets/images/avatar.png');
   --client-voice-tone: 'Optimistic, collaborative, systems-focused';
 
   /* Image Paths */
-  --logo-path: '/clients/strive-together/assets/images/logo.png';
-  --logo-ico-path: '/clients/strive-together/assets/images/logo.ico';
-  --lockup-white-logo-path: '/clients/strive-together/assets/images/logo.png';
+  --logo-path: 'assets/images/logo.png';
+  --logo-ico-path: 'assets/images/logo.ico';
+  --lockup-white-logo-path: 'assets/images/logo.png';
 
   /* Assistant Config */
   --ai-assistant-id: 'asst_9GkHpGa5t50Yw74uzonh6FAz';
