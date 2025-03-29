@@ -1,0 +1,91 @@
+# PDF Generation Workflow
+
+## Overview
+This document outlines how we generate PDFs from chat interactions using AcroForm fields and Make.com automation.
+
+## Current Implementation
+- Chat interactions are captured and sent to Make.com webhook
+- Webhook processes the payload and generates PDFs using PDF.co
+- Templates use AcroForm fields for dynamic content
+
+## PDF Template Structure
+
+### Required Fields
+```json
+{
+  "student_name": "",
+  "learning_target": "",
+  "success_criteria": "",
+  "chat_summary": "",
+  "timestamp": "",
+  "session_id": "",
+  "grade_level": "",
+  "subject_area": ""
+}
+```
+
+### Field Types
+- Text Fields: student_name, learning_target, success_criteria
+- Multi-line Text: chat_summary
+- Date Fields: timestamp
+- Hidden Fields: session_id
+- Dropdown: grade_level, subject_area
+
+## Make.com Workflow
+
+1. **Webhook Trigger**
+   - Receives POST from chat interface
+   - Validates payload structure
+   - Extracts relevant data
+
+2. **Data Processing**
+   - Formats chat history
+   - Maps data to PDF fields
+   - Generates unique session ID
+
+3. **PDF Generation**
+   - Uses PDF.co "Fill PDF Form Fields" module
+   - Applies template with AcroForm fields
+   - Returns downloadable PDF
+
+## Example Payload
+```json
+{
+  "message": "I want to set a learning goal for my 3rd grade class",
+  "threadId": "thread_abc123",
+  "metadata": {
+    "grade_level": "3",
+    "subject_area": "ELA",
+    "timestamp": "2024-03-29T12:00:00Z"
+  }
+}
+```
+
+## Future Enhancements
+1. **Template Management**
+   - Version control for templates
+   - Client-specific templates
+   - Template preview interface
+
+2. **Field Validation**
+   - Required field checking
+   - Format validation
+   - Custom validation rules
+
+3. **Accessibility**
+   - Screen reader optimization
+   - High contrast mode
+   - Keyboard navigation
+
+4. **Analytics**
+   - Usage tracking
+   - Template effectiveness
+   - User engagement metrics
+
+## Testing Checklist
+- [ ] Verify all AcroForm fields are properly named
+- [ ] Test field validation
+- [ ] Check PDF accessibility
+- [ ] Validate webhook responses
+- [ ] Test error handling
+- [ ] Verify template versioning 
